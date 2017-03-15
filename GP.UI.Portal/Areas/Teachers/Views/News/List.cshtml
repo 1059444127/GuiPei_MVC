@@ -1,0 +1,222 @@
+﻿@using GP.Common
+@{
+    Layout = null;
+}
+
+<!DOCTYPE html>
+
+<html>
+<head>
+    <meta name="viewport" content="width=device-width" />
+    <title>列表页</title>
+    <script src="~/Scripts/jquery-1.8.2.min.js"></script>
+    <script src="~/Scripts/MyJs/global.js"></script>
+    <script src="~/Scripts/MyJs/MyPageList/PageList1.js"></script>
+    <script src="~/Scripts/MyJs/bootstrap-2.3.3/js/bootstrap.min.js"></script>
+    <script src="~/Scripts/MyJs/autosize.js"></script>
+    <script src="~/Scripts/MyJs/jquery-form.js"></script>
+    <script src="~/Scripts/MyJs/ckeditor/ckeditor.js"></script>
+    <script src="~/Scripts/MyJs/ckeditor/loadUBBCode.js"></script>
+    <link href="~/Content/MyCss/global.css" rel="stylesheet" />
+    <link href="~/Content/MyCss/bootstrapNoTable/bootstrap.css" rel="stylesheet" />
+    <script type="text/javascript">
+
+    var newsTitle = '@CommonFunc.SafeGetStringFromObj(ViewData["NewsTitle"])';
+    var registerDate = '@CommonFunc.SafeGetStringFromObj(ViewData["RegisterDate"])';
+    $(function () {
+        loadUBBCode();
+        $("#fujian").remove();
+        loadPageList(1);
+    });
+    function loadPageList(pi) {
+        $.post('@Url.Action("PageList")', {
+            "pi": pi, "NewsTitle": newsTitle, "RegisterDate": registerDate
+        },
+          function (data) {
+              var jsonArr = data;
+              if (jsonArr.data == null) {
+                  $("#tbList tr:gt(0)").remove();
+              } else {
+                  createRows(jsonArr.data, pi);
+              }
+              createPageBar($("#PageList"), pi, jsonArr.totalCount, jsonArr.pageCount);
+
+          });
+    }
+
+    function createRows(jsonArr, pi) {
+        var tbL = $("#tbList");
+        $("#tbList tr:gt(0)").remove();
+        for (i = 0; i < jsonArr.length; i++) {
+            var trHTML = "<tr class='listTableContentRow'>";
+            trHTML += "<td style='height:25px'>" + jsonArr[i].NewsTitle + "</td>";
+            if (jsonArr[i].FileName == "" || jsonArr[i].FileName == null) {
+                trHTML += "<td>没有上传文件</td>";
+            } else {
+                trHTML += "<td style='color:red;'>" + jsonArr[i].FileName + "<a style='text-decoration:none;color:#002D96;font-size:10px;' href=\"/Teachers/News/Download?FileName=" + jsonArr[i].FileName + "&FilePath=" + jsonArr[i].FilePath + "\">下载</a></td>";
+                }
+                trHTML += "<td>" + jsonArr[i].Writor + "</td>";
+                trHTML += "<td>" + jsonArr[i].RegisterDate + "</td>";
+                trHTML += "<td><a href='#' onclick=\"show('" + jsonArr[i].Id + "');\"><img alt='查看详细资料' src='/images/imgs/icon_show.gif'/></a></td>";
+                trHTML += "</tr>";
+                tbL.append(trHTML);
+            }
+            MouseAnimate();
+        }
+
+        function show(id) {
+            $("#submit").hide();
+            LoadData(id);
+            $("#myModal").modal('show');
+        }
+
+        function LoadData(id) {
+            var oEditor = CKEDITOR.instances.NewsContent;
+
+            $.ajax({
+                cache: false,
+                asycn: true,
+                type: "get",
+                url: '@Url.Action("LoadData")',
+                dataType: "text",
+                data: { id: id },
+                success: function (data) {
+                    var jsonArr = eval("(" + data + ")");
+
+                    $("#TrainingBaseCode").val(jsonArr.TrainingBaseCode);
+                    $("#TrainingBaseName").val(jsonArr.TrainingBaseName);
+                    $("#ManagersName").val(jsonArr.ManagersName);
+                    $("#ManagersRealName").val(jsonArr.ManagersRealName);
+                    $("#Id").val(jsonArr.Id);
+                    $("#NewsTitle").val(jsonArr.NewsTitle);
+                    oEditor.setData(jsonArr.NewsContent);
+                    $(":checkbox[name='Students'][value='" + jsonArr.Students + "']").attr('checked', true);
+                    $(":checkbox[name='Teachers'][value='" + jsonArr.Teachers + "']").attr('checked', true);
+                    $(":checkbox[name='Bases'][value='" + jsonArr.Bases + "']").attr('checked', true);
+                    $("#Writor").val(jsonArr.Writor);
+                    $("#RegisterDate").val(jsonArr.RegisterDate);
+
+                },
+                error: function () {
+                    alert("系统繁忙，请联系管理员")
+                }
+            });
+        }
+    </script>
+</head>
+<body>
+    <div>
+        <table class="listTableHead" cellspacing="0" cellpadding="0" style="width:100%">
+            <tr>
+                <td class="listTableHeadTR" style="height: 22px;" width="20%">
+                    <img height="16" src="/images/imgs/Query.gif" width="16" style="vertical-align: middle" />新闻公告查询结果
+                </td>
+
+            </tr>
+        </table>
+        <table id="tbList" class="listTable" cellspacing="1" cellpadding="0" style="width:100%">
+            <tr id="tr0" class="listTableTitleRow">
+                <td>标题</td>
+                <td>附件</td>
+                <td>发布对象</td>
+                <td>发布时间</td>
+                <td>查看</td>
+            </tr>
+
+        </table>
+        <div id="PageList" style="text-align:center;vertical-align:middle; margin-top:10px;"></div>
+    </div>
+
+    <form id="form1" name="form1">
+
+        <div class="modal fade" id="myModal" tabindex="-2" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true" data-backdrop="static" style="display:none;max-height:500px;min-height:200px;width:70%;margin-left:-35%;top:5%;">
+            <div class="modal-dialog">
+                <div class="modal-content">
+
+                    <div class="modal-body" style="max-height: 500px; min-height: 200px; padding: 1px;">
+                        <div align="center">
+                            <input type="hidden" id="Id" name="Id" />
+                            <input type="hidden" id="TrainingBaseCode" name="TrainingBaseCode" />
+                            <input type="hidden" id="TrainingBaseName" name="TrainingBaseName" />
+                            <input type="hidden" id="ManagersName" name="ManagersName" />
+                            <input type="hidden" id="ManagersRealName" name="ManagersRealName" />
+
+                            <table border="0" style="border-collapse: collapse;width:100%" cellpadding="0" cellspacing="1" class="detailTable">
+                                <tr>
+                                    <td height="24" align="center" colspan="2" class="detailHead">
+                                        新闻公告
+                                    </td>
+                                </tr>
+
+                                <tr>
+                                    <td width="10%" class="detailTitle" style="height: 25px;">标题：<span style="color: #ff0000">*</span></td>
+                                    <td width="70%" class="detailContent" style="height: 25px;">
+                                        <span class="detailContent" style="height: 25px">
+                                            <input type="text" id="NewsTitle" name="NewsTitle" style="width:450px" />
+                                        </span>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td width="10%" class="detailTitle" style="height: 25px;">内容：<span style="color: #ff0000">*</span></td>
+                                    <td width="70%" class="detailContent" style="height: 25px;">
+                                        <span class="detailContent" style="height: 25px">
+                                            <textarea id="NewsContent" name="NewsContent" rows="10" style="width:95%;"></textarea>
+                                        </span>
+                                    </td>
+                                </tr>
+                                <tr id="fujian">
+                                    <td width="10%" class="detailTitle" style="height: 25px;">附件：</td>
+                                    <td width="70%" style="height: 25px;" class="detailContent" valign="bottom" align="center">
+                                        <label><span style="color: #ff0000">上传多个文件时，请压缩为.rar、.zip格式</span></label>
+                                        <input type="file" id="UploadFile" name="UploadFile" />
+                                        <input type="hidden" id="FileName" name="FileName" />
+                                        <input type="hidden" id="FilePath" name="FilePath" />
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td width="10%" class="detailTitle" style="height: 25px;">发送对象：<span style="color: #ff0000">*</span></td>
+                                    <td width="70%" class="detailContent" style="height: 25px;" align="center">
+                                        <span class="detailContent" style="height: 25px">
+                                            <label><input type="checkbox" id="Students" name="Students" value="1" />学员</label><a style="padding-left:2em;"></a>
+                                            <label><input type="checkbox" id="Teachers" name="Teachers" value="1" />指导医师</label><a style="padding-left:2em;"></a>
+                                            <label><input type="checkbox" id="Bases" name="Bases" value="1" />专业基地负责人</label>
+                                        </span>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td colspan="2">
+                                        <table align="right">
+                                            <tr>
+                                                <td width="18%" class="detailTitle" style="height: 25px;">发布人：<span style="color: #ff0000">*</span></td>
+                                                <td width="10%" class="detailContent" style="height: 25px;">
+                                                    <span class="detailContent" style="height: 25px">
+                                                        <input type="text" id="Writor" name="Writor" style="width:150px" />
+                                                    </span>
+                                                </td>
+                                                <td width="20%" class="detailTitle" style="height: 25px;">发布时间：<span style="color: #ff0000">*</span></td>
+                                                <td width="10%" class="detailContent" style="height: 25px;">
+                                                    <span class="detailContent" style="height: 25px">
+                                                        <input type="text" id="RegisterDate" name="RegisterDate" style="width:150px" onclick="WdatePicker({ dateFmt: 'yyyy-MM-dd HH:mm:ss', maxDate: '%y-%M-%d', position: { left: -25, top: 0 } });" />
+                                                    </span>
+                                                </td>
+                                            </tr>
+                                        </table>
+                                    </td>
+
+                                </tr>
+                            </table>
+                        </div>
+                    </div>
+
+                    <div class="modal-footer" style="margin: auto; text-align: center;">
+                        <input type="button" id="close" name="close" class="btn btn-default" data-dismiss="modal" value="关闭" />
+                       
+                    </div>
+                </div>
+                <!-- /.modal-content -->
+            </div>
+            <!-- /.modal -->
+        </div>
+    </form>
+</body>
+</html>

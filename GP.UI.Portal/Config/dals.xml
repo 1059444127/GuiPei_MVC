@@ -1,0 +1,83 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<objects xmlns="http://www.springframework.net">
+  <!--<object name="DbSessionFactory" type="Heima8.OA.DALFactory.DbSessionFactory, Heima8.OA.DALFactory" singleton="true"  >
+  </object>-->
+
+  <!--spring.net 通过工厂的实例方法来创建对象的配置demo-->
+  <!--<object name="DbSession" type="Heima8.OA.DALFactory.DbSession, Heima8.OA.DALFactory" singleton="false"  factory-method="GetCurrentDbSession" factory-object="DbSessionFactory" >
+  </object>-->
+
+  <!--spring.net 通过工厂的一个静态方法来创建对象的 配置demo。  type就直接配置到工厂类型就可以了。-->
+  <!--<object name="CurrentDbSession" type="GP.DAL.DbSessionFactory, GP.DAL" singleton="false"   factory-method="CreateDbSession"  >
+  </object>-->
+
+  <object name="loginDal" type="GP.DAL.LoginDal, GP.DAL" singleton="false" >
+  </object>
+  <object name="GP_LoginDal" type="GP.DAL.GP_LoginDal, GP.DAL" singleton="false" >
+  </object>
+  <object name="GP_Professional_BaseDal" type="GP.DAL.GP_Professional_BaseDal, GP.DAL" singleton="false" >
+  </object>
+
+  <object name="GP_SchoolInformationDal" type="GP.DAL.GP_SchoolInformationDal, GP.DAL" singleton="false" >
+  </object>
+
+  <object name="GP_StudentsPersonalInformation2Dal" type="GP.DAL.GP_StudentsPersonalInformation2Dal, GP.DAL" singleton="false" >
+  </object>
+
+  <object name="GP_StudentsRotaryInformation2Dal" type="GP.DAL.GP_StudentsRotaryInformation2Dal, GP.DAL" singleton="false" >
+  </object>
+
+  <object name="GP_QuestionnaireDal" type="GP.DAL.GP_QuestionnaireDal, GP.DAL" singleton="false" >
+  </object>
+
+  <object name="GP_RotaryScheduleDal" type="GP.DAL.GP_RotaryScheduleDal, GP.DAL" singleton="false" >
+  </object>
+  <object name="GP_DeptManagementDal" type="GP.DAL.GP_DeptManagementDal, GP.DAL" singleton="false" >
+  </object>
+  <object name="GP_Professional_Base_DeptDal" type="GP.DAL.GP_Professional_Base_DeptDal, GP.DAL" singleton="false" >
+  </object>
+  <object name="GP_Disease_RegisterDal" type="GP.DAL.GP_Disease_RegisterDal, GP.DAL" singleton="false" >
+  </object>
+  <object name="GP_Disease_Register2Dal" type="GP.DAL.GP_Disease_Register2Dal, GP.DAL" singleton="false" >
+  </object>
+  <object name="GP_SkillRequirementDal" type="GP.DAL.GP_SkillRequirementDal, GP.DAL" singleton="false" >
+  </object>
+  <object name="GP_SkillRequirement2Dal" type="GP.DAL.GP_SkillRequirement2Dal, GP.DAL" singleton="false" >
+  </object>
+<object name="GP_ProvinceDal" type="GP.DAL.GP_ProvinceDal, GP.DAL" singleton="false" >
+</object>
+  <object name="GP_CityDal" type="GP.DAL.GP_CityDal, GP.DAL" singleton="false" >
+  </object>
+  <object name="GP_AreaDal" type="GP.DAL.GP_AreaDal, GP.DAL" singleton="false" >
+  </object>
+<object name="GP_BigMedicalRecords2Dal" type="GP.DAL.GP_BigMedicalRecords2Dal, GP.DAL" singleton="false" >
+</object>
+<object name="GP_TeachingActivitiesDal" type="GP.DAL.GP_TeachingActivitiesDal, GP.DAL" singleton="false" >
+</object>
+<object name="GP_AttendanceManagementDal" type="GP.DAL.GP_AttendanceManagementDal, GP.DAL" singleton="false" >
+</object>
+<object name="GP_AdviceFeedbackDal" type="GP.DAL.GP_AdviceFeedbackDal, GP.DAL" singleton="false" >
+</object>
+<object name="GP_ReleaseNewsDal" type="GP.DAL.GP_ReleaseNewsDal, GP.DAL" singleton="false" >
+</object>
+<object name="GP_NeiKeOptionDal" type="GP.DAL.GP_NeiKeOptionDal, GP.DAL" singleton="false" >
+</object>
+  <object name="GP_TiKuResultDal" type="GP.DAL.GP_TiKuResultDal, GP.DAL" singleton="false" >
+</object>
+<object name="RotaryInformationJoinDal" type="GP.DAL.RotaryInformationJoinDal, GP.DAL" singleton="false" >
+</object>
+
+<object name="GP_OutDept_ExamDal" type="GP.DAL.GP_OutDept_ExamDal, GP.DAL" singleton="false" >
+</object>
+<object name="GP_Teachers_Appoint_InformationDal" type="GP.DAL.GP_Teachers_Appoint_InformationDal, GP.DAL" singleton="false" >
+</object>
+
+
+
+
+
+
+
+
+
+</objects>

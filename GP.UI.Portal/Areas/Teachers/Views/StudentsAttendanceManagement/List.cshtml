@@ -1,0 +1,128 @@
+﻿@using GP.Common
+@{
+    Layout = null;
+}
+
+<!DOCTYPE html>
+
+<html>
+<head>
+    <meta name="viewport" content="width=device-width" />
+    <title>列表页</title>
+    <script src="~/Scripts/jquery-1.8.2.min.js"></script>
+    <script src="~/Scripts/MyJs/global.js"></script>
+    <script src="~/Scripts/MyJs/MyPageList/PageList1.js"></script>
+    <script src="~/Scripts/MyJs/bootstrap-2.3.3/js/bootstrap.min.js"></script>
+    <link href="~/Content/MyCss/global.css" rel="stylesheet" />
+    <link href="~/Content/MyCss/bootstrapNoTable/bootstrap.css" rel="stylesheet" />
+
+    <script type="text/javascript">
+        var StudentsRealName = '@CommonFunc.SafeGetStringFromObj(ViewData["StudentsRealName"])';
+        var AttendanceCategory = '@CommonFunc.SafeGetStringFromObj(ViewData["AttendanceCategory"])';
+        var FirstDate = '@CommonFunc.SafeGetStringFromObj(ViewData["FirstDate"])';
+        var LastDate = '@CommonFunc.SafeGetStringFromObj(ViewData["LastDate"])';
+        var Days = '@CommonFunc.SafeGetStringFromObj(ViewData["Days"])';
+
+        $(window).load(function () {
+            loadPageList(1);
+        });
+
+        function loadPageList(pi) {
+            $.post('@Url.Action("PageList")', {
+                "pi": pi, "StudentsRealName": StudentsRealName, 
+                "AttendanceCategory": AttendanceCategory, "FirstDate": FirstDate, "LastDate": LastDate, "Days": Days
+            },
+              function (data) {
+                  var jsonArr = data;
+                  if (jsonArr.data == null) {
+                      $("#tbList tr:gt(0)").remove();
+                  } else {
+                      createRows(jsonArr.data, pi);
+                  }
+                  createPageBar($("#PageList"), pi, jsonArr.totalCount, jsonArr.pageCount);
+
+              });
+        }
+
+        function createRows(jsonArr, pi) {
+            var tbL = $("#tbList");
+            $("#tbList tr:gt(0)").remove();
+            for (i = 0; i < jsonArr.length; i++) {
+                var trHTML = "<tr class='listTableContentRow'>";
+                trHTML += "<td style='height:25px;'>" + jsonArr[i].StudentsRealName + "</td>";
+                trHTML += "<td>" + jsonArr[i].ProfessionalBaseName + "</td>";
+                trHTML += "<td>" + jsonArr[i].DeptName + "</td>";
+                trHTML += "<td>" + jsonArr[i].AttendanceCategory + "</td>";
+                trHTML += "<td>" + jsonArr[i].FirstDate + "</td>";
+                trHTML += "<td>" + jsonArr[i].LastDate + "</td>";
+                trHTML += "<td>" + jsonArr[i].Days + "</td>";
+                if (jsonArr[i].AttendanceCategory == "正常签到" || jsonArr[i].Details == "") {
+                    trHTML += "<td style='width:30%;'>无</td>";
+                } else {
+                    trHTML += "<td style='width:30%;'>" + jsonArr[i].Details + "</td>";
+                }
+                if (jsonArr[i].Comment == "" || jsonArr[i].Comment == null) {
+                    trHTML += "<td style='width:10%;'>无</td>";
+                } else {
+                    trHTML += "<td style='width:10%;'>" + jsonArr[i].Comment + "</td>";
+                }
+                trHTML += "<td><a style='text-decoration:none;color:red;' onclick=\"handle('" + jsonArr[i].TeacherCheck + "','" + jsonArr[i].Id + "','" + pi + "');\" href='#'>" + jsonArr[i].TeacherCheck + "</a></td>";
+                trHTML += "</tr>";
+                tbL.append(trHTML);
+
+            }
+            MouseAnimate();
+        }
+        function handle(check, id, pi) {
+            $.ajax({
+                cache: false,
+                type: "get",
+                url: '@Url.Action("Handle")',
+                dataType: "text",
+                data: { id: id, check: check },
+                success: function (data) {
+                    if (data == "1") {
+                        loadPageList(pi);
+                        return;
+                    } else {
+                        alert("审核操作失败");
+                    }
+
+                },
+                error: function () {
+                    alert("系统繁忙，请联系管理员");
+                }
+            });
+        }
+    </script>
+</head>
+<body>
+    <div>
+        <table class="listTableHead" cellspacing="0" cellpadding="0" style="width:100%">
+            <tr>
+                <td class="listTableHeadTR" style="height: 22px;" width="20%">
+                    <img height="16" src="/images/imgs/Query.gif" width="16" style="vertical-align: middle" />学员出勤记录查询结果
+                </td>
+
+            </tr>
+        </table>
+        <table id="tbList" class="listTable" cellspacing="1" cellpadding="0" style="width:100%">
+            <tr id="tr0" class="listTableTitleRow">
+                <td>姓名</td>
+                <td>专业基地</td>
+                <td>轮转科室</td>
+                <td>类型</td>
+                <td>开始日期</td>
+                <td>结束日期</td>
+                <td>天数</td>
+                <td>具体情况</td>
+                <td>备注</td>
+                <td>审核</td>
+            </tr>
+        </table>
+        <div id="PageList" style="text-align: center; vertical-align: middle; margin-top: 10px;"></div>
+
+    </div>
+
+</body>
+</html>

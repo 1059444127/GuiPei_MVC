@@ -1,0 +1,299 @@
+﻿@using GP.Common
+@{
+    Layout = null;
+}
+
+<!DOCTYPE html>
+
+<html>
+<head>
+    <meta name="viewport" content="width=device-width" />
+    <title>列表页</title>
+    <script src="~/Scripts/jquery-1.8.2.min.js"></script>
+    <script src="~/Scripts/MyJs/global.js"></script>
+    <script src="~/Scripts/MyJs/MyPageList/PageList1.js"></script>
+    <script src="~/Scripts/MyJs/bootstrap-2.3.3/js/bootstrap.min.js"></script>
+    <link href="~/Content/MyCss/global.css" rel="stylesheet" />
+    <link href="~/Content/MyCss/bootstrapNoTable/bootstrap.css" rel="stylesheet" />
+    <script type="text/javascript">
+        var RealName = '@CommonFunc.SafeGetStringFromObj(ViewData["RealName"])';
+        var Sex = '@CommonFunc.SafeGetStringFromObj(ViewData["Sex"])';
+        var MinZu = '@CommonFunc.SafeGetStringFromObj(ViewData["MinZu"])';
+        var HighEducation = '@CommonFunc.SafeGetStringFromObj(ViewData["HighEducation"])';
+        var HighSchool = '@CommonFunc.SafeGetStringFromObj(ViewData["HighSchool"])';
+        var IdentityType = '@CommonFunc.SafeGetStringFromObj(ViewData["IdentityType"])';
+        var SendUnit = '@CommonFunc.SafeGetStringFromObj(ViewData["SendUnit"])';
+        var CollaborativeUnit = '@CommonFunc.SafeGetStringFromObj(ViewData["CollaborativeUnit"])';
+        var TrainingTime = '@CommonFunc.SafeGetStringFromObj(ViewData["TrainingTime"])';
+        var PlanTrainingTime = '@CommonFunc.SafeGetStringFromObj(ViewData["PlanTrainingTime"])';
+        $(window).load(function () {
+            loadPageList(1);
+        });
+
+        function loadPageList(pi) {
+
+            $.post('@Url.Action("PageList")', {
+                "pi": pi, "RealName": RealName, "Sex": Sex, "MinZu": MinZu, "HighEducation": HighEducation, "HighSchool": HighSchool,
+                "IdentityType": IdentityType, "SendUnit": SendUnit, "CollaborativeUnit": CollaborativeUnit,
+                "TrainingTime": TrainingTime, "PlanTrainingTime": PlanTrainingTime
+            },
+              function (data) {
+                  var jsonArr = data;
+                  if (jsonArr.data == null) {
+                      $("#tbList tr:gt(0)").remove();
+                  } else {
+                      createRows(jsonArr.data, pi);
+                  }
+                  createPageBar($("#PageList"), pi, jsonArr.totalCount, jsonArr.pageCount);
+
+              });
+        }
+
+        function createRows(jsonArr) {
+            var tbL = $("#tbList");
+            $("#tbList tr:gt(0)").remove();
+            for (i = 0; i < jsonArr.length; i++) {
+                var trHTML = "<tr class='listTableContentRow'>";
+                trHTML += "<td style='height:25px;'>" + (jsonArr[i].RealName == null ? "" : jsonArr[i].RealName) + "</td>";
+                trHTML += "<td>" + (jsonArr[i].Sex == null ? "" : jsonArr[i].Sex) + "</td>";
+                trHTML += "<td>" + (jsonArr[i].IdNumber == null ? "" : jsonArr[i].IdNumber) + "</td>";
+                trHTML += "<td>" + (jsonArr[i].Telephon == null ? "" : jsonArr[i].Telephon )+ "</td>";
+                trHTML += "<td>" +( jsonArr[i].MinZu == null ? "" : jsonArr[i].MinZu )+ "</td>";
+                trHTML += "<td>" +( jsonArr[i].HighEducation == null ? "" : jsonArr[i].HighEducation )+ "</td>";
+                trHTML += "<td>" +( jsonArr[i].HighSchool == null ? "" : jsonArr[i].HighSchool )+ "</td>";
+                trHTML += "<td>" +( jsonArr[i].HighMajor == null ? "" : jsonArr[i].HighMajor )+ "</td>";
+                trHTML += "<td>" +( jsonArr[i].ProfessionalBaseName == null ? "" : jsonArr[i].ProfessionalBaseName )+ "</td>";
+                trHTML += "<td>" +( jsonArr[i].TrainingTime == null ? "" : jsonArr[i].TrainingTime) + "</td>";
+                trHTML += "<td>" + (jsonArr[i].PlanTrainingTime == null ? "" : jsonArr[i].PlanTrainingTime) + "</td>";
+                trHTML += "<td><a href='#' onclick=\"show('" + jsonArr[i].Id + "');\"><img alt='查看详细资料' src='/images/imgs/icon_show.gif'/></a></td>";
+                trHTML += "</tr>";
+                tbL.append(trHTML);
+            }
+            MouseAnimate();
+        }
+
+        function show(id) {
+            LoadData(id);
+            $("#myModal").modal('show');
+        }
+        function LoadData(id) {
+            $.ajax({
+                cache: false,
+                asycn: true,
+                type: "get",
+                url: '@Url.Action("LoadData")',
+                dataType: "text",
+                data: { id: id },
+                success: function (data) {
+                    var jsonArr = eval("(" + data + ")");
+                    
+                    $("#RealName").html(jsonArr.RealName);
+                    if (jsonArr.ImagePath == "" || jsonArr.ImagePath == null) {
+                        $("#ImagePath").attr("src", "/images/head1.jpg");
+                    } else {
+                        $("#ImagePath").attr("src", jsonArr.ImagePath);
+                    }
+                    $("#Sex").html(jsonArr.Sex);
+                    $("#IdNumber").html(jsonArr.IdNumber);
+                    $("#DateBirth").html(jsonArr.DateBirth);
+                    $("#Telephon").html(jsonArr.Telephon);
+                    $("#Mail").html(jsonArr.Mail);
+                    $("#MinZu").html(jsonArr.MinZu);
+                    $("#BkSchool").html(jsonArr.BkSchool);
+                    $("#BkMajor").html(jsonArr.BkMajor);
+                    $("#GraduationTime").html(jsonArr.GraduationTime);
+                    $("#HighEducation").html(jsonArr.HighEducation);
+                    $("#HighSchool").html(jsonArr.HighSchool);
+                    $("#HighMajor").html(jsonArr.HighMajor);
+                    $("#HighEducationTime").html(jsonArr.HighEducationTime);
+
+                    $("#IdentityType").html(jsonArr.IdentityType);
+                    $("#SendUnit").html(jsonArr.SendUnit);
+                    $("#TrainingBaseName").html(jsonArr.TrainingBaseName);
+                    $("#CollaborativeUnit").html(jsonArr.CollaborativeUnit);
+                    $("#ProfessionalBaseName").html(jsonArr.ProfessionalBaseName);
+                    $("#TrainingTime").html(jsonArr.TrainingTime);
+                    $("#PlanTrainingTime").html(jsonArr.PlanTrainingTime);
+                },
+                error: function () {
+                    alert("系统繁忙，请联系管理员")
+                }
+            });
+        }
+    </script>
+</head>
+<body>
+    <div>
+        <table class="listTableHead" cellspacing="0" cellpadding="0" style="width:100%;">
+            <tr>
+                <td class="listTableHeadTR" style="height: 22px;" width="20%">
+                    <img height="16" src="/images/imgs/Query.gif" width="16" style="vertical-align: middle" />学员基本信息
+                </td>
+            </tr>
+        </table>
+        <table id="tbList" class="listTable" cellspacing="1" cellpadding="0" style="width:100%;">
+            <tr id="tr0" class="listTableTitleRow">
+                <td>姓名</td>
+                <td>性别</td>
+                <td>身份证号码</td>
+                <td>手机号码</td>
+                <td>民族</td>
+                <td>最高学历</td>
+                <td>最高学历毕业院校</td>
+                <td>最高学历专业</td>
+                <td>培训专业</td>
+                <td>参训时间</td>
+                <td>计划参训时限</td>
+                <td>查看</td>
+            </tr>
+        </table>
+        <div id="PageList" style="text-align:center;vertical-align:middle; margin-top:10px;"></div>
+    </div>
+
+    <form id="form1" name="form1">
+        <div class="modal fade" id="myModal" tabindex="-2" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true" data-backdrop="static" style="display:none;max-height:500px;min-height:200px;width:70%;margin-left:-35%;top:5%;">
+            <div class="modal-dialog">
+                <div class="modal-content">
+
+                    <div class="modal-body" style="max-height: 500px; min-height: 200px; padding: 1px;">
+                        <div align="center">
+                            <table border="0" style="border-collapse: collapse;width:100%;" cellpadding="0" cellspacing="1" class="detailTable">
+                                <tr>
+                                    <td height="24" align="center" colspan="6" class="detailHead">学员基本信息</td>
+                                </tr>
+                                <tr>
+                                    <td width="10%" class="detailTitle" style="height: 25px;">姓名</td>
+                                    <td width="23%" class="detailContent" style="height:25px;">
+                                        <label id="RealName"></label>
+                                    </td>
+                                    <td width="60%" class="detailContent" style="height: 50px" colspan="5" rowspan="5">
+                                        <div style="float:left;width:30%;height:125px;margin-left:70px;margin-top:5px;">
+                                            <img alt="图标" style="width:120px;height:160px;" id="ImagePath" />
+                                        </div>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td width="10%" class="detailTitle" style="height: 25px;">性别</td>
+                                    <td class="detailContent" width="23%" style="height: 25px;">
+                                       <label id="Sex"></label>
+                                    </td>
+
+                                </tr>
+                                <tr>
+                                    <td width="10%" class="detailTitle" style="height: 25px">居民身份证号</td>
+                                    <td width="23%" class="detailContent" style="height: 25px">
+                                        <label id="IdNumber"></label>
+                                    </td>
+
+                                </tr>
+                                <tr>
+                                    <td width="10%" class="detailTitle" style="height: 25px">出生日期</td>
+                                    <td width="23%" class="detailContent" style="height: 25px">
+                                        <label id="DateBirth"></label>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td width="10%" class="detailTitle" style="height: 25px">民族</td>
+                                    <td width="23%" class="detailContent" style="height: 25px">
+                                        <label id="MinZu"></label>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td width="10%" class="detailTitle" style="height: 25px"></td>
+                                    <td width="23%" class="detailContent" style="height: 25px" colspan="5"></td>
+                                </tr>
+                                <tr>
+                                    <td width="10%" class="detailTitle" style="height: 25px">手机号码<span style="color: #ff0000">*</span></td>
+                                    <td width="23%" class="detailContent" style="height: 25px">
+                                        <label id="Telephon"></label>
+                                    </td>
+                                    <td width="10%" class="detailTitle" style="height: 25px">常用邮箱<span style="color: #ff0000">*</span></td>
+                                    <td width="23%" class="detailContent" style="height: 25px">
+                                        <label id="Mail"></label>
+                                    </td>
+                                    <td class="detailContent"></td>
+                                    <td class="detailContent"></td>
+                                </tr>
+
+                                <tr>
+                                    <td width="10%" class="detailTitle" style="height: 25px">本科毕业院校</td>
+                                    <td width="23%" class="detailContent" style="height: 25px">
+                                        <label id="BkSchool"></label>
+                                    </td>
+                                    <td width="10%" class="detailTitle" style="height: 25px">本科专业</td>
+                                    <td width="23%" class="detailContent" style="height: 25px">
+                                        <label id="BkMajor"></label>
+                                    </td>
+                                    <td width="10%" class="detailTitle" style="height: 25px">本科毕业时间</td>
+                                    <td width="23%" class="detailContent" style="height: 25px">
+                                        <label id="GraduationTime"></label>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td width="10%" class="detailTitle" style="height: 25px">最高学历</td>
+                                    <td width="23%" class="detailContent" style="height: 25px">
+                                        <label id="HighEducation"></label>
+                                    </td>
+                                    <td width="14%" class="detailTitle" style="height: 25px">最高学历毕业院校</td>
+                                    <td width="23%" class="detailContent" style="height: 25px">
+                                        <label id="HighSchool"></label>
+                                    </td>
+                                    <td width="10%" class="detailTitle" style="height: 25px">最高学历专业</td>
+                                    <td width="23%" class="detailContent" style="height: 25px">
+                                        <label id="HighMajor"></label>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td width="14%" class="detailTitle" style="height: 25px">获得最高学历时间</td>
+                                    <td width="23%" class="detailContent" style="height: 25px">
+                                        <label id="HighEducationTime"></label>
+                                    </td>
+                                    <td width="10%" class="detailTitle" style="height: 25px">身份类型</td>
+                                    <td width="23%" class="detailContent" style="height: 25px">
+                                        <label id="IdentityType"></label>
+                                    </td>
+                                    <td width="10%" class="detailTitle" style="height: 25px">派出单位</td>
+                                    <td width="23%" class="detailContent" style="height: 25px">
+                                        <label id="SendUnit"></label>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td width="10%" class="detailTitle" style="height: 25px">培训基地<span style="color: #ff0000">*</span></td>
+                                    <td width="23%" class="detailContent" style="height: 25px" colspan="3">
+                                        <label id="TrainingBaseName"></label>
+                                    </td>
+                                    <td width="10%" class="detailTitle" style="height: 25px">协同单位</td>
+                                    <td width="23%" class="detailContent" style="height: 25px">
+                                        <label id="CollaborativeUnit"></label>
+                                    </td>
+
+                                </tr>
+                                <tr>
+                                    <td width="10%" class="detailTitle" style="height: 25px">培训专业<span style="color: #ff0000">*</span></td>
+                                    <td width="23%" class="detailContent" style="height: 25px">
+                                        <label id="ProfessionalBaseName"></label>
+                                    </td>
+                                    <td width="10%" class="detailTitle" style="height: 25px">参训时间<span style="color: #ff0000">*</span></td>
+                                    <td width="23%" class="detailContent" style="height: 25px">
+                                        <label id="TrainingTime"></label>
+                                    </td>
+                                    <td width="10%" class="detailTitle" style="height: 25px">计划参训时限<span style="color: #ff0000">*</span></td>
+                                    <td width="23%" class="detailContent" style="height: 25px">
+                                        <label id="PlanTrainingTime"></label>
+                                    </td>
+                                </tr>
+                            </table>
+                        </div>
+                    </div>
+
+                    <div class="modal-footer" style="margin: auto; text-align: center;">
+                        <input type="button" id="close" name="close" class="btn btn-default" data-dismiss="modal" value="关闭" />
+                    </div>
+                </div>
+                <!-- /.modal-content -->
+            </div>
+            <!-- /.modal -->
+        </div>
+    </form>
+</body>
+</html>

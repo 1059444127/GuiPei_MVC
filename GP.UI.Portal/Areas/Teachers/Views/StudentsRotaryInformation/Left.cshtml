@@ -1,0 +1,161 @@
+﻿@{
+    Layout = null;
+}
+
+<!DOCTYPE html>
+
+<html>
+<head>
+    <meta name="viewport" content="width=device-width" />
+    <title>左侧页</title>
+    <script src="~/Scripts/jquery-1.8.2.min.js"></script>
+    <script src="~/Scripts/MyJs/global.js"></script>
+    <script src="~/Scripts/MyJs/My97DatePicker/WdatePicker.js"></script>
+    <link href="~/Content/MyCss/global.css" rel="stylesheet" />
+    <script type="text/javascript">
+        $(function () {
+            $("#IdentityType").change(function () {
+                if ($("#IdentityType").val() == "单位人") {
+                    $("#SendUnit").removeAttr("disabled");
+                } else {
+                    $("#SendUnit").attr("disabled", "disabled");
+                    $("#SendUnit").val();
+                }
+
+            });
+        });
+    </script>
+</head>
+<body>
+    @using (Ajax.BeginForm("LeftToList", "StudentsRotaryInformation", new AjaxOptions() { HttpMethod = "Post" }, new { id = "form1", target = "frmright" }))
+    {
+        <div>
+            <table cellpadding="1" cellspacing="1" class="qryTable">
+
+                <tr>
+                    <td>学员姓名：</td>
+                </tr>
+                <tr>
+                    <td>
+                        <input type="text" id="RealName" name="RealName" style="height:17px;width:150px;" />
+                    </td>
+                </tr>
+
+                <tr>
+                    <td>
+                        性别：
+                        <select id="Sex" name="Sex" style="height:22px; width: 80px;">
+                            <option value="">==请选择==</option>
+                            <option value="男">男</option>
+                            <option value="女">女</option>
+                        </select>
+                    </td>
+                </tr>
+                <tr>
+                    <td>民族：</td>
+                </tr>
+                <tr>
+                    <td>
+                        <input type="text" id="MinZu" name="MinZu" style="height:17px; width: 150px;" />
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        最高学历：<select id="HighEducation" name="HighEducation" style="height:22px; width: 80px;">
+                            <option value="">==请选择==</option>
+                            <option value="专科">专科</option>
+                            <option value="本科">本科</option>
+                            <option value="硕士研究生">硕士研究生</option>
+                            <option value="博士研究生">博士研究生</option>
+                        </select>
+                    </td>
+                </tr>
+                <tr>
+                    <td>最高学历毕业院校：</td>
+                </tr>
+                <tr>
+                    <td>
+                        <input type="text" id="HighSchool" name="HighSchool" style="height:17px; width: 150px;" />
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        身份类型：<select id="IdentityType" name="IdentityType" style="height:22px; width: 80px;">
+                            <option value="">==请选择==</option>
+                            <option value="单位人">单位人</option>
+                            <option value="社会人">社会人</option>
+                        </select>
+                    </td>
+                </tr>
+                <tr>
+                    <td>派出单位：</td>
+                </tr>
+                <tr>
+                    <td>
+                        <input type="text" id="SendUnit" name="SendUnit" style="height:17px; width: 150px;" disabled="disabled" />
+                    </td>
+                </tr>
+                <tr>
+                    <td>协同单位：</td>
+                </tr>
+                <tr>
+                    <td>
+                        <input type="text" id="CollaborativeUnit" name="CollaborativeUnit" style="height:17px; width: 150px;" />
+                    </td>
+                </tr>
+                <tr>
+                    <td>参训时间：<span style="color: #ff0000">(例:2015年)</span></td>
+                </tr>
+                <tr>
+                    <td>
+                        <input type="text" id="TrainingTime" name="TrainingTime" style="height:17px; width: 150px;" />
+                    </td>
+                </tr>
+                <tr>
+                    <td>计划参训时限：<span style="color: #ff0000">(例:2年)</span></td>
+                </tr>
+                <tr>
+                    <td>
+                        <input type="text" id="PlanTrainingTime" name="PlanTrainingTime" style="height:17px; width: 150px;" />
+                    </td>
+                </tr>
+                <tr>
+                    <td>轮转时间：</td>
+                </tr>
+                <tr>
+                    <td>
+                        从
+                        <input type="text" id="RotaryBeginTime" name="RotaryBeginTime" onclick="WdatePicker({ position: { left: -25, top: 0 } })" style="height:17px; width: 150px;" />
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        到
+                        <input type="text" id="RotaryEndTime" name="RotaryEndTime" onclick="WdatePicker({ position: { left: -25, top: 0 } })" style="height:17px; width: 150px;" />
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        出科状态：
+                        <select id="OutdeptStatus" name="OutdeptStatus" style="height:22px; width: 80px;">
+                            <option value="">==请选择==</option>
+                            <option value="0">未出科</option>
+                            <option value="1">已出科</option>
+                            <option value="2">顺延一期</option>
+                        </select>
+                    </td>
+                </tr>
+
+                <tr>
+                    <td>
+                        <div style="text-align:center;">
+                            <input type="submit" id="Submit1" name="Submit2" value="查询" style="width:50px;height:25px;" />
+                            <input type="button" name="Submit2" value="重置" class="button" onclick="form1.reset();" style="width:50px;height:25px;" />
+                        </div>
+                    </td>
+                </tr>
+            </table>
+        </div>
+    }
+</body>
+</html>

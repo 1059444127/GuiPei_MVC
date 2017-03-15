@@ -1,0 +1,167 @@
+﻿@{
+    Layout = null;
+}
+
+<!DOCTYPE html>
+
+<html>
+<head>
+    <meta name="viewport" content="width=device-width" />
+    <title>意见反馈</title>
+    <script src="~/Scripts/jquery-1.8.2.min.js"></script>
+    <script src="~/Scripts/MyJs/global.js"></script>
+    <script src="~/Scripts/MyJs/autosize.js"></script>
+    <script src="~/Scripts/MyJs/showTips.js"></script>
+    <script src="~/Scripts/MyJs/My97DatePicker/WdatePicker.js"></script>
+    <script src="~/Scripts/MyJs/jquery-form.js"></script>
+    <link href="~/Content/MyCss/global.css" rel="stylesheet" />
+
+    <script type="text/javascript">
+        $(function () {
+            $("textarea").autosize();
+            loadInfo2();
+            $("#RegisterDate").val('@DateTime.Now.Date.ToString("yyyy-MM-dd")');
+            $("#Id").val('@Guid.NewGuid().ToString()');
+        });
+
+
+        function saveAndUpdate() {
+            if ($("#DeptCode").val() == "") { alert("轮转科室不能为空"); return false; }
+            if ($("#FeedbackInformation").val() == "") { alert("反馈信息不能为空"); return false; }
+            
+            if ($("#Writor").val() == "") { alert("填写人不能为空"); return false; }
+            if ($("#RegisterDate").val() == "") { alert("登记日期不能为空"); return false; }
+
+            $("#form1").ajaxSubmit({
+                type: "post",
+                url: '@Url.Action("Add")',
+                dataType: "text",
+                success: function (data) {
+                    if (data == "0") {
+                        alert("意见反馈信息保存失败");
+                        return false;
+                    } else {
+                        alert("意见反馈信息保存成功");
+                        window.opener.parent.frames.bodyFrame.frames.frmright.window.loadPageList(1);
+                    }
+                }
+            });
+        }
+    </script>
+</head>
+<body>
+    <form id="form1" name="form1">
+        <div align="center">
+            <input type="hidden" id="Id" name="Id" />
+            <table border="0" style="border-collapse: collapse;width:100%;" cellpadding="0" cellspacing="1" class="detailTable">
+                <tr>
+                    <td height="24" align="center" colspan="4" class="detailHead">意见反馈</td>
+                </tr>
+                <tr>
+                    <td width="15%" class="detailTitle" style="height: 25px;">姓名<span style="color: #ff0000">*</span></td>
+                    <td width="35%" class="detailContent" style="height:25px;">
+                        <span class="detailContent" style="height: 25px">
+                            <input type="text" id="StudentsRealName" name="StudentsRealName" readonly="readonly" style="width: 150px;" />
+                            <input type="hidden" id="StudentsName" name="StudentsName" />
+                        </span>
+                    </td>
+                    <td width="15%" class="detailTitle" style="height: 25px;">培训基地<span style="color: #ff0000">*</span></td>
+                    <td width="35%" class="detailContent" style="height:25px;">
+                        <span class="detailContent" style="height: 25px">
+                            <input type="text" id="TrainingBaseName" name="TrainingBaseName" readonly="readonly" style="width: 150px;" />
+                            <input type="hidden" id="TrainingBaseCode" name="TrainingBaseCode" />
+                        </span>
+                    </td>
+                </tr>
+
+                <tr>
+                    
+                    <td width="15%" class="detailTitle" style="height: 25px;">专业基地<span style="color: #ff0000">*</span></td>
+                    <td width="35%" class="detailContent" style="height:25px;">
+                        <span class="detailContent" style="height: 25px">
+                            <input type="text" id="ProfessionalBaseName" name="ProfessionalBaseName" readonly="readonly" style="width: 150px;" />
+                            <input type="hidden" id="ProfessionalBaseCode" name="ProfessionalBaseCode" />
+                        </span>
+                    </td>
+                    <td width="15%" class="detailTitle" style="height: 25px;">轮转科室<span style="color: #ff0000">*</span></td>
+                    <td width="35%" class="detailContent" style="height:25px;">
+                        <span class="detailContent" style="height: 25px">
+                            <select id="DeptCode" name="DeptCode" style="width:200px">
+                                <option value="">==请选择==</option>
+                            </select><input type="hidden" id="DeptName" name="DeptName" />
+                        </span>
+                    </td>
+                </tr>
+                
+                <tr>
+                    <td width="15%" class="detailTitle" style="height: 25px;">反馈信息<span style="color: #ff0000">*</span></td>
+                    <td width="70%" class="detailContent"  colspan="3">
+                        <span class="detailContent">
+                            <textarea id="FeedbackInformation" name="FeedbackInformation" style="width:95%; min-height: 100px; max-height: 150px;"></textarea>
+                        </span>
+                    </td>
+
+                </tr>
+                <tr>
+                    <td width="15%" class="detailTitle" style="height: 25px;">管理员回复</td>
+                    <td width="70%" class="detailContent" colspan="3">
+                        <span class="detailContent">
+                            <textarea id="ManagerReply" name="ManagerReply" style="width:95%; min-height: 100px; max-height: 150px;" disabled="disabled"></textarea>
+                        </span>
+                    </td>
+
+                </tr>
+                <tr>
+                    <td width="85%" class="detailContent" style="height: 25px" colspan="5">
+                        <table align="right">
+                            <tr>
+                                <td width="25%" class="detailTitle" style="height: 25px">管理员<span style="color: #ff0000">*</span></td>
+                                <td width="20%" class="detailContent" style="height: 25px">
+                                    <span class="detailContent" style="height: 25px">
+                                        <input type="text" id="ManagerName" name="ManagerName" style="width: 100px;" disabled="disabled" />
+                                    </span>
+                                </td>
+                                <td width="20%" class="detailTitle" style="height: 25px">日期<span style="color: #ff0000">*</span></td>
+                                <td width="20%" class="detailContent" style="height: 25px">
+                                    <span class="detailContent" style="height: 25px">
+                                        <input type="text" id="ManagerDate" name="ManagerDate" style="width: 100px;" disabled="disabled" onclick="WdatePicker({ maxDate: '%y-%M-%d' });" />
+                                    </span>
+                                </td>
+                            </tr>
+                        </table>
+                    </td>
+                </tr>
+                <tr>
+                    <td width="85%" class="detailContent" style="height: 25px" colspan="5">
+                        <table align="right">
+                            <tr>
+                                <td width="20%" class="detailTitle" style="height: 25px">填写人<span style="color: #ff0000">*</span></td>
+                                <td width="20%" class="detailContent" style="height: 25px">
+                                    <span class="detailContent" style="height: 25px">
+                                        <input type="text" id="Writor" name="Writor" style="width: 100px;" />
+                                    </span>
+                                </td>
+                                <td width="30%" class="detailTitle" style="height: 25px">登记日期<span style="color: #ff0000">*</span></td>
+                                <td width="20%" class="detailContent" style="height: 25px">
+                                    <span class="detailContent" style="height: 25px">
+                                        <input type="text" id="RegisterDate" name="RegisterDate" style="width: 100px;" onclick="WdatePicker({ maxDate: '%y-%M-%d' });" />
+                                    </span>
+                                </td>
+                            </tr>
+                        </table>
+                    </td>
+                </tr>
+                <tr id="last">
+                    <td colspan="6" style="height: 25px; border-left: 1px solid white; border-right: 1px solid white; border-bottom: 1px solid white">
+                        <div style="text-align: center; margin-top: 8px;">
+                            <input id="SaveAndUpdate" name="SaveAndUpdate" type="button" style="cursor: pointer; background-image: url(/images/tijiao.jpg); border: none; height: 21px; width: 88px;" onclick="saveAndUpdate();"/>
+                            
+                        </div>
+                    </td>
+                </tr>
+            </table>
+
+        </div>
+    </form>
+</body>
+</html>

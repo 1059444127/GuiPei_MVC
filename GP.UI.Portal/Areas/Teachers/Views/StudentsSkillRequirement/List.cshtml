@@ -1,0 +1,238 @@
+﻿@using GP.Common
+@{
+    Layout = null;
+}
+
+<!DOCTYPE html>
+
+<html>
+<head>
+    <meta name="viewport" content="width=device-width" />
+    <title>列表页</title>
+    <script src="~/Scripts/jquery-1.8.2.min.js"></script>
+    <script src="~/Scripts/MyJs/global.js"></script>
+    <script src="~/Scripts/MyJs/MyPageList/PageList1.js"></script>
+    <script src="~/Scripts/MyJs/autosize.js"></script>
+    <script src="~/Scripts/MyJs/bootstrap-2.3.3/js/bootstrap.min.js"></script>
+    <link href="~/Content/MyCss/global.css" rel="stylesheet" />
+    <link href="~/Content/MyCss/bootstrapNoTable/bootstrap.css" rel="stylesheet" />
+    <script type="text/javascript">
+    var StudentsRealName = '@CommonFunc.SafeGetStringFromObj(ViewData["StudentsRealName"])';
+    var SkillName = '@CommonFunc.SafeGetStringFromObj(ViewData["SkillName"])';
+    var RequiredNum = '@CommonFunc.SafeGetStringFromObj(ViewData["RequiredNum"])';
+    var MasterDegree = '@CommonFunc.SafeGetStringFromObj(ViewData["MasterDegree"])';
+    $(window).load(function () {
+        $("textarea").autosize();
+        loadPageList(1);
+    });
+
+    function loadPageList(pi) {
+        $.post('@Url.Action("PageList")', {
+            "pi": pi, "StudentsRealName": StudentsRealName,
+            "SkillName": SkillName, "RequiredNum": RequiredNum, "MasterDegree": MasterDegree
+        },
+          function (data) {
+              var jsonArr = data;
+              if (jsonArr.data == null) {
+                  $("#tbList tr:gt(0)").remove();
+              } else {
+                  createRows(jsonArr.data, pi);
+              }
+              createPageBar($("#PageList"), pi, jsonArr.totalCount, jsonArr.pageCount);
+
+          });
+    }
+
+    function createRows(jsonArr, pi) {
+        var tbL = $("#tbList");
+        $("#tbList tr:gt(0)").remove();
+        var arr = new Array();
+        for (i = 0; i < jsonArr.length; i++) {
+            var temp = jsonArr[i].SkillName;
+            var k = 0;
+            for (j = 0; j < jsonArr.length; j++) {
+                if (jsonArr[j].SkillName == temp) {
+                    k++;
+                    arr[i] = k;
+                }
+            }
+
+        }
+        for (i = 0; i < jsonArr.length; i++) {
+            var trHTML = "<tr class='listTableContentRow'>";
+            trHTML += "<td style='height:25px;'>" + jsonArr[i].StudentsRealName + "</td>";
+            trHTML += "<td>" + jsonArr[i].ProfessionalBaseName + "</td>";
+            trHTML += "<td>" + jsonArr[i].DeptName + "</td>";
+            trHTML += "<td>" + jsonArr[i].SkillName + "</td>";
+            if (jsonArr[i].RequiredNum == "" || jsonArr[i].RequiredNum == null) {
+                trHTML += "<td>" + '无' + "</td>";
+            } else {
+                trHTML += "<td>" + jsonArr[i].RequiredNum + "</td>";
+            }
+            trHTML += "<td>" + arr[i] + "</td>";
+
+            if (jsonArr[i].MasterDegree == "" || jsonArr[i].MasterDegree == null) {
+                trHTML += "<td>" + '无' + "</td>";
+            } else {
+                trHTML += "<td>" + jsonArr[i].MasterDegree + "</td>";
+            }
+            trHTML += "<td><a style='text-decoration:none;color:red;' onclick=\"handle('" + jsonArr[i].TeacherCheck + "','" + jsonArr[i].Id + "','" + pi + "');\" href='#'>" + jsonArr[i].TeacherCheck + "</a></td>";
+            trHTML += "<td><a href='#' onclick=\"show('" + jsonArr[i].Id + "');\"><img alt='查看详细资料' src='/images/imgs/icon_show.gif'/></a></td>";
+            trHTML += "</tr>";
+            tbL.append(trHTML);
+
+
+        }
+        MouseAnimate();
+    }
+    function handle(check, id, pi) {
+        $.ajax({
+            cache: false,
+            type: "get",
+            url: '@Url.Action("Handle")',
+            dataType: "text",
+            data: { id: id, check: check },
+            success: function (data) {
+                if (data == "1") {
+                    loadPageList(pi);
+                    return;
+                } else {
+                    alert("审核操作失败");
+                }
+
+            },
+            error: function () {
+                alert("系统繁忙，请联系管理员");
+            }
+
+        });
+    }
+
+    function show(id) {
+        LoadData(id);
+        $("#myModal").modal('show');
+    }
+
+    function LoadData(id) {
+
+        $.ajax({
+            cache: false,
+            asycn: true,
+            type: "get",
+            url: '@Url.Action("LoadData")',
+            dataType: "text",
+            data: { id: id },
+            success: function (data) {
+                var jsonArr = eval("(" + data + ")");
+
+                $("#SkillName").val(jsonArr.SkillName);
+                $("#PatientName").val(jsonArr.PatientName);
+                $("#CaseNum").val(jsonArr.CaseNum);
+                $("input[name='IsOk'][value=" + jsonArr.IsOk + "]").attr("checked", true);
+                $("#OperateDate").val(jsonArr.OperateDate);
+                $("#Comment").val(jsonArr.Comment);
+            },
+            error: function () {
+                alert("系统繁忙，请联系管理员")
+            }
+        });
+    }
+    </script>
+</head>
+<body>
+    <div>
+        <table class="listTableHead" cellspacing="0" cellpadding="0" style="width:100%">
+            <tr>
+                <td class="listTableHeadTR" style="height: 22px;" width="20%">
+                    <img height="16" src="/images/imgs/Query.gif" width="16" style="vertical-align: middle" />学员技能信息查询结果
+                </td>
+            </tr>
+        </table>
+        <table id="tbList" class="listTable" cellspacing="1" cellpadding="0" style="width:100%">
+            <tr id="tr0" class="listTableTitleRow">
+                <td>姓名</td>
+                <td>专业基地</td>
+                <td>轮转科室</td>
+                <td>技能名称</td>
+                <td>要求例数</td>
+                <td>已完成例数</td>
+                <td>掌握程度</td>
+                <td>审核</td>
+                <td>查看</td>
+            </tr>
+        </table>
+        <div id="PageList" style="text-align:center;vertical-align:middle; margin-top:10px;"></div>
+
+    </div>
+
+    <form id="form1" name="form1">
+
+        <div class="modal fade" id="myModal" tabindex="-2" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true" data-backdrop="static" style="display:none;max-height:500px;min-height:200px;width:80%;margin-left:-40%;top:5%;">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-body" style="max-height: 500px; min-height: 200px; padding: 1px;">
+                        <div align="center">
+                            <table  border="0" style="border-collapse: collapse;width:100%" cellpadding="0" cellspacing="1" class="detailTable">
+                                <tr>
+                                    <td width="20%" class="detailTitle" style="height: 25px;">技能名称：<span style="color: #ff0000">*</span></td>
+                                    <td colspan="3" width="70%" class="detailContent" style="height:25px;">
+                                        <span class="detailContent" style="height: 25px">
+                                            <input type="text" id="SkillName" name="SkillName" style="width:250px;" />
+                                        </span>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td width="20%" class="detailTitle" style="height: 25px;">病人姓名：</td>
+                                    <td width="30%" class="detailContent" style="height:25px;">
+                                        <span class="detailContent" style="height: 25px">
+                                            <input type="text" id="PatientName" name="PatientName" style="width:150px;" />
+                                        </span>
+                                    </td>
+                                    <td width="20%" class="detailTitle" style="height: 25px;">病历号：</td>
+                                    <td width="30%" class="detailContent" style="height:25px;">
+                                        <span class="detailContent" style="height: 25px">
+                                            <input type="text" id="CaseNum" name="CaseNum" style="width:150px;" />
+                                        </span>
+                                    </td>
+                                </tr>
+
+                                <tr>
+                                    <td width="20%" class="detailTitle" style="height: 25px;">是否成功：</td>
+                                    <td width="30%" class="detailContent" style="height:25px;">
+                                        <span class="detailContent" style="height: 25px">
+                                            <label><input type="radio" id="Success" name="IsOk" value="成功" />成功</label>
+                                            <label><input type="radio" id="Error" name="IsOk" value="失败" />失败</label>
+                                        </span>
+                                    </td>
+                                    <td width="20%" class="detailTitle" style="height: 25px;">操作日期：</td>
+                                    <td width="30%" class="detailContent" style="height:25px;">
+                                        <span class="detailContent" style="height: 25px">
+                                            <input type="text" id="OperateDate" name="OperateDate" style="width: 150px;" onclick="WdatePicker({ maxDate: '%y-%M-%d' });" />
+                                        </span>
+                                    </td>
+                                </tr>
+
+                                <tr>
+                                    <td width="20%" class="detailTitle" style="height: 25px;">详细说明：<span style="color: #ff0000">*</span></td>
+                                    <td colspan="3" width="70%" class="detailContent" style="height:25px;">
+                                        <span class="detailContent" style="height: 25px">
+                                            <textarea id="Comment" name="Comment" style="min-height:50px; max-height:120px;width:90%;"></textarea>
+                                        </span>
+                                    </td>
+                                </tr>
+                            </table>
+                        </div>
+                    </div>
+
+                    <div class="modal-footer" style="margin: auto; text-align: center;">
+                        <input type="button" id="close" name="close" class="btn btn-default" data-dismiss="modal" value="关闭" />
+                        @*<input type="button" id="submit" name="submit" class="btn btn-success" value="提交" onclick="TiJiao()" />*@
+                    </div>
+                </div>
+                <!-- /.modal-content -->
+            </div>
+            <!-- /.modal -->
+        </div>
+    </form>
+</body>
+</html>

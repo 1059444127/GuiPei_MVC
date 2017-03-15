@@ -1,0 +1,756 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2009/11/mapping/cs">
+  <EntityContainerMapping StorageEntityContainer="GP_SystemModelStoreContainer" CdmEntityContainer="GP_SystemEntities">
+    <EntitySetMapping Name="GP_Login">
+      <EntityTypeMapping TypeName="GP_SystemModel.GP_Login">
+        <MappingFragment StoreEntitySet="GP_Login">
+          <ScalarProperty Name="id" ColumnName="id" />
+          <ScalarProperty Name="name" ColumnName="name" />
+          <ScalarProperty Name="password" ColumnName="password" />
+          <ScalarProperty Name="real_name" ColumnName="real_name" />
+          <ScalarProperty Name="training_base_name" ColumnName="training_base_name" />
+          <ScalarProperty Name="training_base_code" ColumnName="training_base_code" />
+          <ScalarProperty Name="professional_base_name" ColumnName="professional_base_name" />
+          <ScalarProperty Name="professional_base_code" ColumnName="professional_base_code" />
+          <ScalarProperty Name="dept_name" ColumnName="dept_name" />
+          <ScalarProperty Name="dept_code" ColumnName="dept_code" />
+          <ScalarProperty Name="type" ColumnName="type" />
+          <ScalarProperty Name="LoginState" ColumnName="LoginState" />
+          <ScalarProperty Name="RegisterDate" ColumnName="RegisterDate" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="GP_StudentsPersonalInformation2">
+      <EntityTypeMapping TypeName="GP_SystemModel.GP_StudentsPersonalInformation2">
+        <MappingFragment StoreEntitySet="GP_StudentsPersonalInformation2">
+          <ScalarProperty Name="TrainingBaseProvinceName" ColumnName="TrainingBaseProvinceName" />
+          <ScalarProperty Name="TrainingBaseProvinceCode" ColumnName="TrainingBaseProvinceCode" />
+          <ScalarProperty Name="Tag3" ColumnName="Tag3" />
+          <ScalarProperty Name="Tag2" ColumnName="Tag2" />
+          <ScalarProperty Name="Tag1" ColumnName="Tag1" />
+          <ScalarProperty Name="PlanTrainingTime" ColumnName="PlanTrainingTime" />
+          <ScalarProperty Name="TrainingTime" ColumnName="TrainingTime" />
+          <ScalarProperty Name="ProfessionalBaseName" ColumnName="ProfessionalBaseName" />
+          <ScalarProperty Name="ProfessionalBaseCode" ColumnName="ProfessionalBaseCode" />
+          <ScalarProperty Name="CollaborativeUnit" ColumnName="CollaborativeUnit" />
+          <ScalarProperty Name="TrainingBaseName" ColumnName="TrainingBaseName" />
+          <ScalarProperty Name="TrainingBaseCode" ColumnName="TrainingBaseCode" />
+          <ScalarProperty Name="SendUnit" ColumnName="SendUnit" />
+          <ScalarProperty Name="IdentityType" ColumnName="IdentityType" />
+          <ScalarProperty Name="HighEducationTime" ColumnName="HighEducationTime" />
+          <ScalarProperty Name="HighMajor" ColumnName="HighMajor" />
+          <ScalarProperty Name="HighSchool" ColumnName="HighSchool" />
+          <ScalarProperty Name="HighEducation" ColumnName="HighEducation" />
+          <ScalarProperty Name="GraduationTime" ColumnName="GraduationTime" />
+          <ScalarProperty Name="BkMajor" ColumnName="BkMajor" />
+          <ScalarProperty Name="BkSchool" ColumnName="BkSchool" />
+          <ScalarProperty Name="Mail" ColumnName="Mail" />
+          <ScalarProperty Name="Telephon" ColumnName="Telephon" />
+          <ScalarProperty Name="MinZu" ColumnName="MinZu" />
+          <ScalarProperty Name="DateBirth" ColumnName="DateBirth" />
+          <ScalarProperty Name="IdNumber" ColumnName="IdNumber" />
+          <ScalarProperty Name="Sex" ColumnName="Sex" />
+          <ScalarProperty Name="ImagePath" ColumnName="ImagePath" />
+          <ScalarProperty Name="RealName" ColumnName="RealName" />
+          <ScalarProperty Name="Name" ColumnName="Name" />
+          <ScalarProperty Name="Id" ColumnName="Id" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="GP_Professional_Base">
+      <EntityTypeMapping TypeName="GP_SystemModel.GP_Professional_Base">
+        <MappingFragment StoreEntitySet="GP_Professional_Base">
+          <ScalarProperty Name="professional_base_name" ColumnName="professional_base_name" />
+          <ScalarProperty Name="professional_base_code" ColumnName="professional_base_code" />
+          <ScalarProperty Name="id" ColumnName="id" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="GP_StudentsRotaryInformation2">
+      <EntityTypeMapping TypeName="GP_SystemModel.GP_StudentsRotaryInformation2">
+        <MappingFragment StoreEntitySet="GP_StudentsRotaryInformation2">
+          <ScalarProperty Name="Tag3" ColumnName="Tag3" />
+          <ScalarProperty Name="Tag2" ColumnName="Tag2" />
+          <ScalarProperty Name="Tag1" ColumnName="Tag1" />
+          <ScalarProperty Name="QuestionnaireStatus" ColumnName="QuestionnaireStatus" />
+          <ScalarProperty Name="OutdeptApplication" ColumnName="OutdeptApplication" />
+          <ScalarProperty Name="OutdeptStatus" ColumnName="OutdeptStatus" />
+          <ScalarProperty Name="TeachersRealName" ColumnName="TeachersRealName" />
+          <ScalarProperty Name="TeachersName" ColumnName="TeachersName" />
+          <ScalarProperty Name="RotaryOrder" ColumnName="RotaryOrder" />
+          <ScalarProperty Name="RotaryDays" ColumnName="RotaryDays" />
+          <ScalarProperty Name="RotaryEndTime" ColumnName="RotaryEndTime" />
+          <ScalarProperty Name="RotaryBeginTime" ColumnName="RotaryBeginTime" />
+          <ScalarProperty Name="DeptName" ColumnName="DeptName" />
+          <ScalarProperty Name="DeptCode" ColumnName="DeptCode" />
+          <ScalarProperty Name="ProfessionalBaseName" ColumnName="ProfessionalBaseName" />
+          <ScalarProperty Name="ProfessionalBaseCode" ColumnName="ProfessionalBaseCode" />
+          <ScalarProperty Name="TrainingBaseName" ColumnName="TrainingBaseName" />
+          <ScalarProperty Name="TrainingBaseCode" ColumnName="TrainingBaseCode" />
+          <ScalarProperty Name="RealName" ColumnName="RealName" />
+          <ScalarProperty Name="Name" ColumnName="Name" />
+          <ScalarProperty Name="Id" ColumnName="Id" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="GP_SchoolInformation">
+      <EntityTypeMapping TypeName="GP_SystemModel.GP_SchoolInformation">
+        <MappingFragment StoreEntitySet="GP_SchoolInformation">
+          <ScalarProperty Name="Tag1" ColumnName="Tag1" />
+          <ScalarProperty Name="SchoolType" ColumnName="SchoolType" />
+          <ScalarProperty Name="SchoolLevel" ColumnName="SchoolLevel" />
+          <ScalarProperty Name="CityName" ColumnName="CityName" />
+          <ScalarProperty Name="ManageUnit" ColumnName="ManageUnit" />
+          <ScalarProperty Name="SchoolName" ColumnName="SchoolName" />
+          <ScalarProperty Name="ProvinceName" ColumnName="ProvinceName" />
+          <ScalarProperty Name="Id" ColumnName="Id" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="GP_Questionnaire">
+      <EntityTypeMapping TypeName="GP_SystemModel.GP_Questionnaire">
+        <MappingFragment StoreEntitySet="GP_Questionnaire">
+          <ScalarProperty Name="writor" ColumnName="writor" />
+          <ScalarProperty Name="register_date" ColumnName="register_date" />
+          <ScalarProperty Name="advice" ColumnName="advice" />
+          <ScalarProperty Name="thirteen" ColumnName="thirteen" />
+          <ScalarProperty Name="twelve" ColumnName="twelve" />
+          <ScalarProperty Name="eleven" ColumnName="eleven" />
+          <ScalarProperty Name="ten" ColumnName="ten" />
+          <ScalarProperty Name="nine" ColumnName="nine" />
+          <ScalarProperty Name="eight" ColumnName="eight" />
+          <ScalarProperty Name="seven" ColumnName="seven" />
+          <ScalarProperty Name="six" ColumnName="six" />
+          <ScalarProperty Name="five" ColumnName="five" />
+          <ScalarProperty Name="four" ColumnName="four" />
+          <ScalarProperty Name="three" ColumnName="three" />
+          <ScalarProperty Name="two" ColumnName="two" />
+          <ScalarProperty Name="one" ColumnName="one" />
+          <ScalarProperty Name="instructor" ColumnName="instructor" />
+          <ScalarProperty Name="rotary_dept_code" ColumnName="rotary_dept_code" />
+          <ScalarProperty Name="rotary_dept_name" ColumnName="rotary_dept_name" />
+          <ScalarProperty Name="professional_base_code" ColumnName="professional_base_code" />
+          <ScalarProperty Name="professional_base_name" ColumnName="professional_base_name" />
+          <ScalarProperty Name="training_base_code" ColumnName="training_base_code" />
+          <ScalarProperty Name="training_base_name" ColumnName="training_base_name" />
+          <ScalarProperty Name="id" ColumnName="id" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="GP_RotarySchedule">
+      <EntityTypeMapping TypeName="GP_SystemModel.GP_RotarySchedule">
+        <MappingFragment StoreEntitySet="GP_RotarySchedule">
+          <ScalarProperty Name="Tag3" ColumnName="Tag3" />
+          <ScalarProperty Name="Tag2" ColumnName="Tag2" />
+          <ScalarProperty Name="Tag1" ColumnName="Tag1" />
+          <ScalarProperty Name="TrainingTime" ColumnName="TrainingTime" />
+          <ScalarProperty Name="TotalRealTime" ColumnName="TotalRealTime" />
+          <ScalarProperty Name="RotaryEndTime" ColumnName="RotaryEndTime" />
+          <ScalarProperty Name="RotaryBeginTime" ColumnName="RotaryBeginTime" />
+          <ScalarProperty Name="SchemeOrder" ColumnName="SchemeOrder" />
+          <ScalarProperty Name="DeptNameList" ColumnName="DeptNameList" />
+          <ScalarProperty Name="DeptCodeList" ColumnName="DeptCodeList" />
+          <ScalarProperty Name="DaysList" ColumnName="DaysList" />
+          <ScalarProperty Name="EndTimeList" ColumnName="EndTimeList" />
+          <ScalarProperty Name="BeginTimeList" ColumnName="BeginTimeList" />
+          <ScalarProperty Name="ProfessionalBaseName" ColumnName="ProfessionalBaseName" />
+          <ScalarProperty Name="ProfessionalBaseCode" ColumnName="ProfessionalBaseCode" />
+          <ScalarProperty Name="TrainingBaseName" ColumnName="TrainingBaseName" />
+          <ScalarProperty Name="TrainingBaseCode" ColumnName="TrainingBaseCode" />
+          <ScalarProperty Name="ManagersRealName" ColumnName="ManagersRealName" />
+          <ScalarProperty Name="ManagersName" ColumnName="ManagersName" />
+          <ScalarProperty Name="Id" ColumnName="Id" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="GP_DeptManagement">
+      <EntityTypeMapping TypeName="GP_SystemModel.GP_DeptManagement">
+        <MappingFragment StoreEntitySet="GP_DeptManagement">
+          <ScalarProperty Name="Tag3" ColumnName="Tag3" />
+          <ScalarProperty Name="Tag2" ColumnName="Tag2" />
+          <ScalarProperty Name="Tag1" ColumnName="Tag1" />
+          <ScalarProperty Name="TotalRealTime" ColumnName="TotalRealTime" />
+          <ScalarProperty Name="TotalDeptTime" ColumnName="TotalDeptTime" />
+          <ScalarProperty Name="TrainingTime" ColumnName="TrainingTime" />
+          <ScalarProperty Name="IsRequired" ColumnName="IsRequired" />
+          <ScalarProperty Name="RealTime" ColumnName="RealTime" />
+          <ScalarProperty Name="DeptTime" ColumnName="DeptTime" />
+          <ScalarProperty Name="DeptName" ColumnName="DeptName" />
+          <ScalarProperty Name="DeptCode" ColumnName="DeptCode" />
+          <ScalarProperty Name="ProfessionalBaseName" ColumnName="ProfessionalBaseName" />
+          <ScalarProperty Name="ProfessionalBaseCode" ColumnName="ProfessionalBaseCode" />
+          <ScalarProperty Name="TrainingBaseName" ColumnName="TrainingBaseName" />
+          <ScalarProperty Name="TrainingBaseCode" ColumnName="TrainingBaseCode" />
+          <ScalarProperty Name="ManagersRealName" ColumnName="ManagersRealName" />
+          <ScalarProperty Name="ManagersName" ColumnName="ManagersName" />
+          <ScalarProperty Name="Id" ColumnName="Id" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="GP_Professional_Base_Dept">
+      <EntityTypeMapping TypeName="GP_SystemModel.GP_Professional_Base_Dept">
+        <MappingFragment StoreEntitySet="GP_Professional_Base_Dept">
+          <ScalarProperty Name="is_required" ColumnName="is_required" />
+          <ScalarProperty Name="dept_time" ColumnName="dept_time" />
+          <ScalarProperty Name="dept_name" ColumnName="dept_name" />
+          <ScalarProperty Name="dept_code" ColumnName="dept_code" />
+          <ScalarProperty Name="professional_base_name" ColumnName="professional_base_name" />
+          <ScalarProperty Name="professional_base_code" ColumnName="professional_base_code" />
+          <ScalarProperty Name="id" ColumnName="id" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="GP_Disease_Register">
+      <EntityTypeMapping TypeName="GP_SystemModel.GP_Disease_Register">
+        <MappingFragment StoreEntitySet="GP_Disease_Register">
+          <ScalarProperty Name="outpatient" ColumnName="outpatient" />
+          <ScalarProperty Name="full_manage" ColumnName="full_manage" />
+          <ScalarProperty Name="manage_patient" ColumnName="manage_patient" />
+          <ScalarProperty Name="master_degree" ColumnName="master_degree" />
+          <ScalarProperty Name="required_num" ColumnName="required_num" />
+          <ScalarProperty Name="disease_name" ColumnName="disease_name" />
+          <ScalarProperty Name="disease_code" ColumnName="disease_code" />
+          <ScalarProperty Name="is_required" ColumnName="is_required" />
+          <ScalarProperty Name="dept_time" ColumnName="dept_time" />
+          <ScalarProperty Name="dept_name" ColumnName="dept_name" />
+          <ScalarProperty Name="dept_code" ColumnName="dept_code" />
+          <ScalarProperty Name="professional_base_name" ColumnName="professional_base_name" />
+          <ScalarProperty Name="professional_base_code" ColumnName="professional_base_code" />
+          <ScalarProperty Name="id" ColumnName="id" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="GP_Disease_Register2">
+      <EntityTypeMapping TypeName="GP_SystemModel.GP_Disease_Register2">
+        <MappingFragment StoreEntitySet="GP_Disease_Register2">
+          <ScalarProperty Name="TeacherName" ColumnName="TeacherName" />
+          <ScalarProperty Name="TeacherId" ColumnName="TeacherId" />
+          <ScalarProperty Name="condition" ColumnName="condition" />
+          <ScalarProperty Name="manage_check" ColumnName="manage_check" />
+          <ScalarProperty Name="base_check" ColumnName="base_check" />
+          <ScalarProperty Name="kzr_check" ColumnName="kzr_check" />
+          <ScalarProperty Name="teacher_check" ColumnName="teacher_check" />
+          <ScalarProperty Name="dept_code" ColumnName="dept_code" />
+          <ScalarProperty Name="professional_base_code" ColumnName="professional_base_code" />
+          <ScalarProperty Name="training_base_code" ColumnName="training_base_code" />
+          <ScalarProperty Name="register_date" ColumnName="register_date" />
+          <ScalarProperty Name="writor" ColumnName="writor" />
+          <ScalarProperty Name="comment" ColumnName="comment" />
+          <ScalarProperty Name="visit_date" ColumnName="visit_date" />
+          <ScalarProperty Name="cure_measure" ColumnName="cure_measure" />
+          <ScalarProperty Name="is_rescue" ColumnName="is_rescue" />
+          <ScalarProperty Name="is_charge" ColumnName="is_charge" />
+          <ScalarProperty Name="secondary_diagnosis" ColumnName="secondary_diagnosis" />
+          <ScalarProperty Name="main_diagnosis" ColumnName="main_diagnosis" />
+          <ScalarProperty Name="case_num" ColumnName="case_num" />
+          <ScalarProperty Name="patient_name" ColumnName="patient_name" />
+          <ScalarProperty Name="master_degree" ColumnName="master_degree" />
+          <ScalarProperty Name="real_num" ColumnName="real_num" />
+          <ScalarProperty Name="required_num" ColumnName="required_num" />
+          <ScalarProperty Name="disease_name" ColumnName="disease_name" />
+          <ScalarProperty Name="dept_name" ColumnName="dept_name" />
+          <ScalarProperty Name="professional_base_name" ColumnName="professional_base_name" />
+          <ScalarProperty Name="training_base_name" ColumnName="training_base_name" />
+          <ScalarProperty Name="students_real_name" ColumnName="students_real_name" />
+          <ScalarProperty Name="students_name" ColumnName="students_name" />
+          <ScalarProperty Name="id" ColumnName="id" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="GP_SkillRequirement">
+      <EntityTypeMapping TypeName="GP_SystemModel.GP_SkillRequirement">
+        <MappingFragment StoreEntitySet="GP_SkillRequirement">
+          <ScalarProperty Name="Tag3" ColumnName="Tag3" />
+          <ScalarProperty Name="Tag2" ColumnName="Tag2" />
+          <ScalarProperty Name="Tag1" ColumnName="Tag1" />
+          <ScalarProperty Name="MasterDegree" ColumnName="MasterDegree" />
+          <ScalarProperty Name="RequiredNum" ColumnName="RequiredNum" />
+          <ScalarProperty Name="SkillName" ColumnName="SkillName" />
+          <ScalarProperty Name="SkillCode" ColumnName="SkillCode" />
+          <ScalarProperty Name="IsRequired" ColumnName="IsRequired" />
+          <ScalarProperty Name="DeptTime" ColumnName="DeptTime" />
+          <ScalarProperty Name="DeptName" ColumnName="DeptName" />
+          <ScalarProperty Name="DeptCode" ColumnName="DeptCode" />
+          <ScalarProperty Name="ProfessionalBaseName" ColumnName="ProfessionalBaseName" />
+          <ScalarProperty Name="ProfessionalBaseCode" ColumnName="ProfessionalBaseCode" />
+          <ScalarProperty Name="Id" ColumnName="Id" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="GP_SkillRequirement2">
+      <EntityTypeMapping TypeName="GP_SystemModel.GP_SkillRequirement2">
+        <MappingFragment StoreEntitySet="GP_SkillRequirement2">
+          <ScalarProperty Name="OperateDate" ColumnName="OperateDate" />
+          <ScalarProperty Name="IsOk" ColumnName="IsOk" />
+          <ScalarProperty Name="CaseNum" ColumnName="CaseNum" />
+          <ScalarProperty Name="PatientName" ColumnName="PatientName" />
+          <ScalarProperty Name="MasterDegree" ColumnName="MasterDegree" />
+          <ScalarProperty Name="RealNum" ColumnName="RealNum" />
+          <ScalarProperty Name="RequiredNum" ColumnName="RequiredNum" />
+          <ScalarProperty Name="SkillName" ColumnName="SkillName" />
+          <ScalarProperty Name="Comment" ColumnName="Comment" />
+          <ScalarProperty Name="TeacherName" ColumnName="TeacherName" />
+          <ScalarProperty Name="TeacherId" ColumnName="TeacherId" />
+          <ScalarProperty Name="ManagerCheck" ColumnName="ManagerCheck" />
+          <ScalarProperty Name="BaseCheck" ColumnName="BaseCheck" />
+          <ScalarProperty Name="KzrCheck" ColumnName="KzrCheck" />
+          <ScalarProperty Name="TeacherCheck" ColumnName="TeacherCheck" />
+          <ScalarProperty Name="Writor" ColumnName="Writor" />
+          <ScalarProperty Name="RegisterDate" ColumnName="RegisterDate" />
+          <ScalarProperty Name="DeptName" ColumnName="DeptName" />
+          <ScalarProperty Name="DeptCode" ColumnName="DeptCode" />
+          <ScalarProperty Name="ProfessionalBaseName" ColumnName="ProfessionalBaseName" />
+          <ScalarProperty Name="ProfessionalBaseCode" ColumnName="ProfessionalBaseCode" />
+          <ScalarProperty Name="TrainingBaseName" ColumnName="TrainingBaseName" />
+          <ScalarProperty Name="TrainingBaseCode" ColumnName="TrainingBaseCode" />
+          <ScalarProperty Name="StudentsName" ColumnName="StudentsName" />
+          <ScalarProperty Name="StudentsRealName" ColumnName="StudentsRealName" />
+          <ScalarProperty Name="Id" ColumnName="Id" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="GP_BigMedicalRecords2">
+      <EntityTypeMapping TypeName="GP_SystemModel.GP_BigMedicalRecords2">
+        <MappingFragment StoreEntitySet="GP_BigMedicalRecords2">
+          <ScalarProperty Name="Tag3" ColumnName="Tag3" />
+          <ScalarProperty Name="Tag2" ColumnName="Tag2" />
+          <ScalarProperty Name="Tag1" ColumnName="Tag1" />
+          <ScalarProperty Name="RecordsStatus" ColumnName="RecordsStatus" />
+          <ScalarProperty Name="ReviewerDate" ColumnName="ReviewerDate" />
+          <ScalarProperty Name="Reviewer" ColumnName="Reviewer" />
+          <ScalarProperty Name="XZZDuan" ColumnName="XZZDuan" />
+          <ScalarProperty Name="RYZDuan" ColumnName="RYZDuan" />
+          <ScalarProperty Name="CBZDuan" ColumnName="CBZDuan" />
+          <ScalarProperty Name="BLZYao" ColumnName="BLZYao" />
+          <ScalarProperty Name="SYSQXie" ColumnName="SYSQXie" />
+          <ScalarProperty Name="TGJCha_ZKQK" ColumnName="TGJCha_ZKQK" />
+          <ScalarProperty Name="TGJCha_SJFS_QT" ColumnName="TGJCha_SJFS_QT" />
+          <ScalarProperty Name="TGJCha_SJFS_NMCJ" ColumnName="TGJCha_SJFS_NMCJ" />
+          <ScalarProperty Name="TGJCha_SJFS_BLFS" ColumnName="TGJCha_SJFS_BLFS" />
+          <ScalarProperty Name="TGJCha_SJFS_SLFS" ColumnName="TGJCha_SJFS_SLFS" />
+          <ScalarProperty Name="TGJCha_SZ" ColumnName="TGJCha_SZ" />
+          <ScalarProperty Name="TGJCha_JZ" ColumnName="TGJCha_JZ" />
+          <ScalarProperty Name="TGJCha_WSZQ" ColumnName="TGJCha_WSZQ" />
+          <ScalarProperty Name="TGJCha_GMZC" ColumnName="TGJCha_GMZC" />
+          <ScalarProperty Name="TGJCha_FB_TZ" ColumnName="TGJCha_FB_TZ" />
+          <ScalarProperty Name="TGJCha_FB_KZ" ColumnName="TGJCha_FB_KZ" />
+          <ScalarProperty Name="TGJCha_FB_PG" ColumnName="TGJCha_FB_PG" />
+          <ScalarProperty Name="TGJCha_FB_ShenZ" ColumnName="TGJCha_FB_ShenZ" />
+          <ScalarProperty Name="TGJCha_FB_PZ" ColumnName="TGJCha_FB_PZ" />
+          <ScalarProperty Name="TGJCha_FB_DN" ColumnName="TGJCha_FB_DN" />
+          <ScalarProperty Name="TGJCha_FB_GZ" ColumnName="TGJCha_FB_GZ" />
+          <ScalarProperty Name="TGJCha_FB_CZ" ColumnName="TGJCha_FB_CZ" />
+          <ScalarProperty Name="TGJCha_FB_SZ" ColumnName="TGJCha_FB_SZ" />
+          <ScalarProperty Name="TGJCha_FB_FW" ColumnName="TGJCha_FB_FW" />
+          <ScalarProperty Name="TGJCha_ZWXG" ColumnName="TGJCha_ZWXG" />
+          <ScalarProperty Name="TGJCha_NDM" ColumnName="TGJCha_NDM" />
+          <ScalarProperty Name="TGJCha_X_TZ" ColumnName="TGJCha_X_TZ" />
+          <ScalarProperty Name="TGJCha_X_KZ" ColumnName="TGJCha_X_KZ" />
+          <ScalarProperty Name="TGJCha_X_CZ" ColumnName="TGJCha_X_CZ" />
+          <ScalarProperty Name="TGJCha_X_SZ" ColumnName="TGJCha_X_SZ" />
+          <ScalarProperty Name="TGJCha_F_TZ" ColumnName="TGJCha_F_TZ" />
+          <ScalarProperty Name="TGJCha_F_KZ" ColumnName="TGJCha_F_KZ" />
+          <ScalarProperty Name="TGJCha_F_CZ" ColumnName="TGJCha_F_CZ" />
+          <ScalarProperty Name="TGJCha_F_SZ" ColumnName="TGJCha_F_SZ" />
+          <ScalarProperty Name="TGJCha_XB" ColumnName="TGJCha_XB" />
+          <ScalarProperty Name="TGJCha_JB" ColumnName="TGJCha_JB" />
+          <ScalarProperty Name="TGJCha_TB_KQ" ColumnName="TGJCha_TB_KQ" />
+          <ScalarProperty Name="TGJCha_TB_B" ColumnName="TGJCha_TB_B" />
+          <ScalarProperty Name="TGJCha_TB_E" ColumnName="TGJCha_TB_E" />
+          <ScalarProperty Name="TGJCha_TB_Y" ColumnName="TGJCha_TB_Y" />
+          <ScalarProperty Name="TGJCha_TB_TL" ColumnName="TGJCha_TB_TL" />
+          <ScalarProperty Name="TGJCha_LBJ" ColumnName="TGJCha_LBJ" />
+          <ScalarProperty Name="TGJCha_PFNM" ColumnName="TGJCha_PFNM" />
+          <ScalarProperty Name="TGJCha_YBZK" ColumnName="TGJCha_YBZK" />
+          <ScalarProperty Name="TGJCha_SMTZ_TiZhong" ColumnName="TGJCha_SMTZ_TiZhong" />
+          <ScalarProperty Name="TGJCha_SMTZ_XueYa2" ColumnName="TGJCha_SMTZ_XueYa2" />
+          <ScalarProperty Name="TGJCha_SMTZ_XueYa1" ColumnName="TGJCha_SMTZ_XueYa1" />
+          <ScalarProperty Name="TGJCha_SMTZ_HuXi" ColumnName="TGJCha_SMTZ_HuXi" />
+          <ScalarProperty Name="TGJCha_SMTZ_MaiBo" ColumnName="TGJCha_SMTZ_MaiBo" />
+          <ScalarProperty Name="TGJCha_SMTZ_TiWen" ColumnName="TGJCha_SMTZ_TiWen" />
+          <ScalarProperty Name="JZShi" ColumnName="JZShi" />
+          <ScalarProperty Name="SYShi" ColumnName="SYShi" />
+          <ScalarProperty Name="YJShi" ColumnName="YJShi" />
+          <ScalarProperty Name="HYShi" ColumnName="HYShi" />
+          <ScalarProperty Name="GRShi" ColumnName="GRShi" />
+          <ScalarProperty Name="XTHGu_JRGG" ColumnName="XTHGu_JRGG" />
+          <ScalarProperty Name="XTHGu_SJJS" ColumnName="XTHGu_SJJS" />
+          <ScalarProperty Name="XTHGu_NFMXT" ColumnName="XTHGu_NFMXT" />
+          <ScalarProperty Name="XTHGu_ZXXT" ColumnName="XTHGu_ZXXT" />
+          <ScalarProperty Name="XTHGu_MNXT" ColumnName="XTHGu_MNXT" />
+          <ScalarProperty Name="XTHGu_XHuaXT" ColumnName="XTHGu_XHuaXT" />
+          <ScalarProperty Name="XTHGu_XHXT" ColumnName="XTHGu_XHXT" />
+          <ScalarProperty Name="XTHGu_HXXT" ColumnName="XTHGu_HXXT" />
+          <ScalarProperty Name="JWShi_QT" ColumnName="JWShi_QT" />
+          <ScalarProperty Name="JWShi_SWYW" ColumnName="JWShi_SWYW" />
+          <ScalarProperty Name="JWShi_SXS" ColumnName="JWShi_SXS" />
+          <ScalarProperty Name="JWShi_SSWS" ColumnName="JWShi_SSWS" />
+          <ScalarProperty Name="JWShi_YFJZ" ColumnName="JWShi_YFJZ" />
+          <ScalarProperty Name="JWShi_CRBS" ColumnName="JWShi_CRBS" />
+          <ScalarProperty Name="JWShi_JBS" ColumnName="JWShi_JBS" />
+          <ScalarProperty Name="JWShi_YBJK" ColumnName="JWShi_YBJK" />
+          <ScalarProperty Name="XBShi_QT" ColumnName="XBShi_QT" />
+          <ScalarProperty Name="XBShi_FBYLY" ColumnName="XBShi_FBYLY" />
+          <ScalarProperty Name="XBShi_FBYL" ColumnName="XBShi_FBYL" />
+          <ScalarProperty Name="XBShi_BSZZ" ColumnName="XBShi_BSZZ" />
+          <ScalarProperty Name="XBShi_ZYZZ" ColumnName="XBShi_ZYZZ" />
+          <ScalarProperty Name="XBShi_FBQK" ColumnName="XBShi_FBQK" />
+          <ScalarProperty Name="ZhuSu" ColumnName="ZhuSu" />
+          <ScalarProperty Name="ReliableDegree" ColumnName="ReliableDegree" />
+          <ScalarProperty Name="MedicalHistorySpeaker" ColumnName="MedicalHistorySpeaker" />
+          <ScalarProperty Name="RecordDate" ColumnName="RecordDate" />
+          <ScalarProperty Name="InhospitalDate" ColumnName="InhospitalDate" />
+          <ScalarProperty Name="Phone" ColumnName="Phone" />
+          <ScalarProperty Name="NowDetailAddress" ColumnName="NowDetailAddress" />
+          <ScalarProperty Name="NowAreaName" ColumnName="NowAreaName" />
+          <ScalarProperty Name="NowAreaCode" ColumnName="NowAreaCode" />
+          <ScalarProperty Name="NowCityName" ColumnName="NowCityName" />
+          <ScalarProperty Name="NowCityCode" ColumnName="NowCityCode" />
+          <ScalarProperty Name="NowProvinceName" ColumnName="NowProvinceName" />
+          <ScalarProperty Name="NowProvinceCode" ColumnName="NowProvinceCode" />
+          <ScalarProperty Name="Company" ColumnName="Company" />
+          <ScalarProperty Name="BirthDetailAddress" ColumnName="BirthDetailAddress" />
+          <ScalarProperty Name="BirthAreaName" ColumnName="BirthAreaName" />
+          <ScalarProperty Name="BirthAreaCode" ColumnName="BirthAreaCode" />
+          <ScalarProperty Name="BirthCityName" ColumnName="BirthCityName" />
+          <ScalarProperty Name="BirthCityCode" ColumnName="BirthCityCode" />
+          <ScalarProperty Name="BirthProvinceName" ColumnName="BirthProvinceName" />
+          <ScalarProperty Name="BirthProvinceCode" ColumnName="BirthProvinceCode" />
+          <ScalarProperty Name="Marriage" ColumnName="Marriage" />
+          <ScalarProperty Name="Nation" ColumnName="Nation" />
+          <ScalarProperty Name="Job" ColumnName="Job" />
+          <ScalarProperty Name="Age" ColumnName="Age" />
+          <ScalarProperty Name="Sex" ColumnName="Sex" />
+          <ScalarProperty Name="PatientName" ColumnName="PatientName" />
+          <ScalarProperty Name="InhospitalNo" ColumnName="InhospitalNo" />
+          <ScalarProperty Name="PatientNo" ColumnName="PatientNo" />
+          <ScalarProperty Name="TeachersRealName" ColumnName="TeachersRealName" />
+          <ScalarProperty Name="TeachersName" ColumnName="TeachersName" />
+          <ScalarProperty Name="ManagerCheck" ColumnName="ManagerCheck" />
+          <ScalarProperty Name="BaseCheck" ColumnName="BaseCheck" />
+          <ScalarProperty Name="KzrCheck" ColumnName="KzrCheck" />
+          <ScalarProperty Name="TeacherCheck" ColumnName="TeacherCheck" />
+          <ScalarProperty Name="Writor" ColumnName="Writor" />
+          <ScalarProperty Name="RegisterDate" ColumnName="RegisterDate" />
+          <ScalarProperty Name="DeptName" ColumnName="DeptName" />
+          <ScalarProperty Name="DeptCode" ColumnName="DeptCode" />
+          <ScalarProperty Name="ProfessionalBaseName" ColumnName="ProfessionalBaseName" />
+          <ScalarProperty Name="ProfessionalBaseCode" ColumnName="ProfessionalBaseCode" />
+          <ScalarProperty Name="TrainingBaseName" ColumnName="TrainingBaseName" />
+          <ScalarProperty Name="TrainingBaseCode" ColumnName="TrainingBaseCode" />
+          <ScalarProperty Name="StudentsName" ColumnName="StudentsName" />
+          <ScalarProperty Name="StudentsRealName" ColumnName="StudentsRealName" />
+          <ScalarProperty Name="Id" ColumnName="Id" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="GP_Area">
+      <EntityTypeMapping TypeName="GP_SystemModel.GP_Area">
+        <MappingFragment StoreEntitySet="GP_Area">
+          <ScalarProperty Name="father" ColumnName="father" />
+          <ScalarProperty Name="area" ColumnName="area" />
+          <ScalarProperty Name="areaid" ColumnName="areaid" />
+          <ScalarProperty Name="id" ColumnName="id" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="GP_City">
+      <EntityTypeMapping TypeName="GP_SystemModel.GP_City">
+        <MappingFragment StoreEntitySet="GP_City">
+          <ScalarProperty Name="father" ColumnName="father" />
+          <ScalarProperty Name="city" ColumnName="city" />
+          <ScalarProperty Name="cityid" ColumnName="cityid" />
+          <ScalarProperty Name="id" ColumnName="id" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="GP_Province">
+      <EntityTypeMapping TypeName="GP_SystemModel.GP_Province">
+        <MappingFragment StoreEntitySet="GP_Province">
+          <ScalarProperty Name="province" ColumnName="province" />
+          <ScalarProperty Name="provinceid" ColumnName="provinceid" />
+          <ScalarProperty Name="id" ColumnName="id" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="GP_TeachingActivities">
+      <EntityTypeMapping TypeName="GP_SystemModel.GP_TeachingActivities">
+        <MappingFragment StoreEntitySet="GP_TeachingActivities">
+          <ScalarProperty Name="Tag3" ColumnName="Tag3" />
+          <ScalarProperty Name="Tag2" ColumnName="Tag2" />
+          <ScalarProperty Name="Tag1" ColumnName="Tag1" />
+          <ScalarProperty Name="Comment" ColumnName="Comment" />
+          <ScalarProperty Name="ActivityDate" ColumnName="ActivityDate" />
+          <ScalarProperty Name="ClassHour" ColumnName="ClassHour" />
+          <ScalarProperty Name="MainSpeaker" ColumnName="MainSpeaker" />
+          <ScalarProperty Name="ActivityContent" ColumnName="ActivityContent" />
+          <ScalarProperty Name="ActivityForm" ColumnName="ActivityForm" />
+          <ScalarProperty Name="TeachersRealName" ColumnName="TeachersRealName" />
+          <ScalarProperty Name="TeachersName" ColumnName="TeachersName" />
+          <ScalarProperty Name="ManagerCheck" ColumnName="ManagerCheck" />
+          <ScalarProperty Name="BaseCheck" ColumnName="BaseCheck" />
+          <ScalarProperty Name="KzrCheck" ColumnName="KzrCheck" />
+          <ScalarProperty Name="TeacherCheck" ColumnName="TeacherCheck" />
+          <ScalarProperty Name="Writor" ColumnName="Writor" />
+          <ScalarProperty Name="RegisterDate" ColumnName="RegisterDate" />
+          <ScalarProperty Name="DeptName" ColumnName="DeptName" />
+          <ScalarProperty Name="DeptCode" ColumnName="DeptCode" />
+          <ScalarProperty Name="ProfessionalBaseName" ColumnName="ProfessionalBaseName" />
+          <ScalarProperty Name="ProfessionalBaseCode" ColumnName="ProfessionalBaseCode" />
+          <ScalarProperty Name="TrainingBaseName" ColumnName="TrainingBaseName" />
+          <ScalarProperty Name="TrainingBaseCode" ColumnName="TrainingBaseCode" />
+          <ScalarProperty Name="StudentsName" ColumnName="StudentsName" />
+          <ScalarProperty Name="StudentsRealName" ColumnName="StudentsRealName" />
+          <ScalarProperty Name="Id" ColumnName="Id" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="GP_AttendanceManagement">
+      <EntityTypeMapping TypeName="GP_SystemModel.GP_AttendanceManagement">
+        <MappingFragment StoreEntitySet="GP_AttendanceManagement">
+          <ScalarProperty Name="Details" ColumnName="Details" />
+          <ScalarProperty Name="Days" ColumnName="Days" />
+          <ScalarProperty Name="LastDate" ColumnName="LastDate" />
+          <ScalarProperty Name="FirstDate" ColumnName="FirstDate" />
+          <ScalarProperty Name="AttendanceCategory" ColumnName="AttendanceCategory" />
+          <ScalarProperty Name="Comment" ColumnName="Comment" />
+          <ScalarProperty Name="TeacherName" ColumnName="TeacherName" />
+          <ScalarProperty Name="TeacherId" ColumnName="TeacherId" />
+          <ScalarProperty Name="ManagerCheck" ColumnName="ManagerCheck" />
+          <ScalarProperty Name="BaseCheck" ColumnName="BaseCheck" />
+          <ScalarProperty Name="KzrCheck" ColumnName="KzrCheck" />
+          <ScalarProperty Name="TeacherCheck" ColumnName="TeacherCheck" />
+          <ScalarProperty Name="Writor" ColumnName="Writor" />
+          <ScalarProperty Name="RegisterDate" ColumnName="RegisterDate" />
+          <ScalarProperty Name="DeptName" ColumnName="DeptName" />
+          <ScalarProperty Name="DeptCode" ColumnName="DeptCode" />
+          <ScalarProperty Name="ProfessionalBaseName" ColumnName="ProfessionalBaseName" />
+          <ScalarProperty Name="ProfessionalBaseCode" ColumnName="ProfessionalBaseCode" />
+          <ScalarProperty Name="TrainingBaseName" ColumnName="TrainingBaseName" />
+          <ScalarProperty Name="TrainingBaseCode" ColumnName="TrainingBaseCode" />
+          <ScalarProperty Name="StudentsName" ColumnName="StudentsName" />
+          <ScalarProperty Name="StudentsRealName" ColumnName="StudentsRealName" />
+          <ScalarProperty Name="Id" ColumnName="Id" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="GP_AdviceFeedback">
+      <EntityTypeMapping TypeName="GP_SystemModel.GP_AdviceFeedback">
+        <MappingFragment StoreEntitySet="GP_AdviceFeedback">
+          <ScalarProperty Name="ManagerHandle" ColumnName="ManagerHandle" />
+          <ScalarProperty Name="ManagerDate" ColumnName="ManagerDate" />
+          <ScalarProperty Name="ManagerName" ColumnName="ManagerName" />
+          <ScalarProperty Name="ManagerReply" ColumnName="ManagerReply" />
+          <ScalarProperty Name="FeedbackInformation" ColumnName="FeedbackInformation" />
+          <ScalarProperty Name="Comment" ColumnName="Comment" />
+          <ScalarProperty Name="TeacherName" ColumnName="TeacherName" />
+          <ScalarProperty Name="TeacherId" ColumnName="TeacherId" />
+          <ScalarProperty Name="ManagerCheck" ColumnName="ManagerCheck" />
+          <ScalarProperty Name="BaseCheck" ColumnName="BaseCheck" />
+          <ScalarProperty Name="KzrCheck" ColumnName="KzrCheck" />
+          <ScalarProperty Name="TeacherCheck" ColumnName="TeacherCheck" />
+          <ScalarProperty Name="Writor" ColumnName="Writor" />
+          <ScalarProperty Name="RegisterDate" ColumnName="RegisterDate" />
+          <ScalarProperty Name="DeptName" ColumnName="DeptName" />
+          <ScalarProperty Name="DeptCode" ColumnName="DeptCode" />
+          <ScalarProperty Name="ProfessionalBaseName" ColumnName="ProfessionalBaseName" />
+          <ScalarProperty Name="ProfessionalBaseCode" ColumnName="ProfessionalBaseCode" />
+          <ScalarProperty Name="TrainingBaseName" ColumnName="TrainingBaseName" />
+          <ScalarProperty Name="TrainingBaseCode" ColumnName="TrainingBaseCode" />
+          <ScalarProperty Name="StudentsName" ColumnName="StudentsName" />
+          <ScalarProperty Name="StudentsRealName" ColumnName="StudentsRealName" />
+          <ScalarProperty Name="Id" ColumnName="Id" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="GP_ReleaseNews">
+      <EntityTypeMapping TypeName="GP_SystemModel.GP_ReleaseNews">
+        <MappingFragment StoreEntitySet="GP_ReleaseNews">
+          <ScalarProperty Name="Tag3" ColumnName="Tag3" />
+          <ScalarProperty Name="Tag2" ColumnName="Tag2" />
+          <ScalarProperty Name="Tag1" ColumnName="Tag1" />
+          <ScalarProperty Name="Bases" ColumnName="Bases" />
+          <ScalarProperty Name="Teachers" ColumnName="Teachers" />
+          <ScalarProperty Name="Students" ColumnName="Students" />
+          <ScalarProperty Name="FileName" ColumnName="FileName" />
+          <ScalarProperty Name="FilePath" ColumnName="FilePath" />
+          <ScalarProperty Name="NewsContent" ColumnName="NewsContent" />
+          <ScalarProperty Name="NewsTitle" ColumnName="NewsTitle" />
+          <ScalarProperty Name="RegisterDate" ColumnName="RegisterDate" />
+          <ScalarProperty Name="Writor" ColumnName="Writor" />
+          <ScalarProperty Name="ManagersRealName" ColumnName="ManagersRealName" />
+          <ScalarProperty Name="ManagersName" ColumnName="ManagersName" />
+          <ScalarProperty Name="TrainingBaseName" ColumnName="TrainingBaseName" />
+          <ScalarProperty Name="TrainingBaseCode" ColumnName="TrainingBaseCode" />
+          <ScalarProperty Name="Id" ColumnName="Id" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="GP_NeiKeOption">
+      <EntityTypeMapping TypeName="GP_SystemModel.GP_NeiKeOption">
+        <MappingFragment StoreEntitySet="GP_NeiKeOption">
+          <ScalarProperty Name="Tag3" ColumnName="Tag3" />
+          <ScalarProperty Name="Tag2" ColumnName="Tag2" />
+          <ScalarProperty Name="Id" ColumnName="Id" />
+          <ScalarProperty Name="Tag1" ColumnName="Tag1" />
+          <ScalarProperty Name="QuestionType" ColumnName="QuestionType" />
+          <ScalarProperty Name="SubjectCode" ColumnName="SubjectCode" />
+          <ScalarProperty Name="CorrectAnswer" ColumnName="CorrectAnswer" />
+          <ScalarProperty Name="OptionE" ColumnName="OptionE" />
+          <ScalarProperty Name="OptionD" ColumnName="OptionD" />
+          <ScalarProperty Name="OptionC" ColumnName="OptionC" />
+          <ScalarProperty Name="OptionB" ColumnName="OptionB" />
+          <ScalarProperty Name="OptionA" ColumnName="OptionA" />
+          <ScalarProperty Name="Question" ColumnName="Question" />
+          <ScalarProperty Name="SubjectName" ColumnName="SubjectName" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="GP_TiKuResult">
+      <EntityTypeMapping TypeName="GP_SystemModel.GP_TiKuResult">
+        <MappingFragment StoreEntitySet="GP_TiKuResult">
+          <ScalarProperty Name="Tag3" ColumnName="Tag3" />
+          <ScalarProperty Name="Tag2" ColumnName="Tag2" />
+          <ScalarProperty Name="Tag1" ColumnName="Tag1" />
+          <ScalarProperty Name="RegisterDate" ColumnName="RegisterDate" />
+          <ScalarProperty Name="ErrorNum" ColumnName="ErrorNum" />
+          <ScalarProperty Name="CorrectNum" ColumnName="CorrectNum" />
+          <ScalarProperty Name="UndoNum" ColumnName="UndoNum" />
+          <ScalarProperty Name="TotalNum" ColumnName="TotalNum" />
+          <ScalarProperty Name="TotalScore" ColumnName="TotalScore" />
+          <ScalarProperty Name="SubjectCode" ColumnName="SubjectCode" />
+          <ScalarProperty Name="SubjectName" ColumnName="SubjectName" />
+          <ScalarProperty Name="TrainingBaseName" ColumnName="TrainingBaseName" />
+          <ScalarProperty Name="TrainingBaseCode" ColumnName="TrainingBaseCode" />
+          <ScalarProperty Name="StudentsRealName" ColumnName="StudentsRealName" />
+          <ScalarProperty Name="StudentsName" ColumnName="StudentsName" />
+          <ScalarProperty Name="Id" ColumnName="Id" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="RotaryInformationJoin">
+      <EntityTypeMapping TypeName="GP_SystemModel.RotaryInformationJoin">
+        <MappingFragment StoreEntitySet="RotaryInformationJoin">
+          <ScalarProperty Name="TrainingBaseProvinceName" ColumnName="TrainingBaseProvinceName" />
+          <ScalarProperty Name="TrainingBaseProvinceCode" ColumnName="TrainingBaseProvinceCode" />
+          <ScalarProperty Name="InfoTag3" ColumnName="InfoTag3" />
+          <ScalarProperty Name="InfoTag2" ColumnName="InfoTag2" />
+          <ScalarProperty Name="InfoTag1" ColumnName="InfoTag1" />
+          <ScalarProperty Name="PlanTrainingTime" ColumnName="PlanTrainingTime" />
+          <ScalarProperty Name="TrainingTime" ColumnName="TrainingTime" />
+          <ScalarProperty Name="InfoProfessionalBaseName" ColumnName="InfoProfessionalBaseName" />
+          <ScalarProperty Name="InfoProfessionalBaseCode" ColumnName="InfoProfessionalBaseCode" />
+          <ScalarProperty Name="CollaborativeUnit" ColumnName="CollaborativeUnit" />
+          <ScalarProperty Name="InfoTrainingBaseName" ColumnName="InfoTrainingBaseName" />
+          <ScalarProperty Name="InfoTrainingBaseCode" ColumnName="InfoTrainingBaseCode" />
+          <ScalarProperty Name="SendUnit" ColumnName="SendUnit" />
+          <ScalarProperty Name="IdentityType" ColumnName="IdentityType" />
+          <ScalarProperty Name="HighEducationTime" ColumnName="HighEducationTime" />
+          <ScalarProperty Name="HighMajor" ColumnName="HighMajor" />
+          <ScalarProperty Name="GraduationTime" ColumnName="GraduationTime" />
+          <ScalarProperty Name="HighSchool" ColumnName="HighSchool" />
+          <ScalarProperty Name="HighEducation" ColumnName="HighEducation" />
+          <ScalarProperty Name="BkMajor" ColumnName="BkMajor" />
+          <ScalarProperty Name="BkSchool" ColumnName="BkSchool" />
+          <ScalarProperty Name="Mail" ColumnName="Mail" />
+          <ScalarProperty Name="Telephon" ColumnName="Telephon" />
+          <ScalarProperty Name="MinZu" ColumnName="MinZu" />
+          <ScalarProperty Name="DateBirth" ColumnName="DateBirth" />
+          <ScalarProperty Name="IdNumber" ColumnName="IdNumber" />
+          <ScalarProperty Name="Sex" ColumnName="Sex" />
+          <ScalarProperty Name="ImagePath" ColumnName="ImagePath" />
+          <ScalarProperty Name="InfoRealName" ColumnName="InfoRealName" />
+          <ScalarProperty Name="InfoName" ColumnName="InfoName" />
+          <ScalarProperty Name="Tag3" ColumnName="Tag3" />
+          <ScalarProperty Name="Tag2" ColumnName="Tag2" />
+          <ScalarProperty Name="Tag1" ColumnName="Tag1" />
+          <ScalarProperty Name="QuestionnaireStatus" ColumnName="QuestionnaireStatus" />
+          <ScalarProperty Name="OutdeptApplication" ColumnName="OutdeptApplication" />
+          <ScalarProperty Name="OutdeptStatus" ColumnName="OutdeptStatus" />
+          <ScalarProperty Name="TeachersRealName" ColumnName="TeachersRealName" />
+          <ScalarProperty Name="TeachersName" ColumnName="TeachersName" />
+          <ScalarProperty Name="RotaryOrder" ColumnName="RotaryOrder" />
+          <ScalarProperty Name="RotaryDays" ColumnName="RotaryDays" />
+          <ScalarProperty Name="RotaryEndTime" ColumnName="RotaryEndTime" />
+          <ScalarProperty Name="RotaryBeginTime" ColumnName="RotaryBeginTime" />
+          <ScalarProperty Name="DeptName" ColumnName="DeptName" />
+          <ScalarProperty Name="DeptCode" ColumnName="DeptCode" />
+          <ScalarProperty Name="ProfessionalBaseName" ColumnName="ProfessionalBaseName" />
+          <ScalarProperty Name="ProfessionalBaseCode" ColumnName="ProfessionalBaseCode" />
+          <ScalarProperty Name="TrainingBaseName" ColumnName="TrainingBaseName" />
+          <ScalarProperty Name="TrainingBaseCode" ColumnName="TrainingBaseCode" />
+          <ScalarProperty Name="RealName" ColumnName="RealName" />
+          <ScalarProperty Name="Name" ColumnName="Name" />
+          <ScalarProperty Name="Id" ColumnName="Id" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="GP_OutDept_Exam">
+      <EntityTypeMapping TypeName="GP_SystemModel.GP_OutDept_Exam">
+        <MappingFragment StoreEntitySet="GP_OutDept_Exam">
+          <ScalarProperty Name="dept_manager_date" ColumnName="dept_manager_date" />
+          <ScalarProperty Name="dept_manager" ColumnName="dept_manager" />
+          <ScalarProperty Name="is_pass" ColumnName="is_pass" />
+          <ScalarProperty Name="instructor_date" ColumnName="instructor_date" />
+          <ScalarProperty Name="total_score" ColumnName="total_score" />
+          <ScalarProperty Name="djnl" ColumnName="djnl" />
+          <ScalarProperty Name="zdsp" ColumnName="zdsp" />
+          <ScalarProperty Name="czjn" ColumnName="czjn" />
+          <ScalarProperty Name="sjcznl" ColumnName="sjcznl" />
+          <ScalarProperty Name="clbrnl" ColumnName="clbrnl" />
+          <ScalarProperty Name="blsx" ColumnName="blsx" />
+          <ScalarProperty Name="zdzx" ColumnName="zdzx" />
+          <ScalarProperty Name="llsp" ColumnName="llsp" />
+          <ScalarProperty Name="ydyf" ColumnName="ydyf" />
+          <ScalarProperty Name="gztd" ColumnName="gztd" />
+          <ScalarProperty Name="kqqk" ColumnName="kqqk" />
+          <ScalarProperty Name="instructor_tag" ColumnName="instructor_tag" />
+          <ScalarProperty Name="instructor" ColumnName="instructor" />
+          <ScalarProperty Name="rotary_end_time" ColumnName="rotary_end_time" />
+          <ScalarProperty Name="rotary_begin_time" ColumnName="rotary_begin_time" />
+          <ScalarProperty Name="rotary_dept_name" ColumnName="rotary_dept_name" />
+          <ScalarProperty Name="rotary_dept_code" ColumnName="rotary_dept_code" />
+          <ScalarProperty Name="professional_base_name" ColumnName="professional_base_name" />
+          <ScalarProperty Name="professional_base_code" ColumnName="professional_base_code" />
+          <ScalarProperty Name="high_education_time" ColumnName="high_education_time" />
+          <ScalarProperty Name="high_education" ColumnName="high_education" />
+          <ScalarProperty Name="training_base_name" ColumnName="training_base_name" />
+          <ScalarProperty Name="training_base_code" ColumnName="training_base_code" />
+          <ScalarProperty Name="sex" ColumnName="sex" />
+          <ScalarProperty Name="students_real_name" ColumnName="students_real_name" />
+          <ScalarProperty Name="students_name" ColumnName="students_name" />
+          <ScalarProperty Name="id" ColumnName="id" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="GP_Teachers_Appoint_Information">
+      <EntityTypeMapping TypeName="GP_SystemModel.GP_Teachers_Appoint_Information">
+        <MappingFragment StoreEntitySet="GP_Teachers_Appoint_Information">
+          <ScalarProperty Name="IsReceive" ColumnName="IsReceive" />
+          <ScalarProperty Name="FilePath" ColumnName="FilePath" />
+          <ScalarProperty Name="FileName" ColumnName="FileName" />
+          <ScalarProperty Name="register_date" ColumnName="register_date" />
+          <ScalarProperty Name="dept_name" ColumnName="dept_name" />
+          <ScalarProperty Name="dept_code" ColumnName="dept_code" />
+          <ScalarProperty Name="professional_base_name" ColumnName="professional_base_name" />
+          <ScalarProperty Name="professional_base_code" ColumnName="professional_base_code" />
+          <ScalarProperty Name="training_base_name" ColumnName="training_base_name" />
+          <ScalarProperty Name="training_base_code" ColumnName="training_base_code" />
+          <ScalarProperty Name="type" ColumnName="type" />
+          <ScalarProperty Name="is_pass" ColumnName="is_pass" />
+          <ScalarProperty Name="comment" ColumnName="comment" />
+          <ScalarProperty Name="each_class_num" ColumnName="each_class_num" />
+          <ScalarProperty Name="class_num" ColumnName="class_num" />
+          <ScalarProperty Name="total_num" ColumnName="total_num" />
+          <ScalarProperty Name="training_content" ColumnName="training_content" />
+          <ScalarProperty Name="appoint_end_time" ColumnName="appoint_end_time" />
+          <ScalarProperty Name="appoint_begin_time" ColumnName="appoint_begin_time" />
+          <ScalarProperty Name="teachers_real_name" ColumnName="teachers_real_name" />
+          <ScalarProperty Name="teachers_name" ColumnName="teachers_name" />
+          <ScalarProperty Name="id" ColumnName="id" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <FunctionImportMapping FunctionImportName="QuestionnaireChart" FunctionName="GP_SystemModel.Store.QuestionnaireChart" />
+  </EntityContainerMapping>
+</Mapping>

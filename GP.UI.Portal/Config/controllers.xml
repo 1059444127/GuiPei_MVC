@@ -1,0 +1,116 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<objects xmlns="http://www.springframework.net">
+
+  <object type="GP.UI.Portal.Controllers.LoginController, GP.UI.Portal" singleton="false" >
+    <property name="loginService" ref="loginService" />
+  </object>
+  <object type="GP.UI.Portal.Controllers.TagController, GP.UI.Portal" singleton="false" >
+    <property name="loginService" ref="loginService" />
+  </object>
+
+  <object type="GP.UI.Portal.Areas.Students.Controllers.PersonalInformationController, GP.UI.Portal" singleton="false" >
+    <property name="professionalBaseService" ref="professionalBaseService" />
+    <property name="schoolInformationService" ref="schoolInformationService" />
+    <property name="studentsPersonalInformation" ref="studentsPersonalInformation" />
+  </object>
+
+  <object type="GP.UI.Portal.Areas.Students.Controllers.RotaryInformationController, GP.UI.Portal" singleton="false" >
+    <property name="studentsRotaryInformation2" ref="studentsRotaryInformation2" />
+    <property name="questionnaireService" ref="questionnaireService" />
+    <property name="personalInfoService" ref="studentsPersonalInformation" />
+    <property name="rotaryScheduleService" ref="GP_RotaryScheduleService" />
+    <property name="deptManagementService" ref="GP_DeptManagementService" />
+  </object>
+  <object type="GP.UI.Portal.Areas.Students.Controllers.CommonController, GP.UI.Portal" singleton="false" >
+    <property name="studentsPersonalInfoService" ref="studentsPersonalInformation" />
+    <property name="professionalBaseDeptService" ref="GP_Professional_Base_DeptService" />
+    <property name="loginService" ref="GP_LoginService" />
+    <property name="provinceService" ref="GP_ProvinceService" />
+    <property name="cityService" ref="GP_CityService" />
+    <property name="areaService" ref="GP_AreaService" />
+  </object>
+
+  <object type="GP.UI.Portal.Areas.Students.Controllers.DiseaseRegisterController, GP.UI.Portal" singleton="false" >
+    <property name="diseaseRegisterService" ref="GP_Disease_RegisterService" />
+    <property name="diseaseRegister2Service" ref="GP_Disease_Register2Service" />
+  </object>
+
+<object type="GP.UI.Portal.Areas.Students.Controllers.SkillRequirementController, GP.UI.Portal" singleton="false" >
+  <property name="skillRequirementService" ref="GP_SkillRequirementService" />
+  <property name="skillRequirement2Service" ref="GP_SkillRequirement2Service" />
+</object>
+
+  <object type="GP.UI.Portal.Areas.Students.Controllers.BigMedicalRecordsController, GP.UI.Portal" singleton="false" >
+    <property name="bigMedicalRecords2Service" ref="GP_BigMedicalRecords2Service" />
+  </object>
+<object type="GP.UI.Portal.Areas.Students.Controllers.TeachingActivitiesController, GP.UI.Portal" singleton="false" >
+  <property name="teachingActivitiesService" ref="GP_TeachingActivitiesService" />
+</object>
+<object type="GP.UI.Portal.Areas.Students.Controllers.AttendanceManagementController, GP.UI.Portal" singleton="false" >
+  <property name="attendanceManagementService" ref="GP_AttendanceManagementService" />
+</object>
+  <object type="GP.UI.Portal.Areas.Students.Controllers.AdviceFeedbackController, GP.UI.Portal" singleton="false" >
+    <property name="adviceFeedbackService" ref="GP_AdviceFeedbackService" />
+  </object>
+<object type="GP.UI.Portal.Areas.Students.Controllers.NewsController, GP.UI.Portal" singleton="false" >
+  <property name="releaseNewsService" ref="GP_ReleaseNewsService" />
+</object>
+  <object type="GP.UI.Portal.Areas.Students.Controllers.QuestionBankController, GP.UI.Portal" singleton="false" >
+    <property name="neiKeOptionService" ref="GP_NeiKeOptionService" />
+    <property name="tiKuResultService" ref="GP_TiKuResultService" />
+  </object>
+<object type="GP.UI.Portal.Areas.Students.Controllers.TiKuStaticsController, GP.UI.Portal" singleton="false" >
+  <property name="tiKuResultService" ref="GP_TiKuResultService" />
+</object>
+  <object type="GP.UI.Portal.Areas.Teachers.Controllers.StudentsBasicInformationController, GP.UI.Portal" singleton="false" >
+    <property name="studentsPersonalInformation2Service" ref="studentsPersonalInformation" />
+  </object>
+
+  <object type="GP.UI.Portal.Areas.Teachers.Controllers.StudentsRotaryInformationController, GP.UI.Portal" singleton="false" >
+    <property name="rotaryInformationJoinService" ref="RotaryInformationJoinService" />
+    <property name="outDeptExamService" ref="GP_OutDept_ExamService" />
+  </object>
+<object type="GP.UI.Portal.Areas.Teachers.Controllers.OutDeptExamInformationController, GP.UI.Portal" singleton="false" >
+  <property name="outDeptExamService" ref="GP_OutDept_ExamService" />
+</object>
+  <object type="GP.UI.Portal.Areas.Teachers.Controllers.StudentsAttendanceManagementController, GP.UI.Portal" singleton="false" >
+    <property name="attendanceManagementService" ref="GP_AttendanceManagementService" />
+  </object>
+
+<object type="GP.UI.Portal.Areas.Teachers.Controllers.StudentsDiseaseRegisterController, GP.UI.Portal" singleton="false" >
+  <property name="diseaseRegister2Service" ref="GP_Disease_Register2Service" />
+</object>
+<object type="GP.UI.Portal.Areas.Teachers.Controllers.StudentsSkillRequirementController, GP.UI.Portal" singleton="false" >
+  <property name="skillRequirement2Service" ref="GP_SkillRequirement2Service" />
+</object>
+
+
+<object type="GP.UI.Portal.Areas.Teachers.Controllers.StudentsBigMedicalRecordsController, GP.UI.Portal" singleton="false" >
+  <property name="bigMedicalRecords2Service" ref="GP_BigMedicalRecords2Service" />
+</object>
+  
+<object type="GP.UI.Portal.Areas.Teachers.Controllers.StudentsTeachingActivitiesController, GP.UI.Portal" singleton="false" >
+  <property name="teachingActivitiesService" ref="GP_TeachingActivitiesService" />
+</object>
+  <object type="GP.UI.Portal.Areas.Teachers.Controllers.AppointInformationController, GP.UI.Portal" singleton="false" >
+    <property name="teachersAppointInformationService" ref="GP_Teachers_Appoint_InformationService" />
+  </object>
+  <object type="GP.UI.Portal.Areas.Teachers.Controllers.QuestionnaireInformationController, GP.UI.Portal" singleton="false" >
+    <property name="questionnaireService" ref="questionnaireService" />
+  </object>
+<object type="GP.UI.Portal.Areas.Teachers.Controllers.NewsController, GP.UI.Portal" singleton="false" >
+  <property name="releaseNewsService" ref="GP_ReleaseNewsService" />
+</object>
+
+
+
+
+
+
+
+
+
+
+
+
+</objects>

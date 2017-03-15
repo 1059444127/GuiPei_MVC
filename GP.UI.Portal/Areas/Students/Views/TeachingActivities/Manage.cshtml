@@ -1,0 +1,197 @@
+﻿@{
+    Layout = null;
+}
+
+<!DOCTYPE html>
+
+<html>
+<head>
+    <meta name="viewport" content="width=device-width" />
+    <title>教学活动登记</title>
+    <script src="~/Scripts/jquery-1.8.2.min.js"></script>
+    <script src="~/Scripts/MyJs/global.js"></script>
+    <script src="~/Scripts/MyJs/autosize.js"></script>
+    <script src="~/Scripts/MyJs/showTips.js"></script>
+    <script src="~/Scripts/MyJs/My97DatePicker/WdatePicker.js"></script>
+    <script src="~/Scripts/MyJs/jquery-form.js"></script>
+    <link href="~/Content/MyCss/global.css" rel="stylesheet" />
+    <script type="text/javascript">
+        $(function () {
+            $("textarea").autosize();
+            loadInfo();
+            $("#RegisterDate").val('@DateTime.Now.Date.ToString("yyyy-MM-dd")');
+            $("#Id").val('@Guid.NewGuid().ToString()');
+        });
+
+        function saveOrUpdate() {
+            if ($("#DeptCode").val() == "") { alert("轮转科室不能为空"); return false; }
+            if ($("#TeachersName").val() == "") { alert("指导医师不能为空"); return false; }
+            if ($("#ActivityForm").val() == "") { alert("活动形式不能为空"); return false; }
+            if ($("#ActivityContent").val() == "") { alert("活动内容不能为空"); return false; }
+            if ($("#MainSpeaker").val() == "") { alert("主讲人不能为空"); return false; }
+            if ($("#ActivityDate").val() == "") { alert("活动日期不能为空"); return false; }
+            if ($("#Writor").val() == "") { alert("填写人不能为空"); return false; }
+            if ($("#RegisterDate").val() == "") { alert("登记日期不能为空"); return false; }
+
+            $("#form1").ajaxSubmit({
+                type: "post",
+                url: '@Url.Action("Add")',
+                dataType: "text",
+                success: function (data) {
+                    if (data == "0") {
+                        alert("教学活动登记信息保存失败");
+                        return false;
+                    } else {
+                        alert("教学活动登记信息保存成功");
+                        window.opener.parent.frames.bodyFrame.frames.frmright.window.loadPageList(1);
+                    }
+                }
+            });
+        }
+    </script>
+</head>
+<body>
+    <form id="form1" name="form1">
+        <input type="hidden" id="Id" name="Id" />
+        <div align="center">
+            <table border="0" style="border-collapse: collapse;width:100%;" cellpadding="0" cellspacing="1" class="detailTable">
+                <tr>
+                    <td height="24" align="center" colspan="4" class="detailHead">教学活动</td>
+                </tr>
+                <tr>
+                    <td width="15%" class="detailTitle" style="height: 25px;">姓名<span style="color: #ff0000">*</span></td>
+                    <td width="70%" class="detailContent" style="height:25px;" colspan="3">
+                        <span class="detailContent">
+                            <input type="text" id="StudentsRealName" name="StudentsRealName" readonly="readonly" style="width: 150px;" />
+                            <input type="hidden" id="StudentsName" name="StudentsName" />
+                        </span>
+                    </td>
+
+                </tr>
+
+                <tr>
+                    <td width="15%" class="detailTitle" style="height: 25px;">培训基地<span style="color: #ff0000">*</span></td>
+                    <td width="35%" class="detailContent" style="height:25px;">
+                        <span class="detailContent">
+                            <input type="text" id="TrainingBaseName" name="TrainingBaseName" readonly="readonly" style="width: 150px;" />
+                            <input type="hidden" id="TrainingBaseCode" name="TrainingBaseCode" />
+                        </span>
+                    </td>
+                    <td width="15%" class="detailTitle" style="height: 25px;">专业基地<span style="color: #ff0000">*</span></td>
+                    <td width="35%" class="detailContent" style="height:25px;">
+                        <span class="detailContent">
+                            <input type="text" id="ProfessionalBaseName" name="ProfessionalBaseName" readonly="readonly" style="width: 150px;" />
+                            <input type="hidden" id="ProfessionalBaseCode" name="ProfessionalBaseCode" />
+                        </span>
+                    </td>
+                </tr>
+                <tr>
+                    <td width="15%" class="detailTitle" style="height: 25px;">轮转科室<span style="color: #ff0000">*</span></td>
+                    <td width="35%" class="detailContent" style="height:25px;">
+                        <span class="detailContent">
+                            <select id="DeptCode" name="DeptCode" style="width:150px">
+                                <option value="">==请选择==</option>
+                            </select><input type="hidden" id="DeptName" name="DeptName" />
+                        </span>
+                    </td>
+                    <td width="15%" class="detailTitle" style="height: 25px;">指导医师<span style="color: #ff0000">*</span></td>
+                    <td width="35%" class="detailContent" style="height:25px;">
+                        <span class="detailContent">
+                            <select id="TeachersName" name="TeachersName" style="width:150px">
+                                <option value="">==请选择==</option>
+                            </select><input type="hidden" id="TeachersRealName" name="TeachersRealName" />
+                        </span>
+                    </td>
+                </tr>
+                <tr>
+                    <td width="15%" class="detailTitle" style="height: 25px;">活动形式<span style="color: #ff0000">*</span></td>
+                    <td width="70%" class="detailContent" style="height:25px;" colspan="3">
+                        <span class="detailContent" >
+                            <select id="ActivityForm" name="ActivityForm" style="width:150px">
+                                <option value="">==请选择==</option>
+                                <option value="病历讨论(疑难、死亡)">病历讨论(疑难、死亡)</option>
+                                <option value="主任查房">主任查房</option>
+                                <option value="学术活动">学术活动</option>
+                                <option value="其他学习情况">其他学习情况</option>
+                            </select>
+                        </span>
+                    </td>
+
+                </tr>
+                <tr>
+                    <td width="15%" class="detailTitle" style="height: 25px;">内容<span style="color: #ff0000">*</span></td>
+                    <td width="70%" class="detailContent" style="height:25px;" colspan="3">
+                        <textarea id="ActivityContent" name="ActivityContent" style="width:95%; min-height: 100px; max-height: 150px;"></textarea>
+                        
+                    </td>
+                </tr>
+                <tr>
+                    <td colspan="4" class="detailContent" align="center">
+                        <table align="center">
+                            <tr>
+                                <td width="20%" class="detailTitle" style="height: 25px;">主讲人<span style="color: #ff0000">*</span></td>
+                                <td width="15%" class="detailContent" style="height: 25px;">
+                                    <span class="detailContent">
+                                        <input type="text" style="width:100px;" id="MainSpeaker" name="MainSpeaker" />
+                                    </span>
+                                </td>
+                                <td width="15%" class="detailTitle" style="height: 25px;">学时</td>
+                                <td width="15%" class="detailContent" style="height: 25px;">
+                                    <span class="detailContent">
+                                        <input type="text" style="width:100px;" id="ClassHour" name="ClassHour" />
+                                    </span>
+                                </td>
+                                <td width="25%" class="detailTitle" style="height: 25px;">活动日期<span style="color: #ff0000">*</span></td>
+                                <td width="15%" class="detailContent" style="height: 25px;">
+                                    <span class="detailContent">
+                                        <input type="text" style="width:100px;" id="ActivityDate" name="ActivityDate" onclick="WdatePicker({position:{left:-25,top:0}})" />
+                                    </span>
+                                </td>
+                            </tr>
+                        </table>
+                    </td>
+
+                </tr>
+
+                <tr>
+                    <td width="15%" class="detailTitle" style="height: 25px;">备注</td>
+                    <td width="70%" class="detailContent" style="height:25px;" colspan="3">
+                        <textarea id="Comment" name="Comment" style="width:95%; min-height: 100px; max-height: 150px;"></textarea>
+                    </td>
+
+                </tr>
+                <tr>
+                    <td width="85%" class="detailContent" style="height: 25px;text-align:right" colspan="6">
+                        <table align="right">
+                            <tr>
+
+                                <td width="20%" class="detailTitle" style="height: 25px">填写人<span style="color: #ff0000">*</span></td>
+                                <td width="20%" class="detailContent" style="height: 25px">
+                                    <span class="detailContent">
+                                        <input type="text" style="width:100px;" id="Writor" name="Writor" />
+                                    </span>
+                                </td>
+                                <td width="30%" class="detailTitle" style="height: 25px">登记日期<span style="color: #ff0000">*</span></td>
+                                <td width="20%" class="detailContent" style="height: 25px">
+                                    <span class="detailContent">
+                                        <input type="text" style="width:100px;" id="RegisterDate" name="RegisterDate" onclick="WdatePicker({ maxDate: '%y-%M-%d' });" />
+                                    </span>
+                                </td>
+                            </tr>
+                        </table>
+                    </td>
+                </tr>
+                <tr id="last">
+                    <td colspan="10" style="height: 25px; border-left: 1px solid white; border-right: 1px solid white; border-bottom: 1px solid white">
+                        <div style="text-align: center; margin-top: 8px;">
+                            <input id="SaveOrUpdate" name="SaveOrUpdate" type="button" style="cursor: pointer; background-image: url(/images/tijiao.jpg); border: none; height: 21px; width: 88px;" onclick="saveOrUpdate()" />
+                          
+                        </div>
+                    </td>
+                </tr>
+            </table>
+
+        </div>
+    </form>
+</body>
+</html>

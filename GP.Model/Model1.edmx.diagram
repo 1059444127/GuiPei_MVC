@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="3.0" xmlns:edmx="http://schemas.microsoft.com/ado/2009/11/edmx">
+ <!-- EF Designer content (DO NOT EDIT MANUALLY BELOW HERE) -->
+  <edmx:Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
+    <!-- Diagram content (shape and connector positions) -->
+    <edmx:Diagrams>
+      <Diagram DiagramId="ec22d38de0b9407c89756923c50f02d5" Name="Diagram1">
+        <EntityTypeShape EntityType="GP_SystemModel.GP_Login" Width="1.5" PointX="0.5" PointY="0.5" IsExpanded="true" />
+        <EntityTypeShape EntityType="GP_SystemModel.GP_StudentsPersonalInformation2" Width="1.5" PointX="2" PointY="0.5" />
+        <EntityTypeShape EntityType="GP_SystemModel.GP_Professional_Base" Width="1.5" PointX="3.625" PointY="0.5" />
+        <EntityTypeShape EntityType="GP_SystemModel.GP_StudentsRotaryInformation2" Width="1.5" PointX="3.625" PointY="2.125" />
+        <EntityTypeShape EntityType="GP_SystemModel.GP_SchoolInformation" Width="1.5" PointX="5.25" PointY="0.5" />
+        <EntityTypeShape EntityType="GP_SystemModel.GP_Questionnaire" Width="1.5" PointX="5.25" PointY="3" />
+        <EntityTypeShape EntityType="GP_SystemModel.GP_RotarySchedule" Width="1.5" PointX="6.75" PointY="0.5" />
+        <EntityTypeShape EntityType="GP_SystemModel.GP_DeptManagement" Width="1.5" PointX="6.75" PointY="5.125" />
+        <EntityTypeShape EntityType="GP_SystemModel.GP_Professional_Base_Dept" Width="1.5" PointX="3.625" PointY="7" />
+        <EntityTypeShape EntityType="GP_SystemModel.GP_Disease_Register" Width="1.5" PointX="0.5" PointY="4" />
+        <EntityTypeShape EntityType="GP_SystemModel.GP_Disease_Register2" Width="1.5" PointX="8.25" PointY="0.5" />
+        <EntityTypeShape EntityType="GP_SystemModel.GP_SkillRequirement" Width="1.5" PointX="9.875" PointY="6.375" />
+        <EntityTypeShape EntityType="GP_SystemModel.GP_SkillRequirement2" Width="1.5" PointX="9.875" PointY="0.5" />
+        <EntityTypeShape EntityType="GP_SystemModel.GP_BigMedicalRecords2" Width="1.5" PointX="0.5" PointY="7.75" />
+        <EntityTypeShape EntityType="GP_SystemModel.GP_Area" Width="1.5" PointX="2" PointY="7.375" />
+        <EntityTypeShape EntityType="GP_SystemModel.GP_City" Width="1.5" PointX="2" PointY="9.125" />
+        <EntityTypeShape EntityType="GP_SystemModel.GP_Province" Width="1.5" PointX="2" PointY="10.875" />
+        <EntityTypeShape EntityType="GP_SystemModel.GP_TeachingActivities" Width="1.5" PointX="3.625" PointY="9.375" />
+        <EntityTypeShape EntityType="GP_SystemModel.GP_AttendanceManagement" Width="1.5" PointX="5.25" PointY="8.375" />
+        <EntityTypeShape EntityType="GP_SystemModel.GP_AdviceFeedback" Width="1.5" PointX="2" PointY="12.5" />
+        <EntityTypeShape EntityType="GP_SystemModel.GP_ReleaseNews" Width="1.5" PointX="5.25" PointY="13.75" />
+        <EntityTypeShape EntityType="GP_SystemModel.GP_NeiKeOption" Width="1.5" PointX="6.75" PointY="9.625" />
+        <EntityTypeShape EntityType="GP_SystemModel.GP_TiKuResult" Width="1.5" PointX="8.25" PointY="7.5" />
+        <EntityTypeShape EntityType="GP_SystemModel.RotaryInformationJoin" Width="1.5" PointX="8.25" PointY="11.625" />
+        <EntityTypeShape EntityType="GP_SystemModel.GP_OutDept_Exam" Width="1.5" PointX="6.75" PointY="13.25" />
+        <EntityTypeShape EntityType="GP_SystemModel.GP_Teachers_Appoint_Information" Width="1.5" PointX="3.625" PointY="15.375" />
+      </Diagram>
+    </edmx:Diagrams>
+  </edmx:Designer>
+</edmx:Edmx>

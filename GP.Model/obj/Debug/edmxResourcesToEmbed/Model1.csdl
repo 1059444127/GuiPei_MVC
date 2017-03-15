@@ -1,0 +1,827 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Schema Namespace="GP_SystemModel" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
+  <EntityType Name="GP_Login">
+    <Key>
+      <PropertyRef Name="name" />
+    </Key>
+    <Property Name="id" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+    <Property Name="name" Type="String" MaxLength="50" FixedLength="false" Unicode="true" Nullable="false" />
+    <Property Name="password" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+    <Property Name="real_name" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+    <Property Name="training_base_name" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+    <Property Name="training_base_code" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+    <Property Name="professional_base_name" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+    <Property Name="professional_base_code" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+    <Property Name="dept_name" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+    <Property Name="dept_code" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+    <Property Name="type" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+    <Property Name="LoginState" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+    <Property Name="RegisterDate" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+  </EntityType>
+  <EntityContainer Name="GP_SystemEntities" annotation:LazyLoadingEnabled="true">
+    <EntitySet Name="GP_Login" EntityType="Self.GP_Login" />
+    <EntitySet Name="GP_StudentsPersonalInformation2" EntityType="GP_SystemModel.GP_StudentsPersonalInformation2" />
+    <EntitySet Name="GP_Professional_Base" EntityType="GP_SystemModel.GP_Professional_Base" />
+    <EntitySet Name="GP_StudentsRotaryInformation2" EntityType="GP_SystemModel.GP_StudentsRotaryInformation2" />
+    <EntitySet Name="GP_SchoolInformation" EntityType="GP_SystemModel.GP_SchoolInformation" />
+    <EntitySet Name="GP_Questionnaire" EntityType="GP_SystemModel.GP_Questionnaire" />
+    <EntitySet Name="GP_RotarySchedule" EntityType="GP_SystemModel.GP_RotarySchedule" />
+    <EntitySet Name="GP_DeptManagement" EntityType="GP_SystemModel.GP_DeptManagement" />
+    <EntitySet Name="GP_Professional_Base_Dept" EntityType="GP_SystemModel.GP_Professional_Base_Dept" />
+    <EntitySet Name="GP_Disease_Register" EntityType="GP_SystemModel.GP_Disease_Register" />
+    <EntitySet Name="GP_Disease_Register2" EntityType="GP_SystemModel.GP_Disease_Register2" />
+    <EntitySet Name="GP_SkillRequirement" EntityType="GP_SystemModel.GP_SkillRequirement" />
+    <EntitySet Name="GP_SkillRequirement2" EntityType="GP_SystemModel.GP_SkillRequirement2" />
+    <EntitySet Name="GP_BigMedicalRecords2" EntityType="GP_SystemModel.GP_BigMedicalRecords2" />
+    <EntitySet Name="GP_Area" EntityType="GP_SystemModel.GP_Area" />
+    <EntitySet Name="GP_City" EntityType="GP_SystemModel.GP_City" />
+    <EntitySet Name="GP_Province" EntityType="GP_SystemModel.GP_Province" />
+    <EntitySet Name="GP_TeachingActivities" EntityType="GP_SystemModel.GP_TeachingActivities" />
+    <EntitySet Name="GP_AttendanceManagement" EntityType="GP_SystemModel.GP_AttendanceManagement" />
+    <EntitySet Name="GP_AdviceFeedback" EntityType="GP_SystemModel.GP_AdviceFeedback" />
+    <EntitySet Name="GP_ReleaseNews" EntityType="GP_SystemModel.GP_ReleaseNews" />
+    <EntitySet Name="GP_NeiKeOption" EntityType="GP_SystemModel.GP_NeiKeOption" />
+    <EntitySet Name="GP_TiKuResult" EntityType="GP_SystemModel.GP_TiKuResult" />
+    <EntitySet Name="RotaryInformationJoin" EntityType="GP_SystemModel.RotaryInformationJoin" />
+    <EntitySet Name="GP_OutDept_Exam" EntityType="GP_SystemModel.GP_OutDept_Exam" />
+    <EntitySet Name="GP_Teachers_Appoint_Information" EntityType="GP_SystemModel.GP_Teachers_Appoint_Information" />
+    <FunctionImport Name="QuestionnaireChart">
+      <Parameter Name="sum" Mode="InOut" Type="Int32" />
+      <Parameter Name="one_a" Mode="InOut" Type="Int32" />
+      <Parameter Name="one_b" Mode="InOut" Type="Int32" />
+      <Parameter Name="one_c" Mode="InOut" Type="Int32" />
+      <Parameter Name="one_d" Mode="InOut" Type="Int32" />
+      <Parameter Name="one_e" Mode="InOut" Type="Int32" />
+      <Parameter Name="two_a" Mode="InOut" Type="Int32" />
+      <Parameter Name="two_b" Mode="InOut" Type="Int32" />
+      <Parameter Name="two_c" Mode="InOut" Type="Int32" />
+      <Parameter Name="two_d" Mode="InOut" Type="Int32" />
+      <Parameter Name="two_e" Mode="InOut" Type="Int32" />
+      <Parameter Name="three_a" Mode="InOut" Type="Int32" />
+      <Parameter Name="three_b" Mode="InOut" Type="Int32" />
+      <Parameter Name="three_c" Mode="InOut" Type="Int32" />
+      <Parameter Name="three_d" Mode="InOut" Type="Int32" />
+      <Parameter Name="three_e" Mode="InOut" Type="Int32" />
+      <Parameter Name="four_a" Mode="InOut" Type="Int32" />
+      <Parameter Name="four_b" Mode="InOut" Type="Int32" />
+      <Parameter Name="four_c" Mode="InOut" Type="Int32" />
+      <Parameter Name="four_d" Mode="InOut" Type="Int32" />
+      <Parameter Name="four_e" Mode="InOut" Type="Int32" />
+      <Parameter Name="five_a" Mode="InOut" Type="Int32" />
+      <Parameter Name="five_b" Mode="InOut" Type="Int32" />
+      <Parameter Name="five_c" Mode="InOut" Type="Int32" />
+      <Parameter Name="five_d" Mode="InOut" Type="Int32" />
+      <Parameter Name="five_e" Mode="InOut" Type="Int32" />
+      <Parameter Name="six_a" Mode="InOut" Type="Int32" />
+      <Parameter Name="six_b" Mode="InOut" Type="Int32" />
+      <Parameter Name="six_c" Mode="InOut" Type="Int32" />
+      <Parameter Name="six_d" Mode="InOut" Type="Int32" />
+      <Parameter Name="six_e" Mode="InOut" Type="Int32" />
+      <Parameter Name="seven_a" Mode="InOut" Type="Int32" />
+      <Parameter Name="seven_b" Mode="InOut" Type="Int32" />
+      <Parameter Name="seven_c" Mode="InOut" Type="Int32" />
+      <Parameter Name="seven_d" Mode="InOut" Type="Int32" />
+      <Parameter Name="seven_e" Mode="InOut" Type="Int32" />
+      <Parameter Name="eight_a" Mode="InOut" Type="Int32" />
+      <Parameter Name="eight_b" Mode="InOut" Type="Int32" />
+      <Parameter Name="eight_c" Mode="InOut" Type="Int32" />
+      <Parameter Name="eight_d" Mode="InOut" Type="Int32" />
+      <Parameter Name="eight_e" Mode="InOut" Type="Int32" />
+      <Parameter Name="nine_a" Mode="InOut" Type="Int32" />
+      <Parameter Name="nine_b" Mode="InOut" Type="Int32" />
+      <Parameter Name="nine_c" Mode="InOut" Type="Int32" />
+      <Parameter Name="nine_d" Mode="InOut" Type="Int32" />
+      <Parameter Name="nine_e" Mode="InOut" Type="Int32" />
+      <Parameter Name="ten_a" Mode="InOut" Type="Int32" />
+      <Parameter Name="ten_b" Mode="InOut" Type="Int32" />
+      <Parameter Name="ten_c" Mode="InOut" Type="Int32" />
+      <Parameter Name="ten_d" Mode="InOut" Type="Int32" />
+      <Parameter Name="ten_e" Mode="InOut" Type="Int32" />
+      <Parameter Name="eleven_a" Mode="InOut" Type="Int32" />
+      <Parameter Name="eleven_b" Mode="InOut" Type="Int32" />
+      <Parameter Name="eleven_c" Mode="InOut" Type="Int32" />
+      <Parameter Name="eleven_d" Mode="InOut" Type="Int32" />
+      <Parameter Name="eleven_e" Mode="InOut" Type="Int32" />
+      <Parameter Name="twelve_a" Mode="InOut" Type="Int32" />
+      <Parameter Name="twelve_b" Mode="InOut" Type="Int32" />
+      <Parameter Name="twelve_c" Mode="InOut" Type="Int32" />
+      <Parameter Name="twelve_d" Mode="InOut" Type="Int32" />
+      <Parameter Name="twelve_e" Mode="InOut" Type="Int32" />
+      <Parameter Name="thirteen_a" Mode="InOut" Type="Int32" />
+      <Parameter Name="thirteen_b" Mode="InOut" Type="Int32" />
+      <Parameter Name="thirteen_c" Mode="InOut" Type="Int32" />
+      <Parameter Name="thirteen_d" Mode="InOut" Type="Int32" />
+      <Parameter Name="thirteen_e" Mode="InOut" Type="Int32" />
+      <Parameter Name="training_base_code" Mode="In" Type="String" />
+      <Parameter Name="professional_base_code" Mode="In" Type="String" />
+      <Parameter Name="dept_code" Mode="In" Type="String" />
+      <Parameter Name="instructor" Mode="In" Type="String" />
+    </FunctionImport>
+  </EntityContainer>
+  <EntityType Name="GP_StudentsPersonalInformation2">
+    <Key>
+      <PropertyRef Name="Id" />
+    </Key>
+    <Property Name="Id" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="true" />
+    <Property Name="Name" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+    <Property Name="RealName" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+    <Property Name="ImagePath" Type="String" MaxLength="500" FixedLength="false" Unicode="true" />
+    <Property Name="Sex" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+    <Property Name="IdNumber" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+    <Property Name="DateBirth" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+    <Property Name="MinZu" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+    <Property Name="Telephon" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+    <Property Name="Mail" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+    <Property Name="BkSchool" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+    <Property Name="BkMajor" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+    <Property Name="GraduationTime" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+    <Property Name="HighEducation" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+    <Property Name="HighSchool" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+    <Property Name="HighMajor" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+    <Property Name="HighEducationTime" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+    <Property Name="IdentityType" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+    <Property Name="SendUnit" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+    <Property Name="TrainingBaseCode" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+    <Property Name="TrainingBaseName" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+    <Property Name="CollaborativeUnit" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+    <Property Name="ProfessionalBaseCode" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+    <Property Name="ProfessionalBaseName" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+    <Property Name="TrainingTime" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+    <Property Name="PlanTrainingTime" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+    <Property Name="Tag1" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+    <Property Name="Tag2" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+    <Property Name="Tag3" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+    <Property Name="TrainingBaseProvinceCode" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+    <Property Name="TrainingBaseProvinceName" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+  </EntityType>
+  <EntityType Name="GP_Professional_Base">
+    <Key>
+      <PropertyRef Name="id" />
+    </Key>
+    <Property Name="id" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="true" />
+    <Property Name="professional_base_code" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+    <Property Name="professional_base_name" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+  </EntityType>
+  <EntityType Name="GP_StudentsRotaryInformation2">
+    <Key>
+      <PropertyRef Name="Id" />
+    </Key>
+    <Property Name="Id" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="true" />
+    <Property Name="Name" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+    <Property Name="RealName" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+    <Property Name="TrainingBaseCode" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+    <Property Name="TrainingBaseName" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+    <Property Name="ProfessionalBaseCode" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+    <Property Name="ProfessionalBaseName" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+    <Property Name="DeptCode" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+    <Property Name="DeptName" Type="String" MaxLength="500" FixedLength="false" Unicode="true" />
+    <Property Name="RotaryBeginTime" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+    <Property Name="RotaryEndTime" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+    <Property Name="RotaryDays" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+    <Property Name="RotaryOrder" Type="Int32" />
+    <Property Name="TeachersName" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+    <Property Name="TeachersRealName" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+    <Property Name="OutdeptStatus" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+    <Property Name="OutdeptApplication" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+    <Property Name="QuestionnaireStatus" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+    <Property Name="Tag1" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+    <Property Name="Tag2" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+    <Property Name="Tag3" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+  </EntityType>
+  <EntityType Name="GP_SchoolInformation">
+    <Key>
+      <PropertyRef Name="Id" />
+    </Key>
+    <Property Name="Id" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="true" />
+    <Property Name="ProvinceName" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+    <Property Name="SchoolName" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+    <Property Name="ManageUnit" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+    <Property Name="CityName" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+    <Property Name="SchoolLevel" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+    <Property Name="SchoolType" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+    <Property Name="Tag1" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+  </EntityType>
+  <EntityType Name="GP_Questionnaire">
+    <Key>
+      <PropertyRef Name="id" />
+    </Key>
+    <Property Name="id" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="true" />
+    <Property Name="training_base_name" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+    <Property Name="training_base_code" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+    <Property Name="professional_base_name" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+    <Property Name="professional_base_code" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+    <Property Name="rotary_dept_name" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+    <Property Name="rotary_dept_code" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+    <Property Name="instructor" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+    <Property Name="one" Type="String" MaxLength="10" FixedLength="false" Unicode="true" />
+    <Property Name="two" Type="String" MaxLength="10" FixedLength="false" Unicode="true" />
+    <Property Name="three" Type="String" MaxLength="10" FixedLength="false" Unicode="true" />
+    <Property Name="four" Type="String" MaxLength="10" FixedLength="false" Unicode="true" />
+    <Property Name="five" Type="String" MaxLength="10" FixedLength="false" Unicode="true" />
+    <Property Name="six" Type="String" MaxLength="10" FixedLength="false" Unicode="true" />
+    <Property Name="seven" Type="String" MaxLength="10" FixedLength="false" Unicode="true" />
+    <Property Name="eight" Type="String" MaxLength="10" FixedLength="false" Unicode="true" />
+    <Property Name="nine" Type="String" MaxLength="10" FixedLength="false" Unicode="true" />
+    <Property Name="ten" Type="String" MaxLength="10" FixedLength="false" Unicode="true" />
+    <Property Name="eleven" Type="String" MaxLength="10" FixedLength="false" Unicode="true" />
+    <Property Name="twelve" Type="String" MaxLength="10" FixedLength="false" Unicode="true" />
+    <Property Name="thirteen" Type="String" MaxLength="10" FixedLength="false" Unicode="true" />
+    <Property Name="advice" Type="String" MaxLength="500" FixedLength="false" Unicode="true" />
+    <Property Name="register_date" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+    <Property Name="writor" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+  </EntityType>
+  <EntityType Name="GP_RotarySchedule">
+    <Key>
+      <PropertyRef Name="Id" />
+    </Key>
+    <Property Name="Id" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="true" />
+    <Property Name="ManagersName" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+    <Property Name="ManagersRealName" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+    <Property Name="TrainingBaseCode" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+    <Property Name="TrainingBaseName" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+    <Property Name="ProfessionalBaseCode" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+    <Property Name="ProfessionalBaseName" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+    <Property Name="BeginTimeList" Type="String" MaxLength="2000" FixedLength="false" Unicode="true" />
+    <Property Name="EndTimeList" Type="String" MaxLength="2000" FixedLength="false" Unicode="true" />
+    <Property Name="DaysList" Type="String" MaxLength="2000" FixedLength="false" Unicode="true" />
+    <Property Name="DeptCodeList" Type="String" MaxLength="2000" FixedLength="false" Unicode="true" />
+    <Property Name="DeptNameList" Type="String" MaxLength="2000" FixedLength="false" Unicode="true" />
+    <Property Name="SchemeOrder" Type="Int32" />
+    <Property Name="RotaryBeginTime" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+    <Property Name="RotaryEndTime" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+    <Property Name="TotalRealTime" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+    <Property Name="TrainingTime" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+    <Property Name="Tag1" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+    <Property Name="Tag2" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+    <Property Name="Tag3" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+  </EntityType>
+  <EntityType Name="GP_DeptManagement">
+    <Key>
+      <PropertyRef Name="Id" />
+    </Key>
+    <Property Name="Id" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="true" />
+    <Property Name="ManagersName" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+    <Property Name="ManagersRealName" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+    <Property Name="TrainingBaseCode" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+    <Property Name="TrainingBaseName" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+    <Property Name="ProfessionalBaseCode" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+    <Property Name="ProfessionalBaseName" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+    <Property Name="DeptCode" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+    <Property Name="DeptName" Type="String" MaxLength="500" FixedLength="false" Unicode="true" />
+    <Property Name="DeptTime" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+    <Property Name="RealTime" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+    <Property Name="IsRequired" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+    <Property Name="TrainingTime" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+    <Property Name="TotalDeptTime" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+    <Property Name="TotalRealTime" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+    <Property Name="Tag1" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+    <Property Name="Tag2" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+    <Property Name="Tag3" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+  </EntityType>
+  <EntityType Name="GP_Professional_Base_Dept">
+    <Key>
+      <PropertyRef Name="id" />
+    </Key>
+    <Property Name="id" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="true" />
+    <Property Name="professional_base_code" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+    <Property Name="professional_base_name" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+    <Property Name="dept_code" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+    <Property Name="dept_name" Type="String" MaxLength="500" FixedLength="false" Unicode="true" />
+    <Property Name="dept_time" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+    <Property Name="is_required" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+  </EntityType>
+  <EntityType Name="GP_Disease_Register">
+    <Key>
+      <PropertyRef Name="id" />
+    </Key>
+    <Property Name="id" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="true" />
+    <Property Name="professional_base_code" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+    <Property Name="professional_base_name" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+    <Property Name="dept_code" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+    <Property Name="dept_name" Type="String" MaxLength="500" FixedLength="false" Unicode="true" />
+    <Property Name="dept_time" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+    <Property Name="is_required" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+    <Property Name="disease_code" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+    <Property Name="disease_name" Type="String" MaxLength="500" FixedLength="false" Unicode="true" />
+    <Property Name="required_num" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+    <Property Name="master_degree" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+    <Property Name="manage_patient" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+    <Property Name="full_manage" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+    <Property Name="outpatient" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+  </EntityType>
+  <EntityType Name="GP_Disease_Register2">
+    <Key>
+      <PropertyRef Name="id" />
+    </Key>
+    <Property Name="id" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="true" />
+    <Property Name="students_name" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+    <Property Name="students_real_name" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+    <Property Name="training_base_name" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+    <Property Name="professional_base_name" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+    <Property Name="dept_name" Type="String" MaxLength="500" FixedLength="false" Unicode="true" />
+    <Property Name="disease_name" Type="String" MaxLength="500" FixedLength="false" Unicode="true" />
+    <Property Name="required_num" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+    <Property Name="real_num" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+    <Property Name="master_degree" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+    <Property Name="patient_name" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+    <Property Name="case_num" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+    <Property Name="main_diagnosis" Type="String" MaxLength="1000" FixedLength="false" Unicode="true" />
+    <Property Name="secondary_diagnosis" Type="String" MaxLength="1000" FixedLength="false" Unicode="true" />
+    <Property Name="is_charge" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+    <Property Name="is_rescue" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+    <Property Name="cure_measure" Type="String" MaxLength="1000" FixedLength="false" Unicode="true" />
+    <Property Name="visit_date" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+    <Property Name="comment" Type="String" MaxLength="1000" FixedLength="false" Unicode="true" />
+    <Property Name="writor" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+    <Property Name="register_date" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+    <Property Name="training_base_code" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+    <Property Name="professional_base_code" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+    <Property Name="dept_code" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+    <Property Name="teacher_check" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+    <Property Name="kzr_check" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+    <Property Name="base_check" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+    <Property Name="manage_check" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+    <Property Name="condition" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+    <Property Name="TeacherId" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+    <Property Name="TeacherName" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+  </EntityType>
+  <EntityType Name="GP_SkillRequirement">
+    <Key>
+      <PropertyRef Name="Id" />
+    </Key>
+    <Property Name="Id" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="true" />
+    <Property Name="ProfessionalBaseCode" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+    <Property Name="ProfessionalBaseName" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+    <Property Name="DeptCode" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+    <Property Name="DeptName" Type="String" MaxLength="500" FixedLength="false" Unicode="true" />
+    <Property Name="DeptTime" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+    <Property Name="IsRequired" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+    <Property Name="SkillCode" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+    <Property Name="SkillName" Type="String" MaxLength="500" FixedLength="false" Unicode="true" />
+    <Property Name="RequiredNum" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+    <Property Name="MasterDegree" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+    <Property Name="Tag1" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+    <Property Name="Tag2" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+    <Property Name="Tag3" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+  </EntityType>
+  <EntityType Name="GP_SkillRequirement2">
+    <Key>
+      <PropertyRef Name="Id" />
+    </Key>
+    <Property Name="Id" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="true" />
+    <Property Name="StudentsRealName" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+    <Property Name="StudentsName" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+    <Property Name="TrainingBaseCode" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+    <Property Name="TrainingBaseName" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+    <Property Name="ProfessionalBaseCode" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+    <Property Name="ProfessionalBaseName" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+    <Property Name="DeptCode" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+    <Property Name="DeptName" Type="String" MaxLength="500" FixedLength="false" Unicode="true" />
+    <Property Name="RegisterDate" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+    <Property Name="Writor" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+    <Property Name="TeacherCheck" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+    <Property Name="KzrCheck" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+    <Property Name="BaseCheck" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+    <Property Name="ManagerCheck" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+    <Property Name="TeacherId" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+    <Property Name="TeacherName" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+    <Property Name="Comment" Type="String" MaxLength="1000" FixedLength="false" Unicode="true" />
+    <Property Name="SkillName" Type="String" MaxLength="500" FixedLength="false" Unicode="true" />
+    <Property Name="RequiredNum" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+    <Property Name="RealNum" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+    <Property Name="MasterDegree" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+    <Property Name="PatientName" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+    <Property Name="CaseNum" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+    <Property Name="IsOk" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+    <Property Name="OperateDate" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+  </EntityType>
+  <EntityType Name="GP_BigMedicalRecords2">
+    <Key>
+      <PropertyRef Name="Id" />
+    </Key>
+    <Property Name="Id" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="true" />
+    <Property Name="StudentsRealName" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+    <Property Name="StudentsName" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+    <Property Name="TrainingBaseCode" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+    <Property Name="TrainingBaseName" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+    <Property Name="ProfessionalBaseCode" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+    <Property Name="ProfessionalBaseName" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+    <Property Name="DeptCode" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+    <Property Name="DeptName" Type="String" MaxLength="500" FixedLength="false" Unicode="true" />
+    <Property Name="RegisterDate" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+    <Property Name="Writor" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+    <Property Name="TeacherCheck" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+    <Property Name="KzrCheck" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+    <Property Name="BaseCheck" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+    <Property Name="ManagerCheck" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+    <Property Name="TeachersName" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+    <Property Name="TeachersRealName" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+    <Property Name="PatientNo" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+    <Property Name="InhospitalNo" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+    <Property Name="PatientName" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+    <Property Name="Sex" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+    <Property Name="Age" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+    <Property Name="Job" Type="String" MaxLength="500" FixedLength="false" Unicode="true" />
+    <Property Name="Nation" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+    <Property Name="Marriage" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+    <Property Name="BirthProvinceCode" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+    <Property Name="BirthProvinceName" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+    <Property Name="BirthCityCode" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+    <Property Name="BirthCityName" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+    <Property Name="BirthAreaCode" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+    <Property Name="BirthAreaName" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+    <Property Name="BirthDetailAddress" Type="String" MaxLength="500" FixedLength="false" Unicode="true" />
+    <Property Name="Company" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+    <Property Name="NowProvinceCode" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+    <Property Name="NowProvinceName" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+    <Property Name="NowCityCode" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+    <Property Name="NowCityName" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+    <Property Name="NowAreaCode" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+    <Property Name="NowAreaName" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+    <Property Name="NowDetailAddress" Type="String" MaxLength="500" FixedLength="false" Unicode="true" />
+    <Property Name="Phone" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+    <Property Name="InhospitalDate" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+    <Property Name="RecordDate" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+    <Property Name="MedicalHistorySpeaker" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+    <Property Name="ReliableDegree" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+    <Property Name="ZhuSu" Type="String" MaxLength="2000" FixedLength="false" Unicode="true" />
+    <Property Name="XBShi_FBQK" Type="String" MaxLength="2000" FixedLength="false" Unicode="true" />
+    <Property Name="XBShi_ZYZZ" Type="String" MaxLength="2000" FixedLength="false" Unicode="true" />
+    <Property Name="XBShi_BSZZ" Type="String" MaxLength="2000" FixedLength="false" Unicode="true" />
+    <Property Name="XBShi_FBYL" Type="String" MaxLength="2000" FixedLength="false" Unicode="true" />
+    <Property Name="XBShi_FBYLY" Type="String" MaxLength="2000" FixedLength="false" Unicode="true" />
+    <Property Name="XBShi_QT" Type="String" MaxLength="2000" FixedLength="false" Unicode="true" />
+    <Property Name="JWShi_YBJK" Type="String" MaxLength="2000" FixedLength="false" Unicode="true" />
+    <Property Name="JWShi_JBS" Type="String" MaxLength="2000" FixedLength="false" Unicode="true" />
+    <Property Name="JWShi_CRBS" Type="String" MaxLength="2000" FixedLength="false" Unicode="true" />
+    <Property Name="JWShi_YFJZ" Type="String" MaxLength="2000" FixedLength="false" Unicode="true" />
+    <Property Name="JWShi_SSWS" Type="String" MaxLength="2000" FixedLength="false" Unicode="true" />
+    <Property Name="JWShi_SXS" Type="String" MaxLength="2000" FixedLength="false" Unicode="true" />
+    <Property Name="JWShi_SWYW" Type="String" MaxLength="2000" FixedLength="false" Unicode="true" />
+    <Property Name="JWShi_QT" Type="String" MaxLength="2000" FixedLength="false" Unicode="true" />
+    <Property Name="XTHGu_HXXT" Type="String" MaxLength="2000" FixedLength="false" Unicode="true" />
+    <Property Name="XTHGu_XHXT" Type="String" MaxLength="2000" FixedLength="false" Unicode="true" />
+    <Property Name="XTHGu_XHuaXT" Type="String" MaxLength="2000" FixedLength="false" Unicode="true" />
+    <Property Name="XTHGu_MNXT" Type="String" MaxLength="2000" FixedLength="false" Unicode="true" />
+    <Property Name="XTHGu_ZXXT" Type="String" MaxLength="2000" FixedLength="false" Unicode="true" />
+    <Property Name="XTHGu_NFMXT" Type="String" MaxLength="2000" FixedLength="false" Unicode="true" />
+    <Property Name="XTHGu_SJJS" Type="String" MaxLength="2000" FixedLength="false" Unicode="true" />
+    <Property Name="XTHGu_JRGG" Type="String" MaxLength="2000" FixedLength="false" Unicode="true" />
+    <Property Name="GRShi" Type="String" MaxLength="2000" FixedLength="false" Unicode="true" />
+    <Property Name="HYShi" Type="String" MaxLength="2000" FixedLength="false" Unicode="true" />
+    <Property Name="YJShi" Type="String" MaxLength="2000" FixedLength="false" Unicode="true" />
+    <Property Name="SYShi" Type="String" MaxLength="2000" FixedLength="false" Unicode="true" />
+    <Property Name="JZShi" Type="String" MaxLength="2000" FixedLength="false" Unicode="true" />
+    <Property Name="TGJCha_SMTZ_TiWen" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+    <Property Name="TGJCha_SMTZ_MaiBo" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+    <Property Name="TGJCha_SMTZ_HuXi" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+    <Property Name="TGJCha_SMTZ_XueYa1" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+    <Property Name="TGJCha_SMTZ_XueYa2" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+    <Property Name="TGJCha_SMTZ_TiZhong" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+    <Property Name="TGJCha_YBZK" Type="String" MaxLength="2000" FixedLength="false" Unicode="true" />
+    <Property Name="TGJCha_PFNM" Type="String" MaxLength="2000" FixedLength="false" Unicode="true" />
+    <Property Name="TGJCha_LBJ" Type="String" MaxLength="2000" FixedLength="false" Unicode="true" />
+    <Property Name="TGJCha_TB_TL" Type="String" MaxLength="2000" FixedLength="false" Unicode="true" />
+    <Property Name="TGJCha_TB_Y" Type="String" MaxLength="2000" FixedLength="false" Unicode="true" />
+    <Property Name="TGJCha_TB_E" Type="String" MaxLength="2000" FixedLength="false" Unicode="true" />
+    <Property Name="TGJCha_TB_B" Type="String" MaxLength="2000" FixedLength="false" Unicode="true" />
+    <Property Name="TGJCha_TB_KQ" Type="String" MaxLength="2000" FixedLength="false" Unicode="true" />
+    <Property Name="TGJCha_JB" Type="String" MaxLength="2000" FixedLength="false" Unicode="true" />
+    <Property Name="TGJCha_XB" Type="String" MaxLength="2000" FixedLength="false" Unicode="true" />
+    <Property Name="TGJCha_F_SZ" Type="String" MaxLength="2000" FixedLength="false" Unicode="true" />
+    <Property Name="TGJCha_F_CZ" Type="String" MaxLength="2000" FixedLength="false" Unicode="true" />
+    <Property Name="TGJCha_F_KZ" Type="String" MaxLength="2000" FixedLength="false" Unicode="true" />
+    <Property Name="TGJCha_F_TZ" Type="String" MaxLength="2000" FixedLength="false" Unicode="true" />
+    <Property Name="TGJCha_X_SZ" Type="String" MaxLength="2000" FixedLength="false" Unicode="true" />
+    <Property Name="TGJCha_X_CZ" Type="String" MaxLength="2000" FixedLength="false" Unicode="true" />
+    <Property Name="TGJCha_X_KZ" Type="String" MaxLength="2000" FixedLength="false" Unicode="true" />
+    <Property Name="TGJCha_X_TZ" Type="String" MaxLength="2000" FixedLength="false" Unicode="true" />
+    <Property Name="TGJCha_NDM" Type="String" MaxLength="2000" FixedLength="false" Unicode="true" />
+    <Property Name="TGJCha_ZWXG" Type="String" MaxLength="2000" FixedLength="false" Unicode="true" />
+    <Property Name="TGJCha_FB_FW" Type="String" MaxLength="2000" FixedLength="false" Unicode="true" />
+    <Property Name="TGJCha_FB_SZ" Type="String" MaxLength="2000" FixedLength="false" Unicode="true" />
+    <Property Name="TGJCha_FB_CZ" Type="String" MaxLength="2000" FixedLength="false" Unicode="true" />
+    <Property Name="TGJCha_FB_GZ" Type="String" MaxLength="2000" FixedLength="false" Unicode="true" />
+    <Property Name="TGJCha_FB_DN" Type="String" MaxLength="2000" FixedLength="false" Unicode="true" />
+    <Property Name="TGJCha_FB_PZ" Type="String" MaxLength="2000" FixedLength="false" Unicode="true" />
+    <Property Name="TGJCha_FB_ShenZ" Type="String" MaxLength="2000" FixedLength="false" Unicode="true" />
+    <Property Name="TGJCha_FB_PG" Type="String" MaxLength="2000" FixedLength="false" Unicode="true" />
+    <Property Name="TGJCha_FB_KZ" Type="String" MaxLength="2000" FixedLength="false" Unicode="true" />
+    <Property Name="TGJCha_FB_TZ" Type="String" MaxLength="2000" FixedLength="false" Unicode="true" />
+    <Property Name="TGJCha_GMZC" Type="String" MaxLength="2000" FixedLength="false" Unicode="true" />
+    <Property Name="TGJCha_WSZQ" Type="String" MaxLength="2000" FixedLength="false" Unicode="true" />
+    <Property Name="TGJCha_JZ" Type="String" MaxLength="2000" FixedLength="false" Unicode="true" />
+    <Property Name="TGJCha_SZ" Type="String" MaxLength="2000" FixedLength="false" Unicode="true" />
+    <Property Name="TGJCha_SJFS_SLFS" Type="String" MaxLength="2000" FixedLength="false" Unicode="true" />
+    <Property Name="TGJCha_SJFS_BLFS" Type="String" MaxLength="2000" FixedLength="false" Unicode="true" />
+    <Property Name="TGJCha_SJFS_NMCJ" Type="String" MaxLength="2000" FixedLength="false" Unicode="true" />
+    <Property Name="TGJCha_SJFS_QT" Type="String" MaxLength="2000" FixedLength="false" Unicode="true" />
+    <Property Name="TGJCha_ZKQK" Type="String" MaxLength="2000" FixedLength="false" Unicode="true" />
+    <Property Name="SYSQXie" Type="String" MaxLength="2000" FixedLength="false" Unicode="true" />
+    <Property Name="BLZYao" Type="String" MaxLength="2000" FixedLength="false" Unicode="true" />
+    <Property Name="CBZDuan" Type="String" MaxLength="2000" FixedLength="false" Unicode="true" />
+    <Property Name="RYZDuan" Type="String" MaxLength="2000" FixedLength="false" Unicode="true" />
+    <Property Name="XZZDuan" Type="String" MaxLength="2000" FixedLength="false" Unicode="true" />
+    <Property Name="Reviewer" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+    <Property Name="ReviewerDate" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+    <Property Name="RecordsStatus" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+    <Property Name="Tag1" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+    <Property Name="Tag2" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+    <Property Name="Tag3" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+  </EntityType>
+  <EntityType Name="GP_Area">
+    <Key>
+      <PropertyRef Name="id" />
+    </Key>
+    <Property Name="id" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="true" />
+    <Property Name="areaid" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+    <Property Name="area" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+    <Property Name="father" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+  </EntityType>
+  <EntityType Name="GP_City">
+    <Key>
+      <PropertyRef Name="id" />
+    </Key>
+    <Property Name="id" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="true" />
+    <Property Name="cityid" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+    <Property Name="city" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+    <Property Name="father" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+  </EntityType>
+  <EntityType Name="GP_Province">
+    <Key>
+      <PropertyRef Name="id" />
+    </Key>
+    <Property Name="id" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="true" />
+    <Property Name="provinceid" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+    <Property Name="province" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+  </EntityType>
+  <EntityType Name="GP_TeachingActivities">
+    <Key>
+      <PropertyRef Name="Id" />
+    </Key>
+    <Property Name="Id" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="true" />
+    <Property Name="StudentsRealName" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+    <Property Name="StudentsName" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+    <Property Name="TrainingBaseCode" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+    <Property Name="TrainingBaseName" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+    <Property Name="ProfessionalBaseCode" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+    <Property Name="ProfessionalBaseName" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+    <Property Name="DeptCode" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+    <Property Name="DeptName" Type="String" MaxLength="500" FixedLength="false" Unicode="true" />
+    <Property Name="RegisterDate" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+    <Property Name="Writor" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+    <Property Name="TeacherCheck" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+    <Property Name="KzrCheck" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+    <Property Name="BaseCheck" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+    <Property Name="ManagerCheck" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+    <Property Name="TeachersName" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+    <Property Name="TeachersRealName" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+    <Property Name="ActivityForm" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+    <Property Name="ActivityContent" Type="String" MaxLength="2000" FixedLength="false" Unicode="true" />
+    <Property Name="MainSpeaker" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+    <Property Name="ClassHour" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+    <Property Name="ActivityDate" Type="String" MaxLength="100" FixedLength="false" Unicode="true" />
+    <Property Name="Comment" Type="String" MaxLength="1000" FixedLength="false" Unicode="true" />
+    <Property Name="Tag1" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+    <Property Name="Tag2" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+    <Property Name="Tag3" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+  </EntityType>
+  <EntityType Name="GP_AttendanceManagement">
+    <Key>
+      <PropertyRef Name="Id" />
+    </Key>
+    <Property Name="Id" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="true" />
+    <Property Name="StudentsRealName" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+    <Property Name="StudentsName" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+    <Property Name="TrainingBaseCode" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+    <Property Name="TrainingBaseName" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+    <Property Name="ProfessionalBaseCode" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+    <Property Name="ProfessionalBaseName" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+    <Property Name="DeptCode" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+    <Property Name="DeptName" Type="String" MaxLength="500" FixedLength="false" Unicode="true" />
+    <Property Name="RegisterDate" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+    <Property Name="Writor" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+    <Property Name="TeacherCheck" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+    <Property Name="KzrCheck" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+    <Property Name="BaseCheck" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+    <Property Name="ManagerCheck" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+    <Property Name="TeacherId" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+    <Property Name="TeacherName" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+    <Property Name="Comment" Type="String" MaxLength="1000" FixedLength="false" Unicode="true" />
+    <Property Name="AttendanceCategory" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+    <Property Name="FirstDate" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+    <Property Name="LastDate" Type="String" MaxLength="2000" FixedLength="false" Unicode="true" />
+    <Property Name="Days" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+    <Property Name="Details" Type="String" MaxLength="2000" FixedLength="false" Unicode="true" />
+  </EntityType>
+  <EntityType Name="GP_AdviceFeedback">
+    <Key>
+      <PropertyRef Name="Id" />
+    </Key>
+    <Property Name="Id" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="true" />
+    <Property Name="StudentsRealName" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+    <Property Name="StudentsName" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+    <Property Name="TrainingBaseCode" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+    <Property Name="TrainingBaseName" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+    <Property Name="ProfessionalBaseCode" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+    <Property Name="ProfessionalBaseName" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+    <Property Name="DeptCode" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+    <Property Name="DeptName" Type="String" MaxLength="500" FixedLength="false" Unicode="true" />
+    <Property Name="RegisterDate" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+    <Property Name="Writor" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+    <Property Name="TeacherCheck" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+    <Property Name="KzrCheck" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+    <Property Name="BaseCheck" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+    <Property Name="ManagerCheck" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+    <Property Name="TeacherId" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+    <Property Name="TeacherName" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+    <Property Name="Comment" Type="String" MaxLength="1000" FixedLength="false" Unicode="true" />
+    <Property Name="FeedbackInformation" Type="String" MaxLength="2000" FixedLength="false" Unicode="true" />
+    <Property Name="ManagerReply" Type="String" MaxLength="2000" FixedLength="false" Unicode="true" />
+    <Property Name="ManagerName" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+    <Property Name="ManagerDate" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+    <Property Name="ManagerHandle" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+  </EntityType>
+  <EntityType Name="GP_ReleaseNews">
+    <Key>
+      <PropertyRef Name="Id" />
+    </Key>
+    <Property Name="Id" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="true" />
+    <Property Name="TrainingBaseCode" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+    <Property Name="TrainingBaseName" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+    <Property Name="ManagersName" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+    <Property Name="ManagersRealName" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+    <Property Name="Writor" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+    <Property Name="RegisterDate" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+    <Property Name="NewsTitle" Type="String" MaxLength="500" FixedLength="false" Unicode="true" />
+    <Property Name="NewsContent" Type="String" MaxLength="2000" FixedLength="false" Unicode="true" />
+    <Property Name="FilePath" Type="String" MaxLength="500" FixedLength="false" Unicode="true" />
+    <Property Name="FileName" Type="String" MaxLength="500" FixedLength="false" Unicode="true" />
+    <Property Name="Students" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+    <Property Name="Teachers" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+    <Property Name="Bases" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+    <Property Name="Tag1" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+    <Property Name="Tag2" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+    <Property Name="Tag3" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+  </EntityType>
+  <EntityType Name="GP_NeiKeOption">
+    <Key>
+      <PropertyRef Name="Id" />
+    </Key>
+    <Property Name="SubjectName" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+    <Property Name="Question" Type="String" MaxLength="2000" FixedLength="false" Unicode="true" />
+    <Property Name="OptionA" Type="String" MaxLength="1000" FixedLength="false" Unicode="true" />
+    <Property Name="OptionB" Type="String" MaxLength="1000" FixedLength="false" Unicode="true" />
+    <Property Name="OptionC" Type="String" MaxLength="1000" FixedLength="false" Unicode="true" />
+    <Property Name="OptionD" Type="String" MaxLength="1000" FixedLength="false" Unicode="true" />
+    <Property Name="OptionE" Type="String" MaxLength="1000" FixedLength="false" Unicode="true" />
+    <Property Name="CorrectAnswer" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+    <Property Name="SubjectCode" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+    <Property Name="QuestionType" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+    <Property Name="Tag1" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+    <Property Name="Id" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="true" />
+    <Property Name="Tag2" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+    <Property Name="Tag3" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+  </EntityType>
+  <EntityType Name="GP_TiKuResult">
+    <Key>
+      <PropertyRef Name="Id" />
+    </Key>
+    <Property Name="Id" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="true" />
+    <Property Name="StudentsName" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+    <Property Name="StudentsRealName" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+    <Property Name="TrainingBaseCode" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+    <Property Name="TrainingBaseName" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+    <Property Name="SubjectName" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+    <Property Name="SubjectCode" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+    <Property Name="TotalScore" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+    <Property Name="TotalNum" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+    <Property Name="UndoNum" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+    <Property Name="CorrectNum" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+    <Property Name="ErrorNum" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+    <Property Name="RegisterDate" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+    <Property Name="Tag1" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+    <Property Name="Tag2" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+    <Property Name="Tag3" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+  </EntityType>
+  <EntityType Name="RotaryInformationJoin">
+    <Key>
+      <PropertyRef Name="Id" />
+    </Key>
+    <Property Name="Id" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="true" />
+    <Property Name="Name" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+    <Property Name="RealName" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+    <Property Name="TrainingBaseCode" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+    <Property Name="TrainingBaseName" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+    <Property Name="ProfessionalBaseCode" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+    <Property Name="ProfessionalBaseName" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+    <Property Name="DeptCode" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+    <Property Name="DeptName" Type="String" MaxLength="500" FixedLength="false" Unicode="true" />
+    <Property Name="RotaryBeginTime" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+    <Property Name="RotaryEndTime" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+    <Property Name="RotaryDays" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+    <Property Name="RotaryOrder" Type="Int32" />
+    <Property Name="TeachersName" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+    <Property Name="TeachersRealName" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+    <Property Name="OutdeptStatus" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+    <Property Name="OutdeptApplication" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+    <Property Name="QuestionnaireStatus" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+    <Property Name="Tag1" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+    <Property Name="Tag2" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+    <Property Name="Tag3" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+    <Property Name="InfoName" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+    <Property Name="InfoRealName" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+    <Property Name="ImagePath" Type="String" MaxLength="500" FixedLength="false" Unicode="true" />
+    <Property Name="Sex" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+    <Property Name="IdNumber" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+    <Property Name="DateBirth" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+    <Property Name="MinZu" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+    <Property Name="Telephon" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+    <Property Name="Mail" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+    <Property Name="BkSchool" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+    <Property Name="BkMajor" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+    <Property Name="HighEducation" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+    <Property Name="HighSchool" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+    <Property Name="GraduationTime" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+    <Property Name="HighMajor" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+    <Property Name="HighEducationTime" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+    <Property Name="IdentityType" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+    <Property Name="SendUnit" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+    <Property Name="InfoTrainingBaseCode" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+    <Property Name="InfoTrainingBaseName" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+    <Property Name="CollaborativeUnit" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+    <Property Name="InfoProfessionalBaseCode" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+    <Property Name="InfoProfessionalBaseName" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+    <Property Name="TrainingTime" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+    <Property Name="PlanTrainingTime" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+    <Property Name="InfoTag1" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+    <Property Name="InfoTag2" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+    <Property Name="InfoTag3" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+    <Property Name="TrainingBaseProvinceCode" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+    <Property Name="TrainingBaseProvinceName" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+  </EntityType>
+  <EntityType Name="GP_OutDept_Exam">
+    <Key>
+      <PropertyRef Name="id" />
+    </Key>
+    <Property Name="id" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="true" />
+    <Property Name="students_name" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+    <Property Name="students_real_name" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+    <Property Name="sex" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+    <Property Name="training_base_code" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+    <Property Name="training_base_name" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+    <Property Name="high_education" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+    <Property Name="high_education_time" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+    <Property Name="professional_base_code" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+    <Property Name="professional_base_name" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+    <Property Name="rotary_dept_code" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+    <Property Name="rotary_dept_name" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+    <Property Name="rotary_begin_time" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+    <Property Name="rotary_end_time" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+    <Property Name="instructor" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+    <Property Name="instructor_tag" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+    <Property Name="kqqk" Type="String" MaxLength="10" FixedLength="false" Unicode="true" />
+    <Property Name="gztd" Type="String" MaxLength="10" FixedLength="false" Unicode="true" />
+    <Property Name="ydyf" Type="String" MaxLength="10" FixedLength="false" Unicode="true" />
+    <Property Name="llsp" Type="String" MaxLength="10" FixedLength="false" Unicode="true" />
+    <Property Name="zdzx" Type="String" MaxLength="10" FixedLength="false" Unicode="true" />
+    <Property Name="blsx" Type="String" MaxLength="10" FixedLength="false" Unicode="true" />
+    <Property Name="clbrnl" Type="String" MaxLength="10" FixedLength="false" Unicode="true" />
+    <Property Name="sjcznl" Type="String" MaxLength="10" FixedLength="false" Unicode="true" />
+    <Property Name="czjn" Type="String" MaxLength="10" FixedLength="false" Unicode="true" />
+    <Property Name="zdsp" Type="String" MaxLength="10" FixedLength="false" Unicode="true" />
+    <Property Name="djnl" Type="String" MaxLength="10" FixedLength="false" Unicode="true" />
+    <Property Name="total_score" Type="String" MaxLength="10" FixedLength="false" Unicode="true" />
+    <Property Name="instructor_date" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+    <Property Name="is_pass" Type="String" MaxLength="10" FixedLength="false" Unicode="true" />
+    <Property Name="dept_manager" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+    <Property Name="dept_manager_date" Type="String" MaxLength="10" FixedLength="false" Unicode="true" />
+  </EntityType>
+  <EntityType Name="GP_Teachers_Appoint_Information">
+    <Key>
+      <PropertyRef Name="id" />
+    </Key>
+    <Property Name="id" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="true" />
+    <Property Name="teachers_name" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+    <Property Name="teachers_real_name" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+    <Property Name="appoint_begin_time" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+    <Property Name="appoint_end_time" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+    <Property Name="training_content" Type="String" MaxLength="2000" FixedLength="false" Unicode="true" />
+    <Property Name="total_num" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+    <Property Name="class_num" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+    <Property Name="each_class_num" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+    <Property Name="comment" Type="String" MaxLength="2000" FixedLength="false" Unicode="true" />
+    <Property Name="is_pass" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+    <Property Name="type" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+    <Property Name="training_base_code" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+    <Property Name="training_base_name" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+    <Property Name="professional_base_code" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+    <Property Name="professional_base_name" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+    <Property Name="dept_code" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+    <Property Name="dept_name" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+    <Property Name="register_date" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+    <Property Name="FileName" Type="String" MaxLength="100" FixedLength="false" Unicode="true" />
+    <Property Name="FilePath" Type="String" MaxLength="500" FixedLength="false" Unicode="true" />
+    <Property Name="IsReceive" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+  </EntityType>
+</Schema>

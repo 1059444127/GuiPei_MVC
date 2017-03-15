@@ -1,0 +1,404 @@
+﻿@{
+    Layout = null;
+}
+
+<!DOCTYPE html>
+
+<html>
+<head>
+    <meta name="viewport" content="width=device-width" />
+    <title>新增病种登记</title>
+    <script src="~/Scripts/jquery-1.8.2.min.js"></script>
+    <script src="~/Scripts/MyJs/bootstrap-2.3.3/js/bootstrap.min.js"></script>
+    <script src="~/Scripts/MyJs/global.js"></script>
+    <script src="~/Scripts/MyJs/autosize.js"></script>
+    <script src="~/Scripts/MyJs/My97DatePicker/WdatePicker.js"></script>
+    <script src="~/Scripts/MyJs/jquery-form.js"></script>
+    <link href="~/Content/MyCss/global.css" rel="stylesheet" />
+    <link href="~/Content/MyCss/bootstrapNoTable/bootstrap.css" rel="stylesheet" />
+    <script type="text/javascript">
+        $(function () {
+            $("#dept_code option:not(:first)").remove();
+            $("#disease tr:gt(0)").remove();
+            $("#TeacherId option:not(:first)").remove();
+            $.ajax({
+                cache: false,
+                asycn: true,
+                type: "get",
+                url: '@Url.Action("GetInfo", "Common")',
+                dataType: "text",
+                success: function (data) {
+                    var jsonArr = eval("(" + data + ")");
+                    if (jsonArr.msg == "0") {
+                        alert("请完善个人基本信息");
+                        return false;
+                    } else {
+                        var personalJson = jsonArr.personalInfo;
+                        var deptJson = jsonArr.deptInfo;
+                        $("#students_name").val(personalJson.Name);
+                        $("#students_real_name").val(personalJson.RealName);
+                        $("#training_base_code").val(personalJson.TrainingBaseCode);
+                        $("#training_base_name").val(personalJson.TrainingBaseName);
+                        $("#professional_base_code").val(personalJson.ProfessionalBaseCode);
+                        $("#professional_base_name").val(personalJson.ProfessionalBaseName);
+                        $("#writor").val(personalJson.RealName);
+                        $("#register_date").val('@DateTime.Now.Date.ToString("yyyy-MM-dd")');
+                        for (var i = 0; i < deptJson.length; i++) {
+                            $("#dept_code").append("<option value=" + deptJson[i].dept_code + ">" + deptJson[i].dept_name + "</option>");
+                        }
+                    }
+                },
+                error: function () {
+                    alert("系统繁忙，请联系管理员")
+                }
+            });
+        });
+        
+
+        function loadTeachers() {
+            $("#TeacherId option:not(:first)").remove();
+
+            $.ajax({
+                cache: false,
+                type: "get",
+                url: '@Url.Action("GetTeachers", "Common")',
+                dataType: "text",
+                data: { TrainingBaseCode: $("#training_base_code").val(), DeptCode: $("#dept_code").val() },
+                success: function (data) {
+                    var jsonArr = eval("(" + data + ")");
+                    if (jsonArr.msg == "0") {
+                        alert("尚无指导医师信息，请联系管理员");
+                        return false;
+                    } else {
+                        var Teachers = jsonArr.teachersInfo;
+                        for (var i = 0; i < Teachers.length; i++) {
+                            $("#TeacherId").append("<option value=" + Teachers[i].name + ">" + Teachers[i].real_name + "</option>");
+                        }
+                    }
+                    if ($("#dept_code").val() == "") {
+                        $("#dept_name").val("");
+                        $("#TeacherName").val("");
+                    } else {
+                        $("#dept_name").val($("#dept_code").find("option:selected").text());
+
+                    }
+                },
+                error: function () {
+                    alert("系统繁忙，请联系管理员");
+                }
+            });
+        }
+        function loadDisease() {
+            if ($("#TeacherId").val == "") {
+                $("#TeacherName").val("");
+            } else {
+                $("#TeacherName").val($("#TeacherId").find("option:selected").text());
+            }
+            $("#disease tr:gt(0)").remove();
+            if ($("#TeacherId").val() != "") {
+                var deptCode = $("#dept_code").val();
+                $.ajax({
+                    cache: false,
+                    type: "get",
+                    url: '@Url.Action("LoadDisease")',
+                    dataType: "text",
+                    data: { DeptCode: deptCode },
+                    success: function (data) {
+                        var jsonArr = eval("(" + data + ")");
+
+                        var k = 1;
+                        var trHTML = "";
+                        for (i = 0; i < jsonArr.length; i++) {
+
+                            trHTML += "<tr class='listTableContentRow'>";
+
+                            trHTML += "<td align='center' style='height:25px'>" + k + "</td>";
+                            trHTML += "<td align='center'>" + jsonArr[i].disease_name + "</td>";
+                            if (jsonArr[i].required_num == null || jsonArr[i].required_num == "") {
+                                trHTML += "<td align='center'>" + '无' + "</td>";
+                            } else {
+                                trHTML += "<td align='center'>" + jsonArr[i].required_num + "</td>";
+                            }
+                            trHTML += "<td align='center'>" + jsonArr[i].master_degree + "</td>";
+                            trHTML += "<td align='center'>" +
+                                "<a onclick=\"initDisease('" + jsonArr[i].disease_name + "','" + jsonArr[i].required_num + "','" + jsonArr[i].master_degree + "');\" "+
+                                "style='text-decoration:none;' data-toggle='modal' data-target='#myModal2' href='#'>登记</a></td>";
+                            k += 1;
+                            trHTML += "</tr>";
+
+                        }
+                        $("#disease").append(trHTML);
+
+
+                        $("#disease tr:gt(0)").mouseover(function () {
+                            $(this).removeClass("listTableContentRow");
+                            $(this).addClass("listTableContentRowMouseOver");
+                        });
+
+                        $("#disease tr:gt(0)").mouseout(function () {
+                            $(this).removeClass("listTableContentRowMouseOver");
+                            $(this).addClass("listTableContentRow");
+                        });
+                        $("#disease").append("<tr><td colspan='5'align='left'><input type='button' class='btn btn-success' value='新增病种登记' data-toggle='modal' data-target='#myModal2' id='addDisease' name='addDisease'></td></tr>");
+                    },
+                    error: function () {
+                        alert("系统繁忙，请联系管理员");
+                    }
+                });
+            }
+        }
+
+        function initDisease(diseaseName, requiredNum, masterDegree) {
+            $("#disease_name").val(diseaseName);
+
+            if (requiredNum == "null") {
+                $("#required_num").val("");
+            } else {
+                $("#required_num").val(requiredNum);
+            }
+            if (masterDegree == "null") {
+                $("#master_degree").val("");
+            } else {
+                $("#master_degree").val(masterDegree);
+            }
+        }
+
+        function submitDiseaseRegister() {
+
+            if ($("#disease_name").val() == "") { alert("病种名称不能为空"); return false; }
+            if ($("#patient_name").val() == "") { alert("病人姓名不能为空"); return false; }
+            if ($("#case_num").val() == "") { alert("病历号不能为空"); return false; }
+            if ($("#main_diagnosis").val() == "") { alert("主要诊断不能为空"); return false; }
+            if ($("#main_diagnosis").length > 1000) { alert("主要诊断字数不能超过1000字"); return false; }
+            if ($("#secondary_diagnosis").length > 1000) { alert("次要诊断字数不能超过1000字"); return false; }
+            if ($("#cure_measure").val() == "") { alert("治疗措施不能为空"); return false; }
+            if ($("#cure_measure").length > 1000) { alert("治疗措施字数不能超过1000字"); return false; }
+            if ($("#visit_date").val() == "") { alert("出诊日期不能为空"); return false; }
+            $("#form1").ajaxSubmit({
+                type: "post",
+                url: '@Url.Action("Add")',
+                dataType: "text",//如果是json的话，不用eval()在解析
+                success: function (data) {
+                    if (data == "0") {
+                        alert("病种登记失败");
+                        return false;
+                    } else {
+                        alert("病种登记成功");
+                        $("#myModal2").modal("hide");
+                        //$("#frmright")[0].contentWindow.loadPageList(1);
+                        window.opener.parent.frames.bodyFrame.frames.frmright.window.loadPageList(1);
+                    }
+                }
+            });
+        }
+    </script>
+</head>
+<body>
+    <form id="form1">
+        <div align="center">
+            <table border="0" style="border-collapse: collapse;width:100%;" cellpadding="0" cellspacing="1" class="detailTable">
+                <tr>
+                    <td height="24" align="center" colspan="8" class="detailHead">病种登记</td>
+                </tr>
+                <tr>
+                    <td width="3%" class="detailTitle" style="height: 25px;">姓名<span style="color: #ff0000">*</span></td>
+                    <td width="6%" class="detailContent" style="height:25px;">
+                        <span class="detailContent" style="height: 25px">
+                            <input type="text" id="students_real_name" name="students_real_name" readonly="readonly" style="width:150px;" />
+                        </span><input type="hidden" id="students_name" name="students_name" />
+                        <input type="hidden" id="id" name="id" value="@Guid.NewGuid().ToString()" />
+                    </td>
+                    <td width="12%" class="detailTitle" style="height: 25px;">培训基地<span style="color: #ff0000">*</span></td>
+                    <td width="15%" class="detailContent" style="height:25px;">
+                        <span class="detailContent" style="height: 25px">
+                            <input type="text" id="training_base_name" name="training_base_name" readonly="readonly" style="width:150px;" />
+
+                        </span><input type="hidden" id="training_base_code" name="training_base_code" />
+                    </td>
+                    <td width="12%" class="detailTitle" style="height: 25px;">专业基地<span style="color: #ff0000">*</span></td>
+                    <td width="15%" class="detailContent" style="height:25px;">
+                        <span class="detailContent" style="height: 25px">
+                            <input type="text" id="professional_base_name" name="professional_base_name" readonly="readonly" style="width:150px;" />
+                        </span><input type="hidden" id="professional_base_code" name="professional_base_code" />
+                    </td>
+
+                </tr>
+                <tr>
+                    <td colspan="6" align="center">
+                        <table>
+                            <tr>
+                                <td width="25%" class="detailTitle" style="height: 25px;">轮转科室<span style="color: #ff0000">*</span></td>
+                                <td width="25%" class="detailContent" style="height: 25px;">
+                                    <span class="detailContent" style="height: 25px">
+                                        <select id="dept_code" name="dept_code" style="width:150px;" onchange="loadTeachers()">
+                                            <option value="">==请选择==</option>
+                                        </select>
+                                    </span><input type="hidden" id="dept_name" name="dept_name" />
+                                </td>
+                                <td width="25%" class="detailTitle" style="height: 25px;">指导医师<span style="color: #ff0000">*</span></td>
+                                <td width="25%" class="detailContent" style="height: 25px;">
+                                    <span class="detailContent" style="height: 25px">
+                                        <select id="TeacherId" name="TeacherId" style="width:100px;" onchange="loadDisease()">
+                                            <option value="">==请选择==</option>
+                                        </select>
+                                    </span><input type="hidden" id="TeacherName" name="TeacherName" />
+                                </td>
+                            </tr>
+                        </table>
+                    </td>
+                </tr>
+                <tr>
+
+                    <td colspan="6">
+                        <table class="listTable" id="disease" style="border: 1px;border-style: solid;width:100%;">
+                            <tr class="listTableTitleRow">
+                                <td width="10%" style="height: 25px;" align="center">序号</td>
+                                <td width="60%" style="height: 25px;" align="center">病种名称</td>
+                                <td width="10%" style="height: 25px;" align="center">要求例数</td>
+                                <td width="10%" style="height: 25px;" align="center">掌握程度</td>
+                                <td width="10%" style="height: 25px;" align="center">登记</td>
+                            </tr>
+                            <tr>
+                                <td colspan="5" align="center" bgcolor="#f1f3f5">请选择轮转科室进行病种登记</td>
+                            </tr>
+
+
+                        </table>
+
+                    </td>
+                </tr>
+
+                <tr>
+
+                    <td width="15%" class="detailContent" style="height: 25px"></td>
+                    <td width="85%" class="detailContent" style="height: 25px" colspan="7">
+                        <table align="right">
+                            <tr>
+                                <td width="20%" class="detailTitle" style="height: 25px;">填写人<span style="color: #ff0000">*</span></td>
+                                <td width="20%" class="detailContent" style="height: 25px">
+                                    <span class="detailContent" style="height: 25px">
+                                        <input type="text" id="writor" name="writor" />
+                                    </span>
+                                </td>
+                                <td width="30%" class="detailTitle" style="height: 25px;">登记日期<span style="color: #ff0000">*</span></td>
+                                <td width="20%" class="detailContent" style="height: 25px">
+                                    <span class="detailContent" style="height: 25px">
+                                        <input type="text" id="register_date" name="register_date" readonly="readonly" onclick="WdatePicker({ maxDate: '%y-%M-%d' });" />
+                                    </span>
+                                </td>
+                            </tr>
+                        </table>
+                    </td>
+                </tr>
+            </table>
+        </div>
+
+        <div class="modal fade" id="myModal2" tabindex="-2" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true" data-backdrop="static" style="display:none;max-height:500px;min-height:200px;width:60%;margin-left:-30%;top:5%;">
+            <div class="modal-dialog">
+                <div class="modal-content">
+
+                    <div class="modal-body" style="max-height: 500px; min-height: 200px; padding: 1px;">
+                        <div align="center">
+                            <table border="0" style="border-collapse: collapse;width:100%;" cellpadding="0" cellspacing="1" class="detailTable">
+                                <tr>
+                                    <td width="20%" class="detailTitle" style="height: 25px;">病种名称：<span style="color: #ff0000">*</span></td>
+                                    <td colspan="3" width="70%" class="detailContent" style="height:25px;">
+                                        <span class="detailContent" style="height: 25px">
+                                            <input type="text" id="disease_name" name="disease_name" style="width:200px" />
+                                            <input type="hidden" id="required_num" name="required_num" />
+                                            <input type="hidden" id="master_degree" name="master_degree" />
+
+                                        </span>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td width="20%" class="detailTitle" style="height: 25px;">病人姓名：<span style="color: #ff0000">*</span></td>
+                                    <td width="30%" class="detailContent" style="height:25px;">
+                                        <span class="detailContent" style="height: 25px">
+                                            <input type="text" id="patient_name" name="patient_name" style="width:150px" />
+                                        </span>
+                                    </td>
+                                    <td width="20%" class="detailTitle" style="height: 25px;">病历号：<span style="color: #ff0000">*</span></td>
+                                    <td width="30%" class="detailContent" style="height:25px;">
+                                        <span class="detailContent" style="height: 25px">
+                                            <input type="text" id="case_num" name="case_num" style="width:150px" />
+                                        </span>
+                                    </td>
+                                </tr>
+
+                                <tr>
+                                    <td width="20%" class="detailTitle" style="height: 25px;">主要诊断：<span style="color: #ff0000">*</span></td>
+                                    <td colspan="3" width="70%" class="detailContent">
+                                        <textarea id="main_diagnosis" name="main_diagnosis" style="min-height:50px; max-height:120px;width:90%;"></textarea>
+
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td width="20%" class="detailTitle" style="height: 25px;">次要诊断：</td>
+                                    <td colspan="3" width="70%" class="detailContent">
+
+                                        <textarea id="secondary_diagnosis" name="secondary_diagnosis" style="min-height:50px; max-height:120px;width:90%;"></textarea>
+
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td width="20%" class="detailTitle" style="height: 25px;">是否主管：<span style="color: #ff0000">*</span></td>
+                                    <td width="30%" class="detailContent" style="height:25px;">
+                                        <span class="detailContent" style="height: 25px">
+                                            <label><input type="radio" name="is_charge" value="是" />是</label>
+                                            <label><input type="radio" name="is_charge" value="否" />否</label>
+                                        </span>
+                                    </td>
+                                    <td width="20%" class="detailTitle" style="height: 25px;">是否抢救：<span style="color: #ff0000">*</span></td>
+                                    <td width="30%" class="detailContent" style="height:25px;">
+                                        <span class="detailContent" style="height: 25px">
+                                            <label><input type="radio" name="is_rescue" value="是" />是</label>
+                                            <label><input type="radio" name="is_rescue" value="否" />否</label>
+                                        </span>
+                                    </td>
+                                </tr>
+
+                                <tr>
+                                    <td width="20%" class="detailTitle" style="height: 25px;">治疗措施：<span style="color: #ff0000">*</span></td>
+                                    <td colspan="3" width="70%" class="detailContent">
+                                        <textarea id="cure_measure" name="cure_measure" style="min-height:50px; max-height:120px;width:90%;"></textarea>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td width="20%" class="detailTitle" style="height: 25px;">出诊日期：<span style="color: #ff0000">*</span></td>
+                                    <td width="30%" class="detailContent" style="height:25px;">
+                                        <span class="detailContent" style="height: 25px">
+                                            <input type="text" id="visit_date" name="visit_date" style="width:150px;" onclick="WdatePicker()" />
+                                        </span>
+                                    </td>
+                                    <td width="20%" class="detailTitle" style="height: 25px;">转归情况：</td>
+                                    <td width="30%" class="detailContent" style="height:25px;">
+                                        <span class="detailContent" style="height: 25px">
+                                            <input type="text" id="condition" name="condition" style="width:150px;" />
+                                        </span>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td width="20%" class="detailTitle" style="height: 25px;">备注：</td>
+                                    <td colspan="3" width="70%" class="detailContent">
+                                        <textarea id="comment" name="comment" style="min-height:50px; max-height:120px;width:90%;"></textarea>
+                                    </td>
+                                </tr>
+                            </table>
+
+                        </div>
+                    </div>
+
+                    <div class="modal-footer" style="margin: auto; text-align: center;">
+                        <input type="button" id="close" name="close" class="btn btn-default" data-dismiss="modal" value="关闭" />
+                        <input type="button" id="submit" name="submit" class="btn btn-success" value="提交" onclick="submitDiseaseRegister();" />
+
+                    </div>
+                </div>
+                <!-- /.modal-content -->
+            </div>
+            <!-- /.modal -->
+        </div>
+    </form>
+</body>
+</html>

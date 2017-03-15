@@ -1,0 +1,355 @@
+﻿@using GP.Common
+@{
+    Layout = null;
+}
+
+<!DOCTYPE html>
+
+<html>
+<head>
+    <meta name="viewport" content="width=device-width" />
+    <title>列表页</title>
+    <script src="~/Scripts/jquery-1.8.2.min.js"></script>
+    <script src="~/Scripts/MyJs/global.js"></script>
+    <script src="~/Scripts/MyJs/MyPageList/PageList1.js"></script>
+    <script src="~/Scripts/MyJs/bootstrap-2.3.3/js/bootstrap.min.js"></script>
+    <script src="~/Scripts/MyJs/My97DatePicker/WdatePicker.js"></script>
+    <script src="~/Scripts/MyJs/jquery-form.js"></script>
+    <script src="~/Scripts/MyJs/autosize.js"></script>
+    <link href="~/Content/MyCss/global.css" rel="stylesheet" />
+    <link href="~/Content/MyCss/bootstrapNoTable/bootstrap.css" rel="stylesheet" />
+
+    <script type="text/javascript">
+        var appoint_begin_time = '@CommonFunc.SafeGetStringFromObj(ViewData["appoint_begin_time"])';
+        var appoint_end_time = '@CommonFunc.SafeGetStringFromObj(ViewData["appoint_end_time"])';
+        var is_pass = '@CommonFunc.SafeGetStringFromObj(ViewData["is_pass"])'; 
+
+        $(window).load(function () {
+            loadPageList(1);
+            $("textarea").autosize();
+            $("#each_class_num").focus(function () {
+                var reg = /^\+?[1-9]\d*$/;
+                var totalnum = $("#total_num").val();
+                var classnum = $("#class_num").val();
+                if (classnum == "0" || !reg.test(totalnum) || !reg.test(classnum) || parseInt(classnum) > parseInt(totalnum)) {
+                    alert("输入的数值不合法");
+                    return;
+                } else {
+                    $("#each_class_num").val(Math.round(parseInt(totalnum) / parseInt(classnum)));
+                }
+            }); 
+        });
+
+        function loadPageList(pi) {
+
+            $.post('@Url.Action("PageList")', {
+                "pi": pi,  
+                "appoint_begin_time": appoint_begin_time, "appoint_end_time": appoint_end_time, "is_pass": is_pass
+            },
+              function (data) {
+                  var jsonArr = data;
+                  if (jsonArr.data == null) {
+                      $("#tbList tr:gt(0)").remove();
+                  } else {
+                      createRows(jsonArr.data, pi);
+                  }
+                  createPageBar($("#PageList"), pi, jsonArr.totalCount, jsonArr.pageCount);
+
+              });
+        }
+
+        function createRows(jsonArr, pi) {
+            var tbL = $("#tbList");
+            $("#tbList tr:gt(0)").remove();
+            for (i = 0; i < jsonArr.length; i++) { 
+                var trHTML = "<tr class='listTableContentRow'>";
+                trHTML += "<td style='height:25px;'>" + jsonArr[i].teachers_real_name + "</td>";
+                trHTML += "<td>" + jsonArr[i].dept_name + "</td>";
+                trHTML += "<td>" + jsonArr[i].appoint_begin_time + "</td>";
+                trHTML += "<td>" + jsonArr[i].appoint_end_time + "</td>";
+                trHTML += "<td>" + jsonArr[i].total_num + "</td>"; 
+                if (jsonArr[i].FileName == "" || jsonArr[i].FileName == null) {
+                    trHTML += "<td>没有上传文件</td>";
+                } else {
+                    trHTML += "<td>" + jsonArr[i].FileName + "<span style='color:red;'>-" + jsonArr[i].IsReceive + "</span></td>";
+                } 
+                trHTML += "<td style='color:red'>" + jsonArr[i].is_pass + "</td>";
+                trHTML += "<td><a href='#' onclick=\"show('" + jsonArr[i].id + "','" + pi + "');\"><img alt='查看详细资料' src='/images/imgs/icon_show.gif'/></a></td>";
+                trHTML += "<td><a onclick=\"check('" + jsonArr[i].is_pass + "','" + jsonArr[i].id + "','" + pi + "');\" href='#'><img alt='修改该记录' src='../../images/imgs/icon_edit.gif'/></a></td>";
+                trHTML += "</tr>";
+                tbL.append(trHTML);
+            }
+            MouseAnimate();
+        }
+        function show(id, pi) {
+            $("#submit").hide();
+            LoadData(id, pi);
+            $("#myModal").modal('show');
+        }
+
+        function check(is_pass, id, pi) {
+            if (is_pass == "已通过") {
+                alert("审核已通过，无法进行修改");
+                return;
+            } else {
+                $("#submit").show();
+                LoadData(id, pi);
+                $("#myModal").modal('show');
+            }
+        }
+        function doUplaod() {
+            var fileName = $("#uploadFile").val();
+            if (!fileName) {
+                alert("请选择文件进行上传");
+                return false;
+            } else {//*.doc;*.docx;*.xls;*.xlsx;*.pdf;*.rar;*.zip
+                var ext = fileName.substring(fileName.lastIndexOf(".") + 1).toLocaleLowerCase();
+                if (ext != "doc" && ext != "docx" && ext != "xls" && ext != "xlsx" && ext != "pdf" && ext != "rar" && ext != "zip") {
+                    alert("请选择格式为:doc、docx、ppt、pptx、xls、xlsx、pdf、rar、zip的文件进行上传");
+                    return false;
+                }
+            }
+
+            $("#form1").ajaxSubmit({
+                type: "post",
+                url: '@Url.Action("Upload")',
+                dataType: "text",
+                success: function (data) {
+                    var result = eval("(" + data + ")");
+                    if (result.message == "0") {
+                        alert("请选择格式为:doc、docx、ppt、pptx、xls、xlsx、pdf、rar、zip的文件进行上传");
+                        return;
+                    } else if (result.message == "1") {
+                        alert("请选择文件进行上传");
+                        return;
+                    } else {
+                        alert("文件:" + result.filename + "上传成功")
+                        $("#FileName").val(result.filename);
+                        $("#FilePath").val(result.filepath);
+                    }
+                }
+            });
+        }
+
+        function LoadData(id, pi) {
+            $.ajax({
+                cache: false,
+                asycn: true,
+                type: "get",
+                url: '@Url.Action("LoadData")',
+                dataType: "text",
+                data: { id: id },
+                success: function (data) {
+                    var jsonArr = eval("(" + data + ")");
+                    $("#pi").val(pi);
+                    $("#id").val(id);
+                    $("#teachers_real_name").val(jsonArr.teachers_real_name);
+                    $("#teachers_name").val(jsonArr.teachers_name);
+                    $("#is_pass").val(jsonArr.is_pass);
+                    $("#type").val(jsonArr.type);
+                    $("#training_base_code").val(jsonArr.training_base_code);
+                    $("#training_base_name").val(jsonArr.training_base_name);
+                    $("#professional_base_code").val(jsonArr.professional_base_code);
+                    $("#professional_base_name").val(jsonArr.professional_base_name);
+                    $("#dept_code").val(jsonArr.dept_code);
+                    $("#IsReceive").val(jsonArr.IsReceive); 
+
+                    $("#dept_name").val(jsonArr.dept_name);
+                    $("#appoint_begin_time").val(jsonArr.appoint_begin_time);
+                    $("#appoint_end_time").val(jsonArr.appoint_end_time);
+                    $("#total_num").val(jsonArr.total_num);
+                    $("#class_num").val(jsonArr.class_num);
+                    $("#each_class_num").val(jsonArr.each_class_num);
+                    $("#training_content").val(jsonArr.training_content);
+                    $("#comment").val(jsonArr.comment); 
+                    $("#register_date").val(jsonArr.register_date);
+                    $("#FileName").val(jsonArr.FileName);
+                    $("#FilePath").val(jsonArr.FilePath);
+                },
+                error: function () {
+                    alert("系统繁忙，请联系管理员")
+                }
+            });
+        }
+
+        function Update() {
+            if ($("#teachers_real_name").val() == "") { alert("指导医师不能为空"); return; }
+            if ($("#dept_name").val() == "") { alert("所在科室不能为空"); return; }
+            if ($("#appoint_begin_time").val() == "") { alert("预约开始时间不能为空"); return; }
+            if ($("#appoint_end_time").val() == "") { alert("预约结束时间不能为空"); return; }
+            if ($("#total_num").val() == "") { alert("培训总人数不能为空"); return; }
+            if ($("#training_content").val() == "") { alert("培训内容不能为空"); return; }
+            if ($("#register_date").val() == "") { alert("登记日期不能为空"); return; }
+
+            $("#form1").ajaxSubmit({
+                type: "post",
+                url: '@Url.Action("Update")',
+                dataType: "text",
+                success: function (data) {
+                    var jsonArr = eval("(" + data + ")");
+                    if (jsonArr.status == "error") {
+                        alert(jsonArr.message);
+                        return;
+                    } else {
+                        alert(jsonArr.message); 
+                        $("#myModal").modal("hide");
+                        loadPageList($("#pi").val());
+                    }
+                }
+            });
+        }
+
+    </script>
+</head>
+<body>
+    <div>
+        <table class="listTableHead" cellspacing="0" cellpadding="0" style="width:100%">
+            <tr>
+                <td class="listTableHeadTR" style="height: 22px;" width="20%">
+                    <img height="16" src="/images/imgs/Query.gif" width="16" style="vertical-align: middle" />指导医师预约信息
+                </td> 
+            </tr>
+        </table>
+        <table id="tbList" class="listTable" cellspacing="1" cellpadding="0" style="width:100%">
+            <tr id="tr0" class="listTableTitleRow"> 
+                <td>指导医师</td>
+                <td>所在科室</td>
+                <td>预约开始时间</td>
+                <td>预约结束时间</td>
+                <td>培训总人数</td>
+                <td>附件状态</td>
+                <td>审核</td>
+                <td>查看</td>
+                <td>修改</td>
+            </tr> 
+        </table>
+        <div id="PageList" style="text-align:center;vertical-align:middle; margin-top:10px;"> </div>
+
+    </div>
+
+    <form id="form1" name="form1">
+
+        <div class="modal fade" id="myModal" tabindex="-2" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true" data-backdrop="static" style="display:none;max-height:500px;min-height:200px;width:80%;margin-left:-40%;top:5%;">
+            <div class="modal-dialog">
+                <div class="modal-content">
+
+                    <div class="modal-body" style="max-height: 500px; min-height: 200px; padding: 1px;">
+                        <div align="center">
+                            <input type="hidden" id="pi" name="pi" />
+                            <input type="hidden" id="id" name="id" />
+                            <input type="hidden" id="teachers_name" name="teachers_name" />
+                            <input type="hidden" id="training_base_code" name="training_base_code" />
+                            <input type="hidden" id="training_base_name" name="training_base_name" />
+                            <input type="hidden" id="professional_base_code" name="professional_base_code" />
+                            <input type="hidden" id="professional_base_name" name="professional_base_name" />
+                            <input type="hidden" id="dept_code" name="dept_code" />
+                            <input type="hidden" id="FileName" name="FileName" />
+                            <input type="hidden" id="FilePath" name="FilePath" />
+                            <input type="hidden" id="IsReceive" name="IsReceive" />
+                            <input type="hidden" id="is_pass" name="is_pass" />
+                            <input type="hidden" id="type" name="type" />
+
+                            <table border="0" style="border-collapse: collapse;width:100%;" cellpadding="0" cellspacing="1" class="detailTable">
+                                <tr>
+                                    <td height="24" align="center" colspan="7" class="detailHead">预约信息</td>
+                                </tr>
+                                <tr>
+                                    <td width="10%" class="detailTitle" style="height: 25px;">指导医师：<span style="color: #ff0000">*</span></td>
+                                    <td width="20%" class="detailContent" style="height: 25px;">
+                                        <span class="detailContent" style="height: 25px">
+                                            <input type="text" id="teachers_real_name" name="teachers_real_name" style="width:100px;" />
+                                        </span>
+                                    </td>
+                                    <td width="10%" class="detailTitle" style="height: 25px;">所在科室：<span style="color: #ff0000">*</span></td>
+                                    <td width="20%" class="detailContent" style="height: 25px;">
+                                        <span class="detailContent" style="height: 25px">
+                                            <input type="text" id="dept_name" name="dept_name" style="width:100px;" />
+                                        </span>
+                                    </td>
+                                    <td width="10%" class="detailContent" style="height: 25px;"></td>
+                                    <td width="20%" class="detailContent" style="height: 25px;"></td>
+                                </tr>
+                                <tr>
+                                    <td width="10%" class="detailTitle" style="height: 25px;">预约时间：<span style="color: #ff0000">*</span></td>
+                                    <td colspan="5" width="20%" class="detailContent" style="height: 25px;">
+                                        从<input type="text" id="appoint_begin_time" name="appoint_begin_time" style="width:180px;" onclick="WdatePicker({dateFmt:'yyyy-MM-dd HH:mm'})" />
+                                        到<input type="text" id="appoint_end_time" name="appoint_end_time" style="width:180px;" onclick="WdatePicker({dateFmt:'yyyy-MM-dd HH:mm'})" />
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td width="15%" class="detailTitle" style="height: 25px;">培训总人数：<span style="color: #ff0000">*</span></td>
+                                    <td width="20%" class="detailContent" style="height: 25px;">
+                                        <span class="detailContent" style="height: 25px">
+                                            <input type="text" id="total_num" name="total_num" style="width:100px;" />
+                                        </span>
+                                    </td>
+                                    <td width="10%" class="detailTitle" style="height: 25px;">组数：</td>
+                                    <td width="20%" class="detailContent" style="height: 25px;">
+                                        <span class="detailContent" style="height: 25px">
+                                            <input type="text" id="class_num" name="class_num" style="width:100px;" />组
+                                        </span>
+                                    </td>
+                                    <td width="10%" class="detailTitle" style="height: 25px;">每组人数：</td>
+                                    <td width="20%" class="detailContent" style="height: 25px;">
+                                        <span class="detailContent" style="height: 25px">
+                                            <input type="text" id="each_class_num" name="each_class_num" style="width:100px;" />
+                                        </span>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td width="10%" class="detailTitle" style="height: 25px;">培训内容：<span style="color: #ff0000">*</span></td>
+                                    <td colspan="5" width="20%" class="detailContent" style="height: 25px;">
+                                        <span class="detailContent" style="height: 25px">
+                                            <textarea id="training_content" name="training_content" style="width:95%;min-height:80px;max-height:150px;"></textarea>
+                                        </span>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td width="10%" class="detailTitle" style="height: 25px;">备注：</td>
+                                    <td colspan="5" width="20%" class="detailContent" style="height: 25px;">
+                                        <span class="detailContent" style="height: 25px">
+                                            <textarea id="comment" name="comment" style="width:95%;min-height:80px;max-height:150px;"></textarea>
+                                        </span>
+                                    </td>
+                                </tr>
+                                <tr id="fujian">
+                                    <td width="10%" class="detailTitle" style="height: 25px;">附件：</td>
+                                    <td colspan="5" width="15%" style="height: 25px;" class="detailContent" valign="bottom" align="center">
+                                        <label><span style="color: #ff0000">上传多个文件时，请压缩为.rar、.zip格式</span></label>
+                                        <br />
+                                        <input type="file" id="uploadFile" name="uploadFile" />
+                                        <img alt="" src="/images/BeginUpload1.gif" width="77" height="23" onclick="doUplaod()" style="cursor: pointer;" />
+                                    </td>
+
+                                </tr>
+                                <tr>
+                                    <td width="100%" class="detailContent" style="height: 25px;text-align:right" colspan="6">
+                                        <table align="right">
+                                            <tr>
+                                                <td width="50%" class="detailTitle" style="height: 25px">登记日期<span style="color: #ff0000">*</span></td>
+                                                <td width="30%" class="detailContent" style="height: 25px">
+                                                    <span class="detailContent">
+                                                        <input type="text" style="width:100px;" id="register_date" name="register_date" onclick="WdatePicker({ maxDate: '%y-%M-%d' });" />
+                                                    </span>
+                                                </td>
+                                            </tr>
+                                        </table>
+                                    </td>
+                                </tr> 
+                            </table> 
+                        </div>
+                    </div>
+
+                    <div class="modal-footer" style="margin: auto; text-align: center;">
+                        <input type="button" id="close" name="close" class="btn btn-default" data-dismiss="modal" value="关闭" />
+                        <input type="button" id="submit" name="submit" class="btn btn-success" value="修改" onclick="Update()" />
+
+                    </div>
+                </div>
+                <!-- /.modal-content -->
+            </div>
+            <!-- /.modal -->
+        </div>
+    </form>
+</body>
+</html>

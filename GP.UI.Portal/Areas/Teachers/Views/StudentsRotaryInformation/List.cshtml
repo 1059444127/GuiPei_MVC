@@ -1,0 +1,545 @@
+﻿@using GP.Common
+@{
+    Layout = null;
+}
+
+<!DOCTYPE html>
+
+<html>
+<head>
+    <meta name="viewport" content="width=device-width" />
+    <title>列表页</title>
+    <script src="~/Scripts/jquery-1.8.2.min.js"></script>
+    <script src="~/Scripts/MyJs/global.js"></script>
+    <script src="~/Scripts/MyJs/MyPageList/PageList1.js"></script>
+    <script src="~/Scripts/MyJs/bootstrap-2.3.3/js/bootstrap.min.js"></script>
+    <script src="~/Scripts/MyJs/My97DatePicker/WdatePicker.js"></script>
+    <script src="~/Scripts/MyJs/jquery-form.js"></script>
+    <link href="~/Content/MyCss/global.css" rel="stylesheet" />
+    <link href="~/Content/MyCss/bootstrapNoTable/bootstrap.css" rel="stylesheet" />
+    <script type="text/javascript">
+        var RealName = '@CommonFunc.SafeGetStringFromObj(ViewData["RealName"])';
+        var Sex = '@CommonFunc.SafeGetStringFromObj(ViewData["Sex"])';
+        var MinZu = '@CommonFunc.SafeGetStringFromObj(ViewData["MinZu"])';
+        var HighEducation = '@CommonFunc.SafeGetStringFromObj(ViewData["HighEducation"])';
+        var HighSchool = '@CommonFunc.SafeGetStringFromObj(ViewData["HighSchool"])';
+        var IdentityType = '@CommonFunc.SafeGetStringFromObj(ViewData["IdentityType"])';
+        var SendUnit = '@CommonFunc.SafeGetStringFromObj(ViewData["SendUnit"])';
+        var CollaborativeUnit = '@CommonFunc.SafeGetStringFromObj(ViewData["CollaborativeUnit"])';
+        var TrainingTime = '@CommonFunc.SafeGetStringFromObj(ViewData["TrainingTime"])';
+        var PlanTrainingTime = '@CommonFunc.SafeGetStringFromObj(ViewData["PlanTrainingTime"])';
+        var RotaryBeginTime = '@CommonFunc.SafeGetStringFromObj(ViewData["RotaryBeginTime"])';
+        var RotaryEndTime = '@CommonFunc.SafeGetStringFromObj(ViewData["RotaryEndTime"])';
+        var OutdeptStatus = '@CommonFunc.SafeGetStringFromObj(ViewData["OutdeptStatus"])';
+
+        $(window).load(function () {
+            loadPageList(1);
+        });
+
+        function loadPageList(pi) {
+            $.post('@Url.Action("PageList")', {
+                "pi": pi, "RealName": RealName, "Sex": Sex, "MinZu": MinZu, "HighEducation": HighEducation, "HighSchool": HighSchool,
+                "IdentityType": IdentityType, "SendUnit": SendUnit, "CollaborativeUnit": CollaborativeUnit,
+                "TrainingTime": TrainingTime, "PlanTrainingTime": PlanTrainingTime, "RotaryBeginTime": RotaryBeginTime,
+                "RotaryEndTime": RotaryEndTime, "OutdeptStatus": OutdeptStatus
+            },
+              function (data) {
+                  var jsonArr = data;
+                  if (jsonArr.data == null) {
+                      $("#tbList tr:gt(0)").remove();
+                  } else {
+                      createRows(jsonArr.data, pi);
+                  }
+                  createPageBar($("#PageList"), pi, jsonArr.totalCount, jsonArr.pageCount);
+
+              });
+        }
+
+        function createRows(jsonArr,pi) {
+            var tbL = $("#tbList");
+            $("#tbList tr:gt(0)").remove();
+            for (i = 0; i < jsonArr.length; i++) {
+                var trHTML = "<tr class='listTableContentRow'>";
+                trHTML += "<td style='height:25px;'>" + (jsonArr[i].RealName == null ? "" : jsonArr[i].RealName) + "</td>";
+                trHTML += "<td>" + (jsonArr[i].Sex == null ? "" : jsonArr[i].Sex) + "</td>";
+                trHTML += "<td>" + (jsonArr[i].HighEducation ==null?"":jsonArr[i].HighEducation )+ "</td>";
+                trHTML += "<td>" + (jsonArr[i].HighMajor == null ? "" : jsonArr[i].HighMajor) + "</td>";
+                trHTML += "<td>" + jsonArr[i].ProfessionalBaseName + "</td>";
+                trHTML += "<td>" + jsonArr[i].DeptName + "</td>";
+                trHTML += "<td>" + jsonArr[i].RotaryBeginTime + "</td>";
+                trHTML += "<td>" + jsonArr[i].RotaryEndTime + "</td>";
+                trHTML += "<td>" + jsonArr[i].TeachersRealName + "</td>";
+
+                if (jsonArr[i].OutdeptStatus == "0") {
+                    trHTML += "<td style='color:red'>未出科</td>";
+                } else if (jsonArr[i].OutdeptStatus == "1") {
+                    trHTML += "<td>已出科</td>";
+                } else if (jsonArr[i].OutdeptStatus == "2") {
+                    trHTML += "<td style='color:red'>顺延一期</td>";
+                }
+
+                if (jsonArr[i].OutdeptApplication == "0") {
+                    trHTML += "<td>未申请出科考核</td>";
+                } else if (jsonArr[i].OutdeptApplication == "1") {
+                    trHTML += "<td  style='color:red'>已申请出科考核</td>";
+                }
+                trHTML += "<td><a onclick=\"OutDeptExam('" + jsonArr[i].Id + "','" + jsonArr[i].Name + "','" + jsonArr[i].RealName + "','" + jsonArr[i].TrainingBaseCode + "',"
+                + "'" + jsonArr[i].TrainingBaseName + "','" + jsonArr[i].Sex + "','" + jsonArr[i].HighEducation + "','" + jsonArr[i].HighEducationTime + "',"
+                + "'" + jsonArr[i].ProfessionalBaseCode + "','" + jsonArr[i].ProfessionalBaseName + "','" + jsonArr[i].DeptCode + "',"
+                + "'" + jsonArr[i].DeptName + "','" + jsonArr[i].RotaryBeginTime + "','" + jsonArr[i].RotaryEndTime + "','" + jsonArr[i].TeachersRealName + "','" + jsonArr[i].TeachersName + "',"
+                +"'" + pi + "','" + jsonArr[i].OutdeptApplication + "','" + jsonArr[i].OutdeptStatus + "');\" href='#'><img alt='出科考核' src='/images/imgs/icon_add.gif'/></a></td>";
+                trHTML += "</tr>";
+                tbL.append(trHTML);
+
+
+            }
+            MouseAnimate();
+        }
+
+        function OutDeptExam(Id,Name,RealName,TrainingBaseCode,TrainingBaseName,Sex,HighEducation,HighEducationTime,ProfessionalBaseCode,ProfessionalBaseName,
+            DeptCode, DeptName, RotaryBeginTime, RotaryEndTime, TeachersRealName, TeachersName, pi, OutdeptApplication, OutdeptStatus) {
+            if (OutdeptApplication == "1") {
+                if (OutdeptStatus == "0") {
+                    $("#myModal").modal('show');
+                    $("#teacher").val(TeachersRealName);
+                    $("#instructor_date").val('@DateTime.Now.Date.ToString("yyyy-MM-dd")');
+                    $("#dept_manager_date").val('@DateTime.Now.Date.ToString("yyyy-MM-dd")');
+                    $("#pi").val(pi);
+                    $("#id").val(Id);
+                    $("#students_name").val(Name);
+                    $("#students_real_name").val(RealName);
+                    $("#training_base_code").val(TrainingBaseCode);
+                    $("#training_base_name").val(TrainingBaseName);
+                    $("#sex").val(Sex);
+                    $("#high_education").val(HighEducation);
+                    $("#high_education_time").val(HighEducationTime);
+                    $("#professional_base_code").val(ProfessionalBaseCode);
+                    $("#professional_base_name").val(ProfessionalBaseName);
+                    $("#rotary_dept_code").val(DeptCode);
+                    $("#rotary_dept_name").val(DeptName);
+                    $("#rotary_begin_time").val(RotaryBeginTime);
+                    $("#rotary_end_time").val(RotaryEndTime);
+                    $("#instructor").val(TeachersRealName);
+                    $("#instructor_tag").val(TeachersName);
+                    return;
+                } else {
+                    alert("该学员已进行过出科考核，请勿重复");
+                    return;
+                }
+
+            }else{
+                alert("尚未申请出科，无法进行出科考核");
+                return;
+            }
+        }
+
+        function TiJiao() {
+            if ($(":radio[name='is_pass']:checked").val() == null) { alert("考核结果不能为空"); return false;}
+            if ($("#dept_manager").val() == "") { alert("科主任不能为空"); return false; }
+            if (confirm("出科考核提交后无法进行修改，确认提交？")) {
+                $("#form1").ajaxSubmit({
+                    type: "post",
+                    url: '@Url.Action("TiJiao")',
+                    dataType: "text",
+                    success: function (data) {
+                        alert(data);
+                        $("#myModal").modal("hide");
+                        loadPageList($("#pi").val());
+                    }
+                });
+            }
+        }
+    </script>
+</head>
+<body>
+    <div>
+        <table class="listTableHead" cellspacing="0" cellpadding="0" style="width:100%;">
+            <tr>
+                <td class="listTableHeadTR" style="height: 22px;" width="20%">
+                    <img height="16" src="/images/imgs/Query.gif" width="16" style="vertical-align: middle" />学员轮转信息
+                </td>
+
+            </tr>
+        </table>
+        <table id="tbList" class="listTable" cellspacing="1" cellpadding="0" style="width:100%;">
+            <tr id="tr0" class="listTableTitleRow">
+                <td>姓名</td>
+                <td>性别</td>
+                <td>最高学历</td>
+                <td>最高学历专业</td>
+                <td>专业基地</td>
+                <td>轮转科室</td>
+                <td>轮转开始时间</td>
+                <td>轮转结束时间</td>
+                <td>指导医师</td>
+                <td>出科状态</td>
+                <td>申请</td>
+                <td>考核</td>
+            </tr>
+        </table>
+        <div id="PageList" style="text-align:center;vertical-align:middle; margin-top:10px;"></div>
+    </div>
+
+    <form id="form1" name="form1">
+       
+        <div class="modal fade" id="myModal" tabindex="-2" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true" data-backdrop="static" style="display:none;max-height:500px;min-height:200px;width:90%;margin-left:-45%;top:5%;">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-body" style="max-height: 500px; min-height: 200px; padding: 1px;">
+                        <div align="center">
+                            <input id="pi" name="pi" type="hidden" />
+                            <input type="hidden" id="id" name="id" />
+                            <input type="hidden" id="training_base_code" name="training_base_code" />
+                            <input type="hidden" id="training_base_name" name="training_base_name" />
+                            <table  border="0" style="border-collapse: collapse;width:100%" cellpadding="0" cellspacing="1" class="detailTable">
+                                <tr>
+                                    <td height="24" align="center" colspan="7" class="detailHead">
+                                        出科考核表
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>
+                                        <table>
+                                            <tr>
+                                                <td width="8%" class="detailTitle" style="height: 25px;">姓名：<span style="color: #ff0000">*</span></td>
+                                                <td width="10%" class="detailContent" style="height: 25px;">
+                                                    <span class="detailContent" style="height: 25px">
+                                                        <input type="text" id="students_real_name" name="students_real_name" readonly="readonly" style="width:100px;" />
+                                                        <input type="hidden" id="students_name" name="students_name" />
+                                                    </span>
+                                                </td>
+                                                <td width="8%" class="detailTitle" style="height: 25px;">性别：</td>
+                                                <td width="10%" class="detailContent" style="height: 25px;">
+                                                    <span class="detailContent" style="height: 25px">
+                                                        <input type="text" id="sex" name="sex" readonly="readonly" style="width:100px;" />
+                                                    </span>
+                                                </td>
+                                                <td width="8%" class="detailTitle" style="height: 25px;">学历：</td>
+                                                <td width="10%" class="detailContent" style="height: 25px;">
+                                                    <span class="detailContent" style="height: 25px">
+                                                        <input type="text" id="high_education" name="high_education" readonly="readonly" style="width:100px;" />
+                                                    </span>
+                                                </td>
+                                                <td width="8%" class="detailTitle" style="height: 25px;">毕业时间：</td>
+                                                <td width="10%" class="detailContent" style="height: 25px;">
+                                                    <span class="detailContent" style="height: 25px">
+                                                        <input type="text" id="high_education_time" name="high_education_time" readonly="readonly" style="width:100px;" />
+                                                    </span>
+                                                </td>
+                                                <td width="8%" class="detailTitle" style="height: 25px;">专业基地：</td>
+                                                <td width="10%" class="detailContent" style="height: 25px;">
+                                                    <span class="detailContent" style="height: 25px">
+                                                        <input type="text" id="professional_base_name" name="professional_base_name" readonly="readonly" style="width:100px;" />
+                                                        <input type="hidden" id="professional_base_code" name="professional_base_code" />
+                                                    </span>
+                                                </td>
+                                            </tr>
+                                        </table>
+
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>
+                                        <table>
+                                            <tr>
+                                                <td width="8%" class="detailTitle" style="height: 25px;">轮转科室：</td>
+                                                <td width="10%" class="detailContent" style="height: 25px;">
+                                                    <span class="detailContent" style="height: 25px">
+                                                        <input type="text" id="rotary_dept_name" name="rotary_dept_name" readonly="readonly" style="width:100px;" />
+                                                        <input type="hidden" id="rotary_dept_code" name="rotary_dept_code" />
+                                                    </span>
+                                                </td>
+                                                <td width="10%" class="detailTitle" style="height: 25px;">轮转开始时间：</td>
+                                                <td width="10%" class="detailContent" style="height: 25px;">
+                                                    <span class="detailContent" style="height: 25px">
+                                                        <input type="text" id="rotary_begin_time" name="rotary_begin_time" readonly="readonly" style="width:100px;" />
+                                                    </span>
+                                                </td>
+                                                <td width="10%" class="detailTitle" style="height: 25px;">轮转结束时间：</td>
+                                                <td width="10%" class="detailContent" style="height: 25px;">
+                                                    <span class="detailContent" style="height: 25px">
+                                                        <input type="text" id="rotary_end_time" name="rotary_end_time" readonly="readonly" style="width:100px;" />
+                                                    </span>
+                                                </td>
+                                                <td width="10%" class="detailTitle" style="height: 25px;">指导老师：</td>
+                                                <td width="10%" class="detailContent" style="height: 25px;">
+                                                    <span class="detailContent" style="height: 25px">
+                                                        <input type="text" id="instructor" name="instructor" readonly="readonly" style="width:100px;" />
+                                                        <input type="hidden" id="instructor_tag" name="instructor_tag" />
+                                                    </span>
+                                                </td>
+                                            </tr>
+                                        </table>
+
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td style="height: 10px;"></td>
+                                </tr>
+                                <tr>
+                                    <td align="center">
+                                        <table border="1" style="border-collapse: collapse;width:100%;" cellpadding="0" cellspacing="1" class="detailTable">
+                                            <tr>
+                                                <td colspan="4" width="30%" class="myDetailTitle" style="height: 25px;">考核项目</td>
+                                                <td width="10%" class="myDetailTitle" style="height: 25px;">满分</td>
+                                                <td width="55%" class="myDetailTitle" style="height: 25px;">考核依据</td>
+                                                <td class="myDetailTitle" style="height: 25px;">得分</td>
+                                            </tr>
+                                            <tr>
+                                                <td class="myDetailContent" width="5%">1</td>
+                                                <td colspan="3" class="myDetailContent">考勤情况</td>
+                                                <td class="myDetailContent" width="5%">10</td>
+                                                <td class="detailContent">旷工一天扣5分；不参加节假日查房及跟班每次扣3分；迟到早退每次扣2分；每请假1天扣1分，超过一周不得分</td>
+                                                <td>
+                                                    <input type="text" id="kqqk" name="kqqk" style="width:50px;height:20px;" />
+                                                </td>
+                                            </tr>
+                                            <tr>
+                                                <td class="myDetailContent" width="5%">2</td>
+                                                <td colspan="3" class="myDetailContent">工作态度</td>
+                                                <td class="myDetailContent" width="5%">10</td>
+                                                <td class="detailContent">指导老师和科室同事综合评价</td>
+                                                <td>
+                                                    <input type="text" id="gztd" name="gztd" style="width:50px;height:20px;" />
+                                                </td>
+                                            </tr>
+                                            <tr>
+                                                <td class="myDetailContent" width="5%">3</td>
+                                                <td colspan="3" class="myDetailContent">医德医风</td>
+                                                <td class="myDetailContent" width="5%">5</td>
+                                                <td class="detailContent">指导老师和科室同事综合评价</td>
+                                                <td>
+                                                    <input type="text" id="ydyf" name="ydyf" style="width:50px;height:20px;" />
+                                                </td>
+                                            </tr>
+                                            <tr>
+                                                <td class="myDetailContent" width="5%">4</td>
+                                                <td colspan="3" class="myDetailContent">理论水平</td>
+                                                <td class="myDetailContent" width="5%">15</td>
+                                                <td class="detailContent">结合平时查房提问及出科理论考核</td>
+                                                <td>
+                                                    <input type="text" id="llsp" name="llsp" style="width:50px;height:20px;" />
+                                                </td>
+                                            </tr>
+                                            <tr>
+                                                <td class="myDetailContent" width="5%">5</td>
+                                                <td colspan="3" class="myDetailContent">制度执行</td>
+                                                <td class="myDetailContent" width="5%">15</td>
+                                                <td class="detailContent">指导老师和科室同事综合评价</td>
+                                                <td>
+                                                    <input type="text" id="zdzx" name="zdzx" style="width:50px;height:20px;" />
+                                                </td>
+                                            </tr>
+                                            <tr>
+                                                <td rowspan="5" class="myDetailContent" width="5%">6</td>
+                                                <td rowspan="5" class="myDetailContent" width="5%">基本技能</td>
+                                                <td rowspan="3" class="myDetailContent" width="5%">临床科室</td>
+                                                <td class="myDetailContent">病历书写</td>
+                                                <td class="myDetailContent" width="5%">15</td>
+                                                <td class="detailContent">丙级病历不得分；每份乙级病历扣5分</td>
+                                                <td>
+                                                    <input type="text" id="blsx" name="blsx" style="width:50px;height:20px;" />
+                                                </td>
+                                            </tr>
+                                            <tr>
+                                                <td class="myDetailContent">处理病人能力</td>
+                                                <td class="myDetailContent" width="5%">15</td>
+                                                <td class="detailContent">指导老师和科室同事综合评价</td>
+                                                <td>
+                                                    <input type="text" id="clbrnl" name="clbrnl" style="width:50px;height:20px;" />
+                                                </td>
+                                            </tr>
+                                            <tr>
+                                                <td class="myDetailContent">实际操作能力</td>
+                                                <td class="myDetailContent" width="5%">10</td>
+                                                <td class="detailContent">指导老师和科室同事综合评价</td>
+                                                <td>
+                                                    <input type="text" id="sjcznl" name="sjcznl" style="width:50px;height:20px;" />
+                                                </td>
+                                            </tr>
+                                            <tr>
+                                                <td rowspan="2" class="myDetailContent" width="5%">医技科室</td>
+                                                <td class="myDetailContent">操作技能</td>
+                                                <td class="myDetailContent" width="5%">15</td>
+                                                <td class="detailContent">指导老师和科室同事综合评价</td>
+                                                <td>
+                                                    <input type="text" id="czjn" name="czjn" style="width:50px;height:20px;" />
+                                                </td>
+                                            </tr>
+                                            <tr>
+                                                <td class="myDetailContent">诊断水平</td>
+                                                <td class="myDetailContent" width="5%">25</td>
+                                                <td class="detailContent">指导老师和科室同事综合评价</td>
+                                                <td>
+                                                    <input type="text" id="zdsp" name="zdsp" style="width:50px;height:20px;" />
+                                                </td>
+                                            </tr>
+                                            <tr>
+                                                <td class="myDetailContent" width="5%">7</td>
+                                                <td colspan="3" class="myDetailContent">带教能力</td>
+                                                <td class="myDetailContent" width="5%">5</td>
+                                                <td class="detailContent">指导老师和科室同事综合评价</td>
+                                                <td>
+                                                    <input type="text" id="djnl" name="djnl" style="width:50px;height:20px;" />
+                                                </td>
+                                            </tr>
+                                            <tr>
+                                                <td colspan="6" class="myDetailContent">合计得分（合计得分低于80分者视为不合格，顺延一期）</td>
+                                                <td>
+                                                    <input type="text" id="total_score" name="total_score" style="height:20px;width:50px;" onfocus="this.blur()" />
+                                                </td>
+                                            </tr>
+                                            <tr>
+                                                <td colspan="7" class="myDetailContent" style="text-align:left;">
+                                                    指导老师：<input type="text" id="teacher" name="teacher" readonly="readonly" /> <a style="padding-left: 150px"></a>
+                                                    日期：<input type="text" id="instructor_date" name="instructor_date" onclick="WdatePicker()" />
+                                                </td>
+
+                                            </tr>
+                                            <tr>
+                                                <td colspan="7" style="text-align:left;" class="myDetailContent">
+                                                    <label><input type="radio" id="TongYi" name="is_pass" value="1"/>通过考核，同意出科</label>
+                                                    <br />
+                                                    <label><input type="radio" id="ShunYan" name="is_pass" value="2" />考核未通过，建议在本学科顺延一期</label> 
+                                                </td>
+                                            </tr>
+                                            <tr>
+                                                <td colspan="7" class="myDetailContent" style="text-align:left;">
+                                                    科主任：<input type="text" id="dept_manager" name="dept_manager" />
+                                                    <a style="padding-left: 150px"></a>
+                                                    日期：<input type="text" id="dept_manager_date" name="dept_manager_date" onclick="WdatePicker()" />
+                                                </td>
+                                            </tr>
+
+                                        </table>
+                                    </td>
+                                </tr>
+                            </table>
+                        </div>
+                    </div>
+
+                    <div class="modal-footer" style="margin: auto; text-align: center;">
+                        <input type="button" id="close" name="close" class="btn btn-default" data-dismiss="modal" value="关闭" />
+                        <input type="button" id="submit" name="submit" class="btn btn-success" value="提交" onclick="TiJiao()" />
+                    </div>
+                </div>
+                <!-- /.modal-content -->
+            </div>
+            <!-- /.modal -->
+        </div>
+    </form>
+
+    <script type="text/javascript">
+
+        $(function () {
+            var reg = /^[1-9]\d*|0$/;
+
+            $("#kqqk").blur(function () {
+                if ($("#kqqk").val() == "" || !reg.test($("#kqqk").val()) || parseFloat($("#kqqk").val()) > 10) {
+                    alert("考勤情况考核项目得分数值不合法");
+                    $("#kqqk").val("");
+                    return;
+                } else {
+                    $("#total_score").val(parseFloat($("#kqqk").val() == "" ? 0 : $("#kqqk").val()) + parseFloat($("#gztd").val() == "" ? 0 : $("#gztd").val()) + parseFloat($("#ydyf").val() == "" ? 0 : $("#ydyf").val()) + parseFloat($("#llsp").val() == "" ? 0 : $("#llsp").val()) + parseFloat($("#zdzx").val() == "" ? 0 : $("#zdzx").val()) + parseFloat($("#blsx").val() == "" ? 0 : $("#blsx").val()) + parseFloat($("#clbrnl").val() == "" ? 0 : $("#clbrnl").val()) + parseFloat($("#sjcznl").val() == "" ? 0 : $("#sjcznl").val()) + parseFloat($("#czjn").val() == "" ? 0 : $("#czjn").val()) + parseFloat($("#zdsp").val() == "" ? 0 : $("#zdsp").val()) + parseFloat($("#djnl").val() == "" ? 0 : $("#djnl").val()));
+
+                }
+
+            });
+
+            $("#gztd").blur(function () {
+                if ($("#gztd").val() == "" || !reg.test($("#gztd").val()) || parseFloat($("#gztd").val()) > 10) {
+                    alert("工作态度考核项目得分数值不合法");
+                    $("#gztd").val("");
+                    return;
+                } else {
+                    $("#total_score").val(parseFloat($("#kqqk").val() == "" ? 0 : $("#kqqk").val()) + parseFloat($("#gztd").val() == "" ? 0 : $("#gztd").val()) + parseFloat($("#ydyf").val() == "" ? 0 : $("#ydyf").val()) + parseFloat($("#llsp").val() == "" ? 0 : $("#llsp").val()) + parseFloat($("#zdzx").val() == "" ? 0 : $("#zdzx").val()) + parseFloat($("#blsx").val() == "" ? 0 : $("#blsx").val()) + parseFloat($("#clbrnl").val() == "" ? 0 : $("#clbrnl").val()) + parseFloat($("#sjcznl").val() == "" ? 0 : $("#sjcznl").val()) + parseFloat($("#czjn").val() == "" ? 0 : $("#czjn").val()) + parseFloat($("#zdsp").val() == "" ? 0 : $("#zdsp").val()) + parseFloat($("#djnl").val() == "" ? 0 : $("#djnl").val()));
+                }
+            });
+            $("#ydyf").blur(function () {
+                if ($("#ydyf").val() == "" || !reg.test($("#ydyf").val()) || parseFloat($("#ydyf").val()) > 5) {
+                    alert("医德医风考核项目得分数值不合法");
+                    $("#ydyf").val("");
+                    return;
+                } else {
+                    $("#total_score").val(parseFloat($("#kqqk").val() == "" ? 0 : $("#kqqk").val()) + parseFloat($("#gztd").val() == "" ? 0 : $("#gztd").val()) + parseFloat($("#ydyf").val() == "" ? 0 : $("#ydyf").val()) + parseFloat($("#llsp").val() == "" ? 0 : $("#llsp").val()) + parseFloat($("#zdzx").val() == "" ? 0 : $("#zdzx").val()) + parseFloat($("#blsx").val() == "" ? 0 : $("#blsx").val()) + parseFloat($("#clbrnl").val() == "" ? 0 : $("#clbrnl").val()) + parseFloat($("#sjcznl").val() == "" ? 0 : $("#sjcznl").val()) + parseFloat($("#czjn").val() == "" ? 0 : $("#czjn").val()) + parseFloat($("#zdsp").val() == "" ? 0 : $("#zdsp").val()) + parseFloat($("#djnl").val() == "" ? 0 : $("#djnl").val()));
+                }
+            });
+            $("#llsp").blur(function () {
+                if ($("#llsp").val() == "" || !reg.test($("#llsp").val()) || parseFloat($("#llsp").val()) > 15) {
+                    alert("理论水平考核项目得分数值不合法");
+                    $("#llsp").val("");
+                    return;
+                } else {
+                    $("#total_score").val(parseFloat($("#kqqk").val() == "" ? 0 : $("#kqqk").val()) + parseFloat($("#gztd").val() == "" ? 0 : $("#gztd").val()) + parseFloat($("#ydyf").val() == "" ? 0 : $("#ydyf").val()) + parseFloat($("#llsp").val() == "" ? 0 : $("#llsp").val()) + parseFloat($("#zdzx").val() == "" ? 0 : $("#zdzx").val()) + parseFloat($("#blsx").val() == "" ? 0 : $("#blsx").val()) + parseFloat($("#clbrnl").val() == "" ? 0 : $("#clbrnl").val()) + parseFloat($("#sjcznl").val() == "" ? 0 : $("#sjcznl").val()) + parseFloat($("#czjn").val() == "" ? 0 : $("#czjn").val()) + parseFloat($("#zdsp").val() == "" ? 0 : $("#zdsp").val()) + parseFloat($("#djnl").val() == "" ? 0 : $("#djnl").val()));
+                }
+            });
+            $("#zdzx").blur(function () {
+                if ($("#zdzx").val() == "" || !reg.test($("#zdzx").val()) || parseFloat($("#zdzx").val()) > 15) {
+                    alert("制度执行考核项目得分数值不合法");
+                    $("#zdzx").val("");
+                    return;
+                } else {
+                    $("#total_score").val(parseFloat($("#kqqk").val() == "" ? 0 : $("#kqqk").val()) + parseFloat($("#gztd").val() == "" ? 0 : $("#gztd").val()) + parseFloat($("#ydyf").val() == "" ? 0 : $("#ydyf").val()) + parseFloat($("#llsp").val() == "" ? 0 : $("#llsp").val()) + parseFloat($("#zdzx").val() == "" ? 0 : $("#zdzx").val()) + parseFloat($("#blsx").val() == "" ? 0 : $("#blsx").val()) + parseFloat($("#clbrnl").val() == "" ? 0 : $("#clbrnl").val()) + parseFloat($("#sjcznl").val() == "" ? 0 : $("#sjcznl").val()) + parseFloat($("#czjn").val() == "" ? 0 : $("#czjn").val()) + parseFloat($("#zdsp").val() == "" ? 0 : $("#zdsp").val()) + parseFloat($("#djnl").val() == "" ? 0 : $("#djnl").val()));
+                }
+            });
+            $("#blsx").blur(function () {
+                if ($("#blsx").val() == "" || !reg.test($("#blsx").val()) || parseFloat($("#blsx").val()) > 15) {
+                    alert("病历书写考核项目得分数值不合法");
+                    $("#blsx").val("");
+                    return;
+                } else {
+                    $("#total_score").val(parseFloat($("#kqqk").val() == "" ? 0 : $("#kqqk").val()) + parseFloat($("#gztd").val() == "" ? 0 : $("#gztd").val()) + parseFloat($("#ydyf").val() == "" ? 0 : $("#ydyf").val()) + parseFloat($("#llsp").val() == "" ? 0 : $("#llsp").val()) + parseFloat($("#zdzx").val() == "" ? 0 : $("#zdzx").val()) + parseFloat($("#blsx").val() == "" ? 0 : $("#blsx").val()) + parseFloat($("#clbrnl").val() == "" ? 0 : $("#clbrnl").val()) + parseFloat($("#sjcznl").val() == "" ? 0 : $("#sjcznl").val()) + parseFloat($("#czjn").val() == "" ? 0 : $("#czjn").val()) + parseFloat($("#zdsp").val() == "" ? 0 : $("#zdsp").val()) + parseFloat($("#djnl").val() == "" ? 0 : $("#djnl").val()));
+                }
+            });
+            $("#clbrnl").blur(function () {
+                if ($("#clbrnl").val() == "" || !reg.test($("#clbrnl").val()) || parseFloat($("#clbrnl").val()) > 15) {
+                    alert("处理病人能力考核项目得分数值不合法");
+                    $("#clbrnl").val("");
+                    return;
+                } else {
+                    $("#total_score").val(parseFloat($("#kqqk").val() == "" ? 0 : $("#kqqk").val()) + parseFloat($("#gztd").val() == "" ? 0 : $("#gztd").val()) + parseFloat($("#ydyf").val() == "" ? 0 : $("#ydyf").val()) + parseFloat($("#llsp").val() == "" ? 0 : $("#llsp").val()) + parseFloat($("#zdzx").val() == "" ? 0 : $("#zdzx").val()) + parseFloat($("#blsx").val() == "" ? 0 : $("#blsx").val()) + parseFloat($("#clbrnl").val() == "" ? 0 : $("#clbrnl").val()) + parseFloat($("#sjcznl").val() == "" ? 0 : $("#sjcznl").val()) + parseFloat($("#czjn").val() == "" ? 0 : $("#czjn").val()) + parseFloat($("#zdsp").val() == "" ? 0 : $("#zdsp").val()) + parseFloat($("#djnl").val() == "" ? 0 : $("#djnl").val()));
+                }
+            });
+
+            $("#sjcznl").blur(function () {
+                if ($("#sjcznl").val() == "" || !reg.test($("#sjcznl").val()) || parseFloat($("#sjcznl").val()) > 10) {
+                    alert("实际操作能力考核项目得分数值不合法");
+                    $("#sjcznl").val("");
+                    return;
+                } else {
+                    $("#total_score").val(parseFloat($("#kqqk").val() == "" ? 0 : $("#kqqk").val()) + parseFloat($("#gztd").val() == "" ? 0 : $("#gztd").val()) + parseFloat($("#ydyf").val() == "" ? 0 : $("#ydyf").val()) + parseFloat($("#llsp").val() == "" ? 0 : $("#llsp").val()) + parseFloat($("#zdzx").val() == "" ? 0 : $("#zdzx").val()) + parseFloat($("#blsx").val() == "" ? 0 : $("#blsx").val()) + parseFloat($("#clbrnl").val() == "" ? 0 : $("#clbrnl").val()) + parseFloat($("#sjcznl").val() == "" ? 0 : $("#sjcznl").val()) + parseFloat($("#czjn").val() == "" ? 0 : $("#czjn").val()) + parseFloat($("#zdsp").val() == "" ? 0 : $("#zdsp").val()) + parseFloat($("#djnl").val() == "" ? 0 : $("#djnl").val()));
+                }
+            });
+            $("#czjn").blur(function () {
+                if ($("#czjn").val() == "" || !reg.test($("#czjn").val()) || parseFloat($("#czjn").val()) > 15) {
+                    alert("操作技能考核项目得分数值不合法");
+                    $("#czjn").val("");
+                    return;
+                } else {
+                    $("#total_score").val(parseFloat($("#kqqk").val() == "" ? 0 : $("#kqqk").val()) + parseFloat($("#gztd").val() == "" ? 0 : $("#gztd").val()) + parseFloat($("#ydyf").val() == "" ? 0 : $("#ydyf").val()) + parseFloat($("#llsp").val() == "" ? 0 : $("#llsp").val()) + parseFloat($("#zdzx").val() == "" ? 0 : $("#zdzx").val()) + parseFloat($("#blsx").val() == "" ? 0 : $("#blsx").val()) + parseFloat($("#clbrnl").val() == "" ? 0 : $("#clbrnl").val()) + parseFloat($("#sjcznl").val() == "" ? 0 : $("#sjcznl").val()) + parseFloat($("#czjn").val() == "" ? 0 : $("#czjn").val()) + parseFloat($("#zdsp").val() == "" ? 0 : $("#zdsp").val()) + parseFloat($("#djnl").val() == "" ? 0 : $("#djnl").val()));
+                }
+            });
+            $("#zdsp").blur(function () {
+                if ($("#zdsp").val() == "" || !reg.test($("#zdsp").val()) || parseFloat($("#zdsp").val()) > 25) {
+                    alert("诊断水平考核项目得分数值不合法");
+                    $("#zdsp").val("");
+                    return;
+                } else {
+                    $("#total_score").val(parseFloat($("#kqqk").val() == "" ? 0 : $("#kqqk").val()) + parseFloat($("#gztd").val() == "" ? 0 : $("#gztd").val()) + parseFloat($("#ydyf").val() == "" ? 0 : $("#ydyf").val()) + parseFloat($("#llsp").val() == "" ? 0 : $("#llsp").val()) + parseFloat($("#zdzx").val() == "" ? 0 : $("#zdzx").val()) + parseFloat($("#blsx").val() == "" ? 0 : $("#blsx").val()) + parseFloat($("#clbrnl").val() == "" ? 0 : $("#clbrnl").val()) + parseFloat($("#sjcznl").val() == "" ? 0 : $("#sjcznl").val()) + parseFloat($("#czjn").val() == "" ? 0 : $("#czjn").val()) + parseFloat($("#zdsp").val() == "" ? 0 : $("#zdsp").val()) + parseFloat($("#djnl").val() == "" ? 0 : $("#djnl").val()));
+                }
+            });
+            $("#djnl").blur(function () {
+                if ($("#djnl").val() == "" || !reg.test($("#djnl").val()) || parseFloat($("#djnl").val()) > 5) {
+                    alert("带教能力考核项目得分数值不合法");
+                    $("#djnl").val("");
+                    return;
+                } else {
+                    $("#total_score").val(parseFloat($("#kqqk").val() == "" ? 0 : $("#kqqk").val()) + parseFloat($("#gztd").val() == "" ? 0 : $("#gztd").val()) + parseFloat($("#ydyf").val() == "" ? 0 : $("#ydyf").val()) + parseFloat($("#llsp").val() == "" ? 0 : $("#llsp").val()) + parseFloat($("#zdzx").val() == "" ? 0 : $("#zdzx").val()) + parseFloat($("#blsx").val() == "" ? 0 : $("#blsx").val()) + parseFloat($("#clbrnl").val() == "" ? 0 : $("#clbrnl").val()) + parseFloat($("#sjcznl").val() == "" ? 0 : $("#sjcznl").val()) + parseFloat($("#czjn").val() == "" ? 0 : $("#czjn").val()) + parseFloat($("#zdsp").val() == "" ? 0 : $("#zdsp").val()) + parseFloat($("#djnl").val() == "" ? 0 : $("#djnl").val()));
+                }
+            });
+
+        });
+    </script>
+
+</body>
+</html>

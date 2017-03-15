@@ -1,0 +1,687 @@
+﻿@using GP.Common
+@{
+    Layout = null;
+}
+
+<!DOCTYPE html>
+
+<html>
+<head>
+    <meta name="viewport" content="width=device-width" />
+    <title>列表页</title>
+    <script src="~/Scripts/jquery-1.8.2.min.js"></script>
+    <script src="~/Scripts/MyJs/bootstrap-2.3.3/js/bootstrap.min.js"></script>
+    <script src="~/Scripts/MyJs/global.js"></script>
+    <script src="~/Scripts/MyJs/autosize.js"></script>
+    <script src="~/Scripts/MyJs/jquery-form.js"></script>
+    <link href="~/Content/MyCss/global.css" rel="stylesheet" />
+    <link href="~/Content/MyCss/bootstrapNoTable/bootstrap.css" rel="stylesheet" />
+    <style type="text/css">
+        .button {
+            width: 200px;
+            height: 20px;
+            border: #002D96 1px solid;
+            padding: 2px;
+            filter: progid:DXImageTransform.Microsoft.Gradient(GradientType=0, StartColorStr=#FFFFFF, EndColorStr=#9DBCEA);
+            cursor: pointer;
+            color: black;
+        }
+
+        .tbmover {
+            border: #336699 1px solid;
+            padding-right: 2px;
+            padding-left: 2px;
+            cursor: pointer;
+        }
+
+        .tbmout {
+            padding-right: 3px;
+            padding-left: 3px;
+        }
+    </style> 
+
+    <script type="text/javascript">
+        var Name,RealName,TrainingBaseCode,TrainingBaseName, NowDate,nowDate;
+       
+        $(function () {
+             Name = '@CommonFunc.SafeGetStringFromObj(ViewData["Name"])';
+             RealName = '@CommonFunc.SafeGetStringFromObj(ViewData["RealName"])';
+             TrainingBaseCode = '@CommonFunc.SafeGetStringFromObj(ViewData["TrainingBaseCode"])';
+             TrainingBaseName = '@CommonFunc.SafeGetStringFromObj(ViewData["TrainingBaseName"])';
+
+            NowDate = new Date();
+            nowDate = new Date(NowDate.getFullYear() + "/" + (NowDate.getMonth() + 1) + "/" + NowDate.getDate());
+
+            loadRotaryInfo(Name, TrainingBaseCode);
+
+            if ($("#tbList tr:gt(0)").length > 0) {
+                $("#GenerateRotaryInformation").css("display", "none");
+            }
+            $("#advice").one('focus', function () {
+                $(this).autosize();
+            });
+           
+        });
+
+        function generateRotaryInformation() {
+            var ProfessionalBaseCode, TrainingTime;
+            var k = "";
+
+            $.ajax({
+                cache: false,
+                async: false,
+                type: "get",
+                url: '@Url.Action("GetPersonalInfo")',
+                dataType: "text",
+                data: { Name: Name, TrainingBaseCode: TrainingBaseCode },
+                success: function (data) {
+                    if (data == "0") {
+                        alert("请完善个人基本信息");
+                        return;
+                    } else {
+                        var jsonArr = eval("(" + data + ")");
+
+                        ProfessionalBaseCode = jsonArr[0].ProfessionalBaseCode;
+                        TrainingTime = jsonArr[0].TrainingTime;
+
+                    }
+                },
+                error: function () {
+                    alert("系统繁忙，请联系管理员");
+                }
+            });
+
+            $.ajax({
+                cache: false,
+                async: false,
+                type: "get",
+                url: '@Url.Action("GetRotaryInfo")',
+                dataType: "text",
+                data: { TrainingBaseCode: TrainingBaseCode, ProfessionalBaseCode: ProfessionalBaseCode, TrainingTime: TrainingTime },
+                success: function (data) {
+                    if (data == "0") {
+                        alert("管理员尚未进行轮转排班");
+                        return;
+                    } else {
+                        var jsonArr = eval("(" + data + ")");
+                        for (var i = 0; i < jsonArr.length; i++) {
+                            var arr = new Array();
+                            var nameList = jsonArr[i].Tag1;
+                            arr = nameList.split("}");
+                            for (var j = 0; j < arr.length; j++) {
+                                if (arr[j] == Name) {
+                                    k = i;
+                                }
+                            }
+                        }
+                        if (k == "") {
+                            alert("管理员尚未进行学员分配");
+                            return;
+                        } else {
+                            $.ajax({
+                                cache: false,
+                                async: false,
+                                type: "post",
+                                url: '@Url.Action("InsertRotary")',
+                                dataType: "text",
+                                data: {
+                                    name: Name, realName: RealName, trainingBaseCode: jsonArr[k].TrainingBaseCode, trainingBaseName: jsonArr[k].TrainingBaseName,
+                                    professionalBaseCode: jsonArr[k].ProfessionalBaseCode, professionalBaseName: jsonArr[k].ProfessionalBaseName, deptCodeList: jsonArr[k].DeptCodeList,
+                                    deptNameList: jsonArr[k].DeptNameList, beginTimeList: jsonArr[k].BeginTimeList, endTimeList: jsonArr[k].EndTimeList, daysList: jsonArr[k].DaysList,
+                                    trainingTime: jsonArr[k].TrainingTime, outdeptStatus: "0", outdeptApplication: "0", questionnaireStatus: "0", length: jsonArr.length
+                                },
+                                success: function (data) {
+                                    alert(data);
+                                    loadRotaryInfo(Name, TrainingBaseCode);
+                                },
+                                error: function () {
+                                    alert("系统繁忙，请联系管理员");
+                                }
+                            });
+
+
+                        }
+
+                    }
+                },
+                error: function () {
+                    alert("系统繁忙，请联系管理员");
+                }
+            });
+        }
+
+        function loadRotaryInfo(Name, TrainingBaseCode) {
+
+            $.ajax({
+                cache: false,
+                async: false,
+                type: "get",
+                url: '@Url.Action("LoadRotaryInfo")',
+                dataType: "text",
+                data: { Name: Name, TrainingBaseCode: TrainingBaseCode },
+                success: function (data) {
+                    if (data == ""||data==null) {
+                        return;
+                    } else {
+                        var tbL = $("#tbList");
+                        var jsonArr = eval("(" + data + ")");
+                        $("#tbList tr:gt(0)").remove();
+
+                        for (i = 0; i < jsonArr.length; i++) {
+                            var trHTML = "<tr class='listTableContentRow'>";
+                            trHTML += "<td style='height:25px'>" + jsonArr[i].ProfessionalBaseName + "</td>";
+                            trHTML += "<td style='width:20%'>" + jsonArr[i].DeptName + "</td>";
+                            trHTML += "<td>" + jsonArr[i].RotaryBeginTime + "</td>";
+                            trHTML += "<td>" + jsonArr[i].RotaryEndTime + "</td>";
+                            trHTML += "<td>" + jsonArr[i].TeachersRealName + "</td>";
+                            if (nowDate >= new Date(jsonArr[i].RotaryBeginTime.replace(/-/g, "/")) && nowDate <= new Date(jsonArr[i].RotaryEndTime.replace(/-/g, "/"))) {
+                                trHTML += "<td style='color:red'>正在轮转</td>";
+                                if (jsonArr[i].OutdeptStatus == "0") {
+                                    trHTML += "<td style='color:red'>未出科</td>";
+                                } else if (jsonArr[i].OutdeptStatus == "1") {
+                                    trHTML += "<td>已出科</td>";
+                                } else if (jsonArr[i].OutdeptStatus == "2") {
+                                    trHTML += "<td style='color:red'>顺延一期</td>";
+                                }
+                                if (jsonArr[i].OutdeptApplication == "0") {
+                                    trHTML += "<td><a style='color:red;text-decoration:none' onclick=\"application('" + jsonArr[i].Id + "');\" href='#'><img src='/images/imgs/icon_edit.gif'/>申请出科考核</a></td>";
+                                } else if (jsonArr[i].OutdeptApplication == "1") {
+                                    trHTML += "<td style='color:green'>已申请出科考核</td>";
+                                }
+                                if (jsonArr[i].QuestionnaireStatus == "0") {
+                                    trHTML += "<td><a style='color:red;text-decoration:none' data-toggle='modal' data-target='#myModal' onclick=\"OpenModal('" + jsonArr[i].Id + "')\" href='#'><img src='/images/imgs/icon_add.gif'/>填写问卷</a></td>";
+                                } else if (jsonArr[i].QuestionnaireStatus == "1") {
+                                    trHTML += "<td style='color:green'>已填写</td>";
+                                }
+
+                            } else if (nowDate < new Date(jsonArr[i].RotaryBeginTime.replace(/-/g, "/"))) {
+                                trHTML += "<td>未轮转</td>";
+                                if (jsonArr[i].OutdeptStatus == "0") {
+                                    trHTML += "<td style='color:red'>未出科</td>";
+                                } else if (jsonArr[i].OutdeptStatus == "1") {
+                                    trHTML += "<td>已出科</td>";
+                                } else if (jsonArr[i].OutdeptStatus == "2") {
+                                    trHTML += "<td style='color:red'>顺延一期</td>";
+                                }
+                                trHTML += "<td>不能申请出科考核</td>";
+                                trHTML += "<td>不能填写问卷</td>";
+
+                            } else if (nowDate > new Date(jsonArr[i].RotaryEndTime.replace(/-/g, "/"))) {
+                                trHTML += "<td style='color:green'>已轮转</td>";
+                                if (jsonArr[i].OutdeptStatus == "0") {
+                                    trHTML += "<td style='color:red'>未出科</td>";
+                                } else if (jsonArr[i].OutdeptStatus == "1") {
+                                    trHTML += "<td>已出科</td>";
+                                } else if (jsonArr[i].OutdeptStatus == "2") {
+                                    trHTML += "<td style='color:red'>顺延一期</td>";
+                                }
+
+                                if (jsonArr[i].OutdeptApplication == "0") {
+                                    trHTML += "<td><a style='color:red;text-decoration:none' onclick=\"application('" + jsonArr[i].Id + "');\" href='#'><img src='/images/imgs/icon_edit.gif'/>申请出科考核</a></td>";
+                                } else if (jsonArr[i].OutdeptApplication == "1") {
+                                    trHTML += "<td style='color:green'>已申请出科考核</td>";
+                                }
+                                if (jsonArr[i].QuestionnaireStatus == "0") {
+                                    trHTML += "<td><a style='color:red;text-decoration:none' data-toggle='modal' data-target='#myModal' onclick=\"OpenModal('" + jsonArr[i].Id + "')\" href='#'><img src='/images/imgs/icon_add.gif'/>填写问卷</a></td>";
+                                } else if (jsonArr[i].QuestionnaireStatus == "1") {
+                                    trHTML += "<td style='color:green'>已填写</td>";
+                                }
+                            }
+
+                            trHTML += "</tr>";
+                            tbL.append(trHTML);
+                        }
+                        $("#GenerateRotaryInformation").css("display", "none");
+                        $("#tbList tr:gt(0)").mouseover(function () {
+                            $(this).removeClass("listTableContentRow");
+                            $(this).addClass("listTableContentRowMouseOver");
+                        });
+
+                        $("#tbList tr:gt(0)").mouseout(function () {
+                            $(this).removeClass("listTableContentRowMouseOver");
+                            $(this).addClass("listTableContentRow");
+                        });
+                    }
+                },
+                error: function () {
+                    alert("系统繁忙，请联系管理员");
+                }
+            });
+        }
+
+        function ToWord() {
+            $.ajax({
+                cache: false,
+                type: "post",
+                url: '@Url.Action("ToWord")',
+                dataType: "text",//如果是json的话，不用eval()在解析
+                data: { Name: $("#Name").val(), RealName: $("#RealName").val(), TrainingBaseCode: $("#TrainingBaseCode").val(), TrainingBaseName: $("#TrainingBaseName").val() },
+                success: function (data) {
+                    if (data == "0") {
+                        alert("服务器没有模版");
+                    } else {
+                        window.location.href = "/RotaryWord/" + data;
+                    }
+                    
+                },
+                error: function () {
+                    alert("系统繁忙，请联系管理员");
+                }
+
+            });
+        }
+
+        function application(id) {
+
+            $.post('@Url.Action("OutDeptApplication")', { "Id": id }, function (data) {
+                if (data == "0") {
+                    alert("申请出科考核成功，请耐心等待");
+                    loadRotaryInfo(Name, TrainingBaseCode);
+                }
+                else {
+                    alert("系统繁忙，请联系管理员");
+                }
+                
+            });
+        }
+
+        function OpenModal(id) {
+            $.ajax({
+                cache: false,
+                type: "get",
+                url: '@Url.Action("InitialQuestionnaire")',
+                dataType: "text",//如果是json的话，不用eval()在解析
+                data: { id:id },
+                success: function (data) {
+                    var jsonArr = eval("(" + data + ")");
+                    $("#id").val('@Guid.NewGuid().ToString()');
+                    $("#RotaryInfoId").val(id);
+                    $("#training_base_name").val(jsonArr[0].TrainingBaseName);
+                    $("#training_base_code").val(jsonArr[0].TrainingBaseCode);
+                    $("#professional_base_name").val(jsonArr[0].ProfessionalBaseName);
+                    $("#professional_base_code").val(jsonArr[0].ProfessionalBaseCode);
+                    $("#rotary_dept_name").val(jsonArr[0].DeptName);
+                    $("#rotary_dept_code").val(jsonArr[0].DeptCode);
+                    $("#instructor").val(jsonArr[0].TeachersRealName);
+                    $("#writor").val(jsonArr[0].RealName);
+                    $("#register_date").val('@DateTime.Now.ToString("yyyy-MM-dd")');
+                },
+                error: function () {
+                    alert("系统繁忙，请联系管理员");
+                }
+
+            });
+        }
+
+        function submitQuestionnaire() {
+            if (!$('input:radio[name="one"]').is(":checked")) {
+                alert("第一项未选择");
+                return false;
+            }
+            if (!$('input:radio[name="two"]').is(":checked")) {
+                alert("第二项未选择");
+                return false;
+            }
+            if (!$('input:radio[name="three"]').is(":checked")) {
+                alert("第三项未选择");
+                return false;
+            }
+            if (!$('input:radio[name="four"]').is(":checked")) {
+                alert("第四项未选择");
+                return false;
+            }
+            if (!$('input:radio[name="five"]').is(":checked")) {
+                alert("第五项未选择");
+                return false;
+            }
+            if (!$('input:radio[name="six"]').is(":checked")) {
+                alert("第六项未选择");
+                return false;
+            }
+            if (!$('input:radio[name="seven"]').is(":checked")) {
+                alert("第七项未选择");
+                return false;
+            }
+            if (!$('input:radio[name="eight"]').is(":checked")) {
+                alert("第八项未选择");
+                return false;
+            }
+            if (!$('input:radio[name="nine"]').is(":checked")) {
+                alert("第九项未选择");
+                return false;
+            }
+            if (!$('input:radio[name="ten"]').is(":checked")) {
+                alert("第十项未选择");
+                return false;
+            } if (!$('input:radio[name="eleven"]').is(":checked")) {
+                alert("第十一项未选择");
+                return false;
+            } if (!$('input:radio[name="twelve"]').is(":checked")) {
+                alert("第十二项未选择");
+                return false;
+            }
+            if (!$('input:radio[name="thirteen"]').is(":checked")) {
+                alert("第十三项未选择");
+                return false;
+            } if ($("#advice").val()=="") {
+                alert("第十四项不能为空");
+                return false;
+            }
+
+            $("#form2").ajaxSubmit({
+                type: "post",
+                url: '@Url.Action("SubmitQuestionnaire")',
+                dataType: "text",
+                success: function (data) {
+                    if (data == "0") {
+                        alert("问卷调查提交成功");
+                        loadRotaryInfo(Name,TrainingBaseCode);
+                    } else {
+                        alert("问卷调查提交失败");
+                    }
+                }
+            });
+        }
+    </script>
+</head>
+<body style="text-align:center;">
+    @using (Html.BeginForm("", "", FormMethod.Post, new { id = "form1" }))
+{
+    <div id="generateList" style="margin:0 auto;text-align:center;">
+        <table style="margin:0 auto;">
+            <tr>
+                <td class='tbmout' onmouseover="this.className='tbmover'" onmouseout="this.className='tbmout'" onclick="ToWord();" style="height:16px;width:100px;">
+                    <img src="/images/imgs/export1.png" alt="" align="absmiddle" />导出轮转信息
+                </td>
+
+                <td class="detailTitle">姓名</td>
+                <td class="detailContent">
+                    <input type="text" id="RealName" name="RealName" readonly="readonly" style="height: 20px;width:150px;" value="@CommonFunc.FilterSpecialString(CommonFunc.SafeGetStringFromObj(ViewData["RealName"]))" />
+
+                    <input type="hidden" id="Name" name="Name" value="@CommonFunc.FilterSpecialString(CommonFunc.SafeGetStringFromObj(ViewData["Name"]))"/>
+                </td>
+                <td class="detailTitle">培训基地</td>
+                <td class="detailContent">
+                    <input type="text" id="TrainingBaseName" name="TrainingBaseName" readonly="readonly" style="height:20px;width:150px;" value="@CommonFunc.FilterSpecialString(CommonFunc.SafeGetStringFromObj(ViewData["TrainingBaseName"]))" />
+
+                    <input type="hidden" id="TrainingBaseCode" name="TrainingBaseCode" value="@CommonFunc.FilterSpecialString(CommonFunc.SafeGetStringFromObj(ViewData["TrainingBaseCode"]))" />
+                </td>
+                <td style="height:15px;">
+                    <input type="button" style="display:block;height:25px;width:100px;" id="GenerateRotaryInformation" name="GenerateRotaryInformation" value="生成轮转信息" onclick="generateRotaryInformation()" />
+
+                </td>
+            </tr>
+        </table>
+    </div>
+
+            <div id="listDiv">
+        <table id="tbList" class="listTable" cellspacing="1" cellpadding="0" style="width:100%">
+            <tr id="tr0" class="listTableTitleRow">
+                
+                <td>专业基地</td> 
+                <td>轮转科室</td>                                           
+                <td>轮转开始时间</td> 
+                <td>轮转结束时间</td>
+                <td>指导医师</td>
+                <td>状态</td>
+                <td>出科情况</td>
+                <td>申请</td>
+                <td>问卷</td>                
+            </tr>            
+      </table>
+    </div>
+}
+   @*-------------------------------------------------------学员对指导医师问卷调查表单------------------------------------------------------*@
+    <form id="form2">
+        <!-- 模态框（Modal） -->
+        <div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true" data-backdrop="static" style="display:none;height:500px;width:90%;margin-left:-45%;top:2%;">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    
+                    <div class="modal-body" style="max-height: 500px; min-height: 500px; padding: 1px;">                       
+                        <div align="center">
+                            <table width="100%" border="0" style="border-collapse: collapse" cellpadding="0" cellspacing="1" class="detailTable">
+                                <tr>
+                                    <td height="24" align="center" colspan="2" class="detailHead">学员对指导老师满意度调查反馈问卷</td>
+                                </tr>
+                                <tr>
+                                    <td width="100%" style="height: 25px; background-color: #e2ebfb;" colspan="2" align="center">
+                                        填表说明：<span style="height: 25px; color: red;">
+                                            1.根据自身真实意见选择答案<a style="padding-left: 2em;"></a>2.该问卷不记名
+                                        </span>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td colspan="3" align="center" style="background-color: #f1f3f5;">
+                                        <table>
+                                            <tr>
+                                                <td width="10%" class="detailTitle" style="height: 25px;">培训基地：<span style="color: #ff0000">*</span></td>
+                                                <td width="15%" class="detailContent" style="height: 25px;" align="left">
+                                                    <input type="hidden" id="id" name="id" />
+                                                    <input type="hidden" id="RotaryInfoId" name="RotaryInfoId" />
+                                                    <input type="text" id="training_base_name" name="training_base_name" readonly="readonly"/>
+                                                    <input type="hidden" id="training_base_code" name="training_base_code" />
+                                                </td>
+                                                <td width="10%" class="detailTitle" style="height: 25px;">专业基地：<span style="color: #ff0000">*</span></td>
+                                                <td width="15%" class="detailContent" style="height: 25px;" align="left">
+                                                    <input type="text" id="professional_base_name" name="professional_base_name" readonly="readonly"/>
+                                                    <input type="hidden" id="professional_base_code" name="professional_base_code" />
+                                                </td>
+                                                <td width="10%" class="detailTitle" style="height: 25px;">轮转科室：<span style="color: #ff0000">*</span></td>
+                                                <td width="15%" class="detailContent" style="height: 25px;" align="left">
+                                                    <input type="text" id="rotary_dept_name" name="rotary_dept_name" readonly="readonly" />
+                                                    <input type="hidden" id="rotary_dept_code" name="rotary_dept_code" />
+                                                </td>
+                                                <td width="10%" class="detailTitle" style="height: 25px;">指导医师：<span style="color: #ff0000">*</span></td>
+                                                <td width="15%" class="detailContent" style="height: 25px;" align="left">
+                                                    <input type="text" id="instructor" name="instructor" readonly="readonly" />
+                                                </td>
+                                            </tr>
+                                        </table>
+                                    </td>
+                                </tr>
+
+                                <tr>
+                                    <td align="center" colspan="2">
+                                        <table width="100%" border="1" style="border-collapse: collapse" cellpadding="0" cellspacing="1" class="detailTable">
+                                            <tr>
+                                                <td width="5%" style="height: 25px; background-color: #e2ebfb;" class="myDetailTitle">序号</td>
+                                                <td width="15%" style="height: 25px; background-color: #e2ebfb;" class="myDetailTitle">选择题目</td>
+                                                <td width="20%" style="height: 25px; background-color: #e2ebfb;" class="myDetailTitle">选项</td>
+
+                                            </tr>
+                                            <tr>
+                                                <td width="5%" style="height: 30px; background-color: #e2ebfb;" align="center">1</td>
+                                                <td width="15%" style="height: 30px; background-color: #e2ebfb;" align="left">您对指导老师的敬业精神：</td>
+                                                <td width="20%" class="detailContent" style="height: 30px;" align="left">
+
+                                                    <label><input type="radio" name="one" value="A" />A.非常满意</label>
+                                                    <label><input type="radio" name="one" value="B" />B.比较满意</label>
+                                                    <label><input type="radio" name="one" value="C" />C.一般</label>
+                                                    <label><input type="radio" name="one" value="D" />D.不满意</label>
+                                                    <label><input type="radio" name="one" value="E" />E.不清楚</label>
+                                                </td>
+                                            </tr>
+                                            <tr>
+                                                <td width="5%" style="height: 30px; background-color: #e2ebfb;" align="center">2</td>
+                                                <td width="15%" style="height: 30px; background-color: #e2ebfb;" align="left">您对指导老师严谨的工作作风：</td>
+                                                <td width="20%" class="detailContent" style="height: 30px;" align="left">
+                                                    <label><input type="radio" name="two" value="A" />A.非常满意</label>
+                                                    <label><input type="radio" name="two" value="B" />B.比较满意</label>
+                                                    <label><input type="radio" name="two" value="C" />C.一般</label>
+                                                    <label><input type="radio" name="two" value="D" />D.不满意</label>
+                                                    <label><input type="radio" name="two" value="E" />E.不清楚</label>
+                                                </td>
+                                            </tr>
+                                            <tr>
+                                                <td width="5%" style="height: 30px; background-color: #e2ebfb;" align="center">3</td>
+                                                <td width="15%" style="height: 30px; background-color: #e2ebfb;" align="left">您对指导老师基础知识理论水平：</td>
+                                                <td width="20%" class="detailContent" style="height: 30px;" align="left">
+                                                    <label><input type="radio" name="three" value="A" />A.非常满意</label>
+                                                    <label><input type="radio" name="three" value="B" />B.比较满意</label>
+                                                    <label><input type="radio" name="three" value="C" />C.一般</label>
+                                                    <label><input type="radio" name="three" value="D" />D.不满意</label>
+                                                    <label><input type="radio" name="three" value="E" />E.不清楚</label>
+                                                </td>
+                                            </tr>
+                                            <tr>
+                                                <td width="5%" style="height: 30px; background-color: #e2ebfb;" align="center">4</td>
+                                                <td width="15%" style="height: 30px; background-color: #e2ebfb;" align="left">您对指导老师临床疑难病症处理能力：</td>
+                                                <td width="20%" class="detailContent" style="height: 30px;" align="left">
+                                                    <label><input type="radio" name="four" value="A" />A.非常满意</label>
+                                                    <label><input type="radio" name="four" value="B" />B.比较满意</label>
+                                                    <label><input type="radio" name="four" value="C" />C.一般</label>
+                                                    <label><input type="radio" name="four" value="D" />D.不满意</label>
+                                                    <label><input type="radio" name="four" value="E" />E.不清楚</label>
+                                                </td>
+                                            </tr>
+                                            <tr>
+                                                <td width="5%" style="height: 30px; background-color: #e2ebfb;" align="center">5</td>
+                                                <td width="15%" style="height: 30px; background-color: #e2ebfb;" align="left">您对指导老师临床操作技能：</td>
+                                                <td width="20%" class="detailContent" style="height: 30px;" align="left">
+                                                    <label><input type="radio" name="five" value="A" />A.非常满意</label>
+                                                    <label><input type="radio" name="five" value="B" />B.比较满意</label>
+                                                    <label><input type="radio" name="five" value="C" />C.一般</label>
+                                                    <label><input type="radio" name="five" value="D" />D.不满意</label>
+                                                    <label><input type="radio" name="five" value="E" />E.不清楚</label>
+                                                </td>
+                                            </tr>
+                                            <tr>
+                                                <td width="5%" style="height: 30px; background-color: #e2ebfb;" align="center">6</td>
+                                                <td width="15%" style="height: 30px; background-color: #e2ebfb;" align="left">您对指导老师与患者、同事、被带教者之间交流能力：</td>
+                                                <td width="20%" class="detailContent" style="height: 30px;" align="left">
+                                                    <label><input type="radio" name="six" value="A" />A.非常满意</label>
+                                                    <label><input type="radio" name="six" value="B" />B.比较满意</label>
+                                                    <label><input type="radio" name="six" value="C" />C.一般</label>
+                                                    <label><input type="radio" name="six" value="D" />D.不满意</label>
+                                                    <label><input type="radio" name="six" value="E" />E.不清楚</label>
+                                                </td>
+                                            </tr>
+                                            <tr>
+                                                <td width="5%" style="height: 30px; background-color: #e2ebfb;" align="center">7</td>
+                                                <td width="15%" style="height: 30px; background-color: #e2ebfb;" align="left">您对指导老师对本学科进展的了解能力：</td>
+                                                <td width="20%" class="detailContent" style="height: 30px;" align="left">
+                                                    <label><input type="radio" name="seven" value="A" />A.非常满意</label>
+                                                    <label><input type="radio" name="seven" value="B" />B.比较满意</label>
+                                                    <label><input type="radio" name="seven" value="C" />C.一般</label>
+                                                    <label><input type="radio" name="seven" value="D" />D.不满意</label>
+                                                    <label><input type="radio" name="seven" value="E" />E.不清楚</label>
+                                                </td>
+                                            </tr>
+                                            <tr>
+                                                <td width="5%" style="height: 30px; background-color: #e2ebfb;" align="center">8</td>
+                                                <td width="15%" style="height: 30px; background-color: #e2ebfb;" align="left">您对指导老师对医疗纠纷的防范意识：</td>
+                                                <td width="20%" class="detailContent" style="height: 30px;" align="left">
+                                                    <label><input type="radio" name="eight" value="A" />A.非常满意</label>
+                                                    <label><input type="radio" name="eight" value="B" />B.比较满意</label>
+                                                    <label><input type="radio" name="eight" value="C" />C.一般</label>
+                                                    <label><input type="radio" name="eight" value="D" />D.不满意</label>
+                                                    <label><input type="radio" name="eight" value="E" />E.不清楚</label>
+                                                </td>
+                                            </tr>
+                                            <tr>
+                                                <td width="5%" style="height: 30px; background-color: #e2ebfb;" align="center">9</td>
+                                                <td width="15%" style="height: 30px; background-color: #e2ebfb;" align="left">您对指导老师科研能力：</td>
+                                                <td width="20%" class="detailContent" style="height: 30px;" align="left">
+                                                    <label><input type="radio" name="nine" value="A" />A.非常满意</label>
+                                                    <label><input type="radio" name="nine" value="B" />B.比较满意</label>
+                                                    <label><input type="radio" name="nine" value="C" />C.一般</label>
+                                                    <label><input type="radio" name="nine" value="D" />D.不满意</label>
+                                                    <label><input type="radio" name="nine" value="E" />E.不清楚</label>
+                                                </td>
+                                            </tr>
+                                            <tr>
+                                                <td width="5%" style="height: 30px; background-color: #e2ebfb;" align="center">10</td>
+                                                <td width="15%" style="height: 30px; background-color: #e2ebfb;" align="left">您对指导老师的外语运用水平：</td>
+                                                <td width="20%" class="detailContent" style="height: 30px;" align="left">
+                                                    <label><input type="radio" name="ten" value="A" />A.非常满意</label>
+                                                    <label><input type="radio" name="ten" value="B" />B.比较满意</label>
+                                                    <label><input type="radio" name="ten" value="C" />C.一般</label>
+                                                    <label><input type="radio" name="ten" value="D" />D.不满意</label>
+                                                    <label><input type="radio" name="ten" value="E" />E.不清楚</label>
+                                                </td>
+                                            </tr>
+                                            <tr>
+                                                <td width="5%" style="height: 30px; background-color: #e2ebfb;" align="center">11</td>
+                                                <td width="15%" style="height: 30px; background-color: #e2ebfb;" align="left">您对指导老师的带教经验：</td>
+                                                <td width="20%" class="detailContent" style="height: 30px;" align="left">
+                                                    <label><input type="radio" name="eleven" value="A" />A.非常满意</label>
+                                                    <label><input type="radio" name="eleven" value="B" />B.比较满意</label>
+                                                    <label><input type="radio" name="eleven" value="C" />C.一般</label>
+                                                    <label><input type="radio" name="eleven" value="D" />D.不满意</label>
+                                                    <label><input type="radio" name="eleven" value="E" />E.不清楚</label>
+                                                </td>
+                                            </tr>
+                                            <tr>
+                                                <td width="5%" style="height: 30px; background-color: #e2ebfb;" align="center">12</td>
+                                                <td width="15%" style="height: 30px; background-color: #e2ebfb;" align="left">您对指导老师带教表达能力：</td>
+                                                <td width="20%" class="detailContent" style="height: 30px;" align="left">
+                                                    <label><input type="radio" name="twelve" value="A" />A.非常满意</label>
+                                                    <label><input type="radio" name="twelve" value="B" />B.比较满意</label>
+                                                    <label><input type="radio" name="twelve" value="C" />C.一般</label>
+                                                    <label><input type="radio" name="twelve" value="D" />D.不满意</label>
+                                                    <label><input type="radio" name="twelve" value="E" />E.不清楚</label>
+                                                </td>
+                                            </tr>
+                                            <tr>
+                                                <td width="5%" style="height: 30px; background-color: #e2ebfb;" align="center">13</td>
+                                                <td width="15%" style="height: 30px; background-color: #e2ebfb;" align="left">您对指导老师的带教放手能力：</td>
+                                                <td width="20%" class="detailContent" style="height: 30px;" align="left">
+                                                    <label><input type="radio" name="thirteen" value="A" />A.非常满意</label>
+                                                    <label><input type="radio" name="thirteen" value="B" />B.比较满意</label>
+                                                    <label><input type="radio" name="thirteen" value="C" />C.一般</label>
+                                                    <label><input type="radio" name="thirteen" value="D" />D.不满意</label>
+                                                    <label><input type="radio" name="thirteen" value="E" />E.不清楚</label>
+                                                </td>
+                                            </tr>
+                                            <tr>
+                                                <td width="5%" style="height: 30px; background-color: #e2ebfb;" align="center">14</td>
+                                                <td width="15%" style="height: 30px; background-color: #e2ebfb;" align="left">您对我院指导老师及轮转科室的评价、建议和出科小结：</td>
+                                                <td width="20%" class="detailContent" align="left">
+                                                    <textarea id="advice" name="advice" class='animated' style="min-height:50px; max-height:120px;width:90%;"></textarea>
+                                                </td>
+                                            </tr>
+                                        </table>
+                                    </td>                        
+                                </tr>
+
+                                <tr>
+                                    <td width="20%" style="height: 30px; background-color: #e2ebfb;"></td>
+                                    <td width="20%" class="detailContent" style="height: 30px;">
+                                        <table>
+                                            <tr>
+                                                <td class="detailTitle" width="20%" style="height: 30px;"></td>
+                                                <td class="detailTitle" width="20%" style="height: 30px;">填写日期：<span style="color: #ff0000">*</span></td>
+                                                <td class="detailContent" width="20%" style="height: 30px;">
+                                                   
+                                                    <input type="text" id="register_date" name="register_date" readonly="readonly" />
+                                                    <input type="hidden" id="writor" name="writor" />
+                                                    
+                                                </td>
+                                            </tr>
+                                        </table>
+                                    </td>
+                                </tr>
+                               
+                            </table>
+                            
+                        </div>
+                    </div>
+                   
+                    <div class="modal-footer" style="margin: auto; text-align: center;">
+                        <input type="button" id="close" name="close" class="btn btn-default" data-dismiss="modal" value="关闭" />
+                        <input type="button" id="submit" name="submit" class="btn btn-success" value="提交" onclick="submitQuestionnaire();" />
+
+                    </div>
+                </div>
+                <!-- /.modal-content -->
+            </div>
+            <!-- /.modal -->
+        </div>
+
+    </form>
+   @*-------------------------------------------------------学员对指导医师问卷调查表单------------------------------------------------------*@
+
+</body>
+</html>
+

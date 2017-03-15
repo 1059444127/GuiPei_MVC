@@ -1,0 +1,177 @@
+﻿@{
+    Layout = null;
+}
+
+<!DOCTYPE html>
+
+<html>
+<head>
+    <meta name="viewport" content="width=device-width" />
+    <title>列表页</title> 
+    <script src="~/Scripts/jquery-1.8.2.min.js"></script>
+    <script src="~/Scripts/MyJs/global.js"></script>
+    <script src="~/Scripts/MyJs/MyPageList/PageList2.js"></script>
+    <link href="~/Content/MyCss/global.css" rel="stylesheet" />
+    <script type="text/javascript">
+        $(window).load(function () {
+            loadPageList(1);
+        });
+        function loadPageList(pi) {
+            $.post('@Url.Action("PageList")', { "pi": pi },
+              function (data) {
+                  var jsonArr = data;
+                  if (jsonArr.data == null) {
+                      $("#tbList tr:gt(0)").remove();
+                  } else {
+                      createRows(jsonArr.data, pi);
+                  }
+                  createPageBar($("#PageList"), pi, jsonArr.totalCount, jsonArr.pageCount);
+
+              });
+        }
+        function createRows(jsonArr) {
+            var tbL = $("#tbList");
+            $("#tbList tr:gt(0)").remove();
+            for (i = 0; i < jsonArr.length; i++) {
+                var trHTML = "<tr bgcolor='#FFFFFF'>";
+                trHTML += "<td colspan='6' style='height: 25px'>" + jsonArr[i].advice + "</td>";
+                trHTML += "</tr>";
+                tbL.append(trHTML);
+            }
+        }
+    </script>
+</head>
+<body>
+    <div>
+        <form id="form1">
+            <div align="center">
+                <div align="center">
+                    <span style="font-size:14px;font-weight:bold">表1 满意度调查反馈</span><br />
+                    <br />
+                </div>
+                <table style="width:90%;background-color:#CCCCCC;" align="center" cellpadding="0" cellspacing="1">
+                    <tr style="text-align:center">
+                        <td width="15%" style="height: 25px" align="center"><strong>调查项目</strong></td>
+                        <td width="10%" style="height: 25px" align="center"><strong>A.非常满意的比例（人数）</strong></td>
+                        <td width="10%" style="height: 25px" align="center"><strong>B.比较满意的比例（人数）</strong></td>
+                        <td width="10%" style="height: 25px" align="center"><strong>C.一般的比例（人数）</strong></td>
+                        <td width="10%" style="height: 25px" align="center"><strong>D.不满意的比例（人数）</strong></td>
+                        <td width="10%" style="height: 25px" align="center"><strong>E.不清楚的比例（人数）</strong></td>
+                    </tr>
+                    <tr style="text-align:center;background-color:#FFFFFF;">
+                        <td style="height: 25px">敬业精神</td>
+                        <td style="height: 25px"><strong>@(((double)ViewBag.one_a / ViewBag.sum).ToString("0.00%"))（@ViewBag.one_a）</strong></td>
+                        <td style="height: 25px"><strong>@(((double)ViewBag.one_b / ViewBag.sum).ToString("0.00%"))（@ViewBag.one_b）</strong></td>
+                        <td style="height: 25px"><strong>@(((double)ViewBag.one_c / ViewBag.sum).ToString("0.00%"))（@ViewBag.one_c）</strong></td>
+                        <td style="height: 25px"><strong>@(((double)ViewBag.one_d / ViewBag.sum).ToString("0.00%"))（@ViewBag.one_d）</strong></td>
+                        <td style="height: 25px"><strong>@(((double)ViewBag.one_e / ViewBag.sum).ToString("0.00%"))（@ViewBag.one_e）</strong></td>
+                    </tr>
+                    <tr style="text-align:center;background-color:#FFFFFF;">
+                        <td style="height: 25px">工作作风</td>
+                        <td style="height: 25px"><strong>@(((double)ViewBag.two_a / ViewBag.sum).ToString("0.00%"))（@ViewBag.two_a）</strong></td>
+                        <td style="height: 25px"><strong>@(((double)ViewBag.two_b / ViewBag.sum).ToString("0.00%"))（@ViewBag.two_b）</strong></td>
+                        <td style="height: 25px"><strong>@(((double)ViewBag.two_c / ViewBag.sum).ToString("0.00%"))（@ViewBag.two_c）</strong></td>
+                        <td style="height: 25px"><strong>@(((double)ViewBag.two_d / ViewBag.sum).ToString("0.00%"))（@ViewBag.two_d）</strong></td>
+                        <td style="height: 25px"><strong>@(((double)ViewBag.two_e / ViewBag.sum).ToString("0.00%"))（@ViewBag.two_e）</strong></td>
+                    </tr>
+                    <tr style="text-align:center;background-color:#FFFFFF;">
+                        <td style="height: 25px">基础知识理论水平</td>
+                        <td style="height: 25px"><strong>@(((double)ViewBag.three_a / ViewBag.sum).ToString("0.00%"))（@ViewBag.three_a）</strong></td>
+                        <td style="height: 25px"><strong>@(((double)ViewBag.three_b / ViewBag.sum).ToString("0.00%"))（@ViewBag.three_b）</strong></td>
+                        <td style="height: 25px"><strong>@(((double)ViewBag.three_c / ViewBag.sum).ToString("0.00%"))（@ViewBag.three_c）</strong></td>
+                        <td style="height: 25px"><strong>@(((double)ViewBag.three_d / ViewBag.sum).ToString("0.00%"))（@ViewBag.three_d）</strong></td>
+                        <td style="height: 25px"><strong>@(((double)ViewBag.three_e / ViewBag.sum).ToString("0.00%"))（@ViewBag.three_e）</strong></td>
+                    </tr>
+                    <tr style="text-align:center;background-color:#FFFFFF;">
+                        <td style="height: 25px">疑难病症处理能力</td>
+                        <td style="height: 25px"><strong>@(((double)ViewBag.four_a / ViewBag.sum).ToString("0.00%"))（@ViewBag.four_a）</strong></td>
+                        <td style="height: 25px"><strong>@(((double)ViewBag.four_b / ViewBag.sum).ToString("0.00%"))（@ViewBag.four_b）</strong></td>
+                        <td style="height: 25px"><strong>@(((double)ViewBag.four_c / ViewBag.sum).ToString("0.00%"))（@ViewBag.four_c）</strong></td>
+                        <td style="height: 25px"><strong>@(((double)ViewBag.four_d / ViewBag.sum).ToString("0.00%"))（@ViewBag.four_d）</strong></td>
+                        <td style="height: 25px"><strong>@(((double)ViewBag.four_e / ViewBag.sum).ToString("0.00%"))（@ViewBag.four_e）</strong></td>
+                    </tr>
+                    <tr style="text-align:center;background-color:#FFFFFF;">
+                        <td style="height: 25px">临床操作技能</td>
+                        <td style="height: 25px"><strong>@(((double)ViewBag.five_a / ViewBag.sum).ToString("0.00%"))（@ViewBag.five_a）</strong></td>
+                        <td style="height: 25px"><strong>@(((double)ViewBag.five_b / ViewBag.sum).ToString("0.00%"))（@ViewBag.five_b）</strong></td>
+                        <td style="height: 25px"><strong>@(((double)ViewBag.five_c / ViewBag.sum).ToString("0.00%"))（@ViewBag.five_c）</strong></td>
+                        <td style="height: 25px"><strong>@(((double)ViewBag.five_d / ViewBag.sum).ToString("0.00%"))（@ViewBag.five_d）</strong></td>
+                        <td style="height: 25px"><strong>@(((double)ViewBag.five_e / ViewBag.sum).ToString("0.00%"))（@ViewBag.five_e）</strong></td>
+                    </tr>
+                    <tr style="text-align:center;background-color:#FFFFFF;">
+                        <td style="height: 25px">与患者、同事等交流能力</td>
+                        <td style="height: 25px"><strong>@(((double)ViewBag.six_a / ViewBag.sum).ToString("0.00%"))（@ViewBag.six_a）</strong></td>
+                        <td style="height: 25px"><strong>@(((double)ViewBag.six_b / ViewBag.sum).ToString("0.00%"))（@ViewBag.six_b）</strong></td>
+                        <td style="height: 25px"><strong>@(((double)ViewBag.six_c / ViewBag.sum).ToString("0.00%"))（@ViewBag.six_c）</strong></td>
+                        <td style="height: 25px"><strong>@(((double)ViewBag.six_d / ViewBag.sum).ToString("0.00%"))（@ViewBag.six_d）</strong></td>
+                        <td style="height: 25px"><strong>@(((double)ViewBag.six_e / ViewBag.sum).ToString("0.00%"))（@ViewBag.six_e）</strong></td>
+                    </tr>
+                    <tr style="text-align:center;background-color:#FFFFFF;">
+                        <td style="height: 25px">本学科进展了解能力</td>
+                        <td style="height: 25px"><strong>@(((double)ViewBag.seven_a / ViewBag.sum).ToString("0.00%"))（@ViewBag.seven_a）</strong></td>
+                        <td style="height: 25px"><strong>@(((double)ViewBag.seven_b / ViewBag.sum).ToString("0.00%"))（@ViewBag.seven_b）</strong></td>
+                        <td style="height: 25px"><strong>@(((double)ViewBag.seven_c / ViewBag.sum).ToString("0.00%"))（@ViewBag.seven_c）</strong></td>
+                        <td style="height: 25px"><strong>@(((double)ViewBag.seven_d / ViewBag.sum).ToString("0.00%"))（@ViewBag.seven_d）</strong></td>
+                        <td style="height: 25px"><strong>@(((double)ViewBag.seven_e / ViewBag.sum).ToString("0.00%"))（@ViewBag.seven_e）</strong></td>
+                    </tr>
+                    <tr style="text-align:center;background-color:#FFFFFF;">
+                        <td style="height: 25px">医疗纠纷防范意识</td>
+                        <td style="height: 25px"><strong>@(((double)ViewBag.eight_a / ViewBag.sum).ToString("0.00%"))（@ViewBag.eight_a）</strong></td>
+                        <td style="height: 25px"><strong>@(((double)ViewBag.eight_b / ViewBag.sum).ToString("0.00%"))（@ViewBag.eight_b）</strong></td>
+                        <td style="height: 25px"><strong>@(((double)ViewBag.eight_c / ViewBag.sum).ToString("0.00%"))（@ViewBag.eight_c）</strong></td>
+                        <td style="height: 25px"><strong>@(((double)ViewBag.eight_d / ViewBag.sum).ToString("0.00%"))（@ViewBag.eight_d）</strong></td>
+                        <td style="height: 25px"><strong>@(((double)ViewBag.eight_e / ViewBag.sum).ToString("0.00%"))（@ViewBag.eight_e）</strong></td>
+                    </tr>
+                    <tr style="text-align:center;background-color:#FFFFFF;">
+                        <td style="height: 25px">科研能力</td>
+                        <td style="height: 25px"><strong>@(((double)ViewBag.nine_a / ViewBag.sum).ToString("0.00%"))（@ViewBag.nine_a）</strong></td>
+                        <td style="height: 25px"><strong>@(((double)ViewBag.nine_b / ViewBag.sum).ToString("0.00%"))（@ViewBag.nine_b）</strong></td>
+                        <td style="height: 25px"><strong>@(((double)ViewBag.nine_c / ViewBag.sum).ToString("0.00%"))（@ViewBag.nine_c）</strong></td>
+                        <td style="height: 25px"><strong>@(((double)ViewBag.nine_d / ViewBag.sum).ToString("0.00%"))（@ViewBag.nine_d）</strong></td>
+                        <td style="height: 25px"><strong>@(((double)ViewBag.nine_e / ViewBag.sum).ToString("0.00%"))（@ViewBag.nine_e）</strong></td>
+                    </tr>
+                    <tr style="text-align:center;background-color:#FFFFFF;">
+                        <td style="height: 25px">外语运用水平</td>
+                        <td style="height: 25px"><strong>@(((double)ViewBag.ten_a / ViewBag.sum).ToString("0.00%"))（@ViewBag.ten_a）</strong></td>
+                        <td style="height: 25px"><strong>@(((double)ViewBag.ten_b / ViewBag.sum).ToString("0.00%"))（@ViewBag.ten_b）</strong></td>
+                        <td style="height: 25px"><strong>@(((double)ViewBag.ten_c / ViewBag.sum).ToString("0.00%"))（@ViewBag.ten_c）</strong></td>
+                        <td style="height: 25px"><strong>@(((double)ViewBag.ten_d / ViewBag.sum).ToString("0.00%"))（@ViewBag.ten_d）</strong></td>
+                        <td style="height: 25px"><strong>@(((double)ViewBag.ten_e / ViewBag.sum).ToString("0.00%"))（@ViewBag.ten_e）</strong></td>
+                    </tr>
+                    <tr style="text-align:center;background-color:#FFFFFF;">
+                        <td style="height: 25px">带教经验</td>
+                        <td style="height: 25px"><strong>@(((double)ViewBag.eleven_a / ViewBag.sum).ToString("0.00%"))（@ViewBag.eleven_a）</strong></td>
+                        <td style="height: 25px"><strong>@(((double)ViewBag.eleven_b / ViewBag.sum).ToString("0.00%"))（@ViewBag.eleven_b）</strong></td>
+                        <td style="height: 25px"><strong>@(((double)ViewBag.eleven_c / ViewBag.sum).ToString("0.00%"))（@ViewBag.eleven_c）</strong></td>
+                        <td style="height: 25px"><strong>@(((double)ViewBag.eleven_d / ViewBag.sum).ToString("0.00%"))（@ViewBag.eleven_d）</strong></td>
+                        <td style="height: 25px"><strong>@(((double)ViewBag.eleven_e / ViewBag.sum).ToString("0.00%"))（@ViewBag.eleven_e）</strong></td>
+                    </tr>
+                    <tr style="text-align:center;background-color:#FFFFFF;">
+                        <td style="height: 25px">表达能力</td>
+                        <td style="height: 25px"><strong>@(((double)ViewBag.twelve_a / ViewBag.sum).ToString("0.00%"))（@ViewBag.twelve_a）</strong></td>
+                        <td style="height: 25px"><strong>@(((double)ViewBag.twelve_b / ViewBag.sum).ToString("0.00%"))（@ViewBag.twelve_b）</strong></td>
+                        <td style="height: 25px"><strong>@(((double)ViewBag.twelve_c / ViewBag.sum).ToString("0.00%"))（@ViewBag.twelve_c）</strong></td>
+                        <td style="height: 25px"><strong>@(((double)ViewBag.twelve_d / ViewBag.sum).ToString("0.00%"))（@ViewBag.twelve_d）</strong></td>
+                        <td style="height: 25px"><strong>@(((double)ViewBag.twelve_e / ViewBag.sum).ToString("0.00%"))（@ViewBag.twelve_e）</strong></td>
+                    </tr>
+                    <tr style="text-align:center;background-color:#FFFFFF;">
+                        <td style="height: 25px">放手能力</td>
+                        <td style="height: 25px"><strong>@(((double)ViewBag.thirteen_a / ViewBag.sum).ToString("0.00%"))（@ViewBag.thirteen_a）</strong></td>
+                        <td style="height: 25px"><strong>@(((double)ViewBag.thirteen_b / ViewBag.sum).ToString("0.00%"))（@ViewBag.thirteen_b）</strong></td>
+                        <td style="height: 25px"><strong>@(((double)ViewBag.thirteen_c / ViewBag.sum).ToString("0.00%"))（@ViewBag.thirteen_c）</strong></td>
+                        <td style="height: 25px"><strong>@(((double)ViewBag.thirteen_d / ViewBag.sum).ToString("0.00%"))（@ViewBag.thirteen_d）</strong></td>
+                        <td style="height: 25px"><strong>@(((double)ViewBag.thirteen_e / ViewBag.sum).ToString("0.00%"))（@ViewBag.thirteen_e）</strong></td>
+                    </tr>
+                </table>
+                <table style="width:90%;background-color:#CCCCCC;" align="center" cellpadding="0" cellspacing="1" id="tbList">
+                    <tr style="text-align:center" id="tr0">
+                        <td colspan="6" style="height: 25px" align="center"><strong>学员对我院指导老师及轮转科室的评价、建议和出科小结</strong></td>
+                    </tr>
+                </table> 
+                <div id="PageList" style="text-align:center;vertical-align:top; margin-top:10px; line-height:20px;"> </div>
+                  
+            </div> 
+        </form>
+    </div>
+</body>
+</html>

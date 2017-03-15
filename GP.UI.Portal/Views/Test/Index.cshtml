@@ -1,0 +1,72 @@
+﻿@{
+    Layout = null;
+}
+
+<!DOCTYPE html>
+
+<html>
+<head>
+    <meta name="viewport" content="width=device-width" />
+    <title>Index</title>
+    <script src="~/Scripts/jquery-1.8.2.min.js"></script>
+    <script src="~/Scripts/MyJs/extjs-4.2.1/ext-all.js"></script>
+    <script src="~/Scripts/MyJs/extjs-4.2.1/ext-lang-zh_CN.js"></script>
+    <link href="~/Scripts/MyJs/extjs-4.2.1/resources/css/ext-all.css" rel="stylesheet"/>
+    <script type="text/javascript">
+        //Ext.onReady(function () {
+        //    //创建一个窗体
+        //    var win = new Ext.Window({
+        //        width: 300,
+        //        height: 300,
+        //        items: [],
+        //        modal: true,
+        //        buttonAlign: 'center',
+        //        buttons: [{
+        //            text: '测试', id: 'btnTest', handler: function () {
+        //                Ext.Msg.show({
+        //                    title: '询问',
+        //                    msg: '您喜欢 ExtJs 吗？',
+        //                    fn: processResult,
+        //                    icon: Ext.Msg.QUESTION,
+        //                    buttons: Ext.Msg.YESNO
+        //                });
+        //            }
+        //        }
+        //        ]
+        //    });
+        //    win.show();
+        //});
+
+        ////询问对话框处理Handler
+        //function processResult(btn) {
+        //    Ext.Msg.alert('结果', btn);
+        //}
+        
+        //Ext.onReady(function () {
+        //    var data = '测试';
+        //        Ext.MessageBox.alert(data, '这是第一个ext');
+        //    });
+
+        Ext.onReady(function () {
+            Ext.create('Ext.window.Window', {
+                title: 'Hello',
+                height: 200,
+                width: 400,
+                layout: 'fit',
+                items: {  // Let's put an empty grid in just to illustrate fit layout
+                    xtype: 'grid',
+                    border: false,
+                    columns: [{ header: 'World' }],                 // 仅仅用来显示一个头部。没有数据，
+                    store: Ext.create('Ext.data.ArrayStore', {}) // 一个假的空的数据存储
+                }
+            }).show();
+            });
+
+    </script>
+</head>
+<body>
+    <div>
+        
+    </div>
+</body>
+</html>

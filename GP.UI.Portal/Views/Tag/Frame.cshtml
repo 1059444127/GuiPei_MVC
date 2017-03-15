@@ -1,0 +1,155 @@
+﻿@using GP.Model
+@model GP_Login
+@{
+    Layout = null;
+    string role = ViewData["role"].ToString();
+}
+
+<html>
+<head>
+    <meta name="viewport" content="width=device-width" />
+    <title>住院医师规范化培训系统</title>
+    <link href="~/Content/MyCss/global.css" rel="stylesheet" />
+    <script src="~/Scripts/MyJs/global.js"></script>
+
+    <script type="text/javascript">
+        function Quit() {
+            top.window.opener = top;
+            top.window.open('@Url.Action("Index","Login")','_self', '');
+        }
+    </script>
+</head>
+<body onscroll="no">
+    @using (Html.BeginForm(null, null, FormMethod.Post, new { id = "form1" }))
+    {
+        <div>
+            <table border="0" cellpadding="0" cellspacing="0" style="height: 100%; width: 100%;">
+                <tr>
+                    <td colspan="3" style="height: 30px;">
+                        <table width="100%" style="height: 38px;" border="0" cellpadding="0" cellspacing="0">
+                            <tr>
+                                <td colspan="2">
+                                    <table width="100%" border="0" cellspacing="0" cellpadding="0" style="background-color: #0354de;">
+                                        <tr>
+                                            <td width="290" rowspan="2" align="left" style="padding-left: 10px; background-color: white;">
+                                                <div style="color: blue; font-size: 20px; font-weight: bold;">住院医师规范化培训管理系统</div>
+                                            </td>
+                                            <td rowspan ="2" height="26" align="left" style="background-image: url(/images/main/top_logo_bg.gif);">
+                                                <div style="color: red; font-size: 16px; font-weight: bold;padding-top:5px;" >
+                                                    @Html.Label(Model.training_base_name)
+
+                                                    <a style="padding-left:2em;" />
+                                                    @if (role == "students")
+                                                    {
+                                                        @Html.Label("students", "学员")
+                                                    }
+                                                    else if (role == "teachers")
+                                                    {
+                                                        @Html.Label("teachers", "指导医师")
+                                                    }
+                                                    else if (role == "bases")
+                                                    {
+                                                        @Html.Label("bases", "专业基地负责人")
+                                                    }
+                                                    else
+                                                    {
+                                                        @Html.Label("managers", "管理员")
+                                                    }
+                                                    信息系统工作站
+                                                </div>
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td align="left" style="height: 5px; background-image: url(/images/main/top_logo_bg.gif); "></td>
+                                        </tr>
+                                    </table>
+                                </td>
+                            </tr>
+                        </table>
+                        <table width="100%" border="0" cellpadding="0" cellspacing="0">
+                            <tr>
+                                <td>
+                                    <table width="100%" border="0" cellpadding="0" cellspacing="0"  style="background-color: #0066cc;color:#fff;">
+                                        <tr>
+                                            <td align="right">
+
+                                                @if (role == "students")
+                                                {
+                                                    <span style="color: White;">当前用户:</span>
+                                                    @Html.Label(Model.real_name, new { style = "color:white" })
+                                                    <a style="color: White;" href="javascript:OpenTopWindow('@Url.Action("ModifyPassword", "Tag", new { name=Model.name})',500,140);">(修改密码)</a>
+                                                    <span>&nbsp;</span>
+                                                    <span style="color: White;">日期:</span>
+                                                    @Html.Label(DateTime.Now.ToString("yyyy年MM月dd日"), new { style = "color:white" })
+                                                    <span>&nbsp;</span>
+                                                    <a style="color: White;" href="#" onclick="Quit()">安全退出</a>
+                                                    <span>&nbsp;</span>
+                                                }
+                                                else if (role == "teachers")
+                                                {
+                                                    <span style="color: White;">当前用户:</span>
+                                                    @Html.Label(Model.real_name, new { style = "color:white" })
+                                                    <a style="color: White;" href="javascript:OpenTopWindow('@Url.Action("ModifyPassword", "Tag", new { name = Model.name })',500,140);">(修改密码)</a>
+                                                    <span>&nbsp;</span>
+                                                    @Html.Label(Model.professional_base_name, new { style="color:white"})
+                                                    <span>&nbsp;</span>
+                                                    @Html.Label(Model.dept_name, new { style="color:white"})
+                                                    <span>&nbsp;</span>
+                                                    <span style="color: White;">日期:</span>
+                                                    @Html.Label(DateTime.Now.ToString("yyyy年MM月dd日"), new { style = "color:white" })
+                                                    <span>&nbsp;</span>
+                                                    <a style="color: White;" href="#" onclick="Quit()">安全退出</a>
+                                                    <span>&nbsp;</span>
+                                                }else if (role == "bases")
+                                                {
+                                                    <span style="color: White;">当前用户:</span>
+                                                    @Html.Label(Model.real_name, new { style = "color:white" })
+                                                    <a style="color: White;" href="javascript:OpenTopWindow('@Url.Action("ModifyPassword", "Tag", new { name = Model.name })',500,140);">(修改密码)</a>
+                                                    <span>&nbsp;</span>
+                                                    @Html.Label(Model.professional_base_name, new { style="color:white"})
+                                                    
+                                                    <span>&nbsp;</span>
+                                                    <span style="color: White;">日期:</span>
+                                                    @Html.Label(DateTime.Now.ToString("yyyy年MM月dd日"), new { style = "color:white" })
+                                                    <span>&nbsp;</span>
+                                                    <a style="color: White;" href="#" onclick="Quit()">安全退出</a>
+                                                    <span>&nbsp;</span>
+                                                }
+                                                else
+                                                {
+                                                    <span style="color: White;">当前用户:</span>
+                                                    @Html.Label(Model.real_name, new { style = "color:white" })
+                                                    <a style="color: White;" href="javascript:OpenTopWindow('@Url.Action("ModifyPassword", "Tag", new { name=Model.name})',500,140);">(修改密码)</a>
+                                                    <span>&nbsp;</span>
+                                                    <span style="color: White;">日期:</span>
+                                                    @Html.Label(DateTime.Now.ToString("yyyy年MM月dd日"), new { style = "color:white" })
+                                                    <span>&nbsp;</span>
+                                                    <a style="color: White;" href="#" onclick="Quit()">安全退出</a>
+                                                    <span>&nbsp;</span>
+                                                }
+
+                                            </td>
+                                        </tr>
+                                    </table>
+                                </td>
+                            </tr>
+                        </table>
+                    </td>
+                </tr>
+                <tr>
+                    <td align="center" valign="middle" id="frmTitle" style="width:169px;">
+                        <iframe frameborder="0" id="LeftFrame" scrolling="auto" src='@Url.Action("LeftFrame", "Tag", new { role=role})' style="height: 100%; visibility: inherit; width: 165px; z-index: 2"></iframe>
+                    </td>
+                    <td style="width: 100%">
+                        <iframe frameborder="0" id="MainFrame" name="MainFrame" scrolling="no" src='@Url.Action("MainFrame")' style="height: 100%; visibility: inherit; width: 100%; z-index: 1"></iframe>
+                    </td>
+                </tr>
+            </table>
+
+        </div>
+    }
+
+
+</body>
+</html>
+

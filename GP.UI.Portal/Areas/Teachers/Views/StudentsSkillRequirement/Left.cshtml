@@ -1,0 +1,68 @@
+﻿@{
+    Layout = null;
+}
+
+<!DOCTYPE html>
+
+<html>
+<head>
+    <meta name="viewport" content="width=device-width" />
+    <title>左侧页</title>
+    <script src="~/Scripts/jquery-1.8.2.min.js"></script>
+    <script src="~/Scripts/MyJs/global.js"></script>
+    <script src="~/Scripts/MyJs/My97DatePicker/WdatePicker.js"></script>
+    <link href="~/Content/MyCss/global.css" rel="stylesheet" />
+
+</head>
+<body>
+    @using (Ajax.BeginForm("LeftToList", "StudentsSkillRequirement", new AjaxOptions() { HttpMethod = "Post" }, new { id = "form1", target = "frmright" }))
+    {
+        <div>
+            <table cellpadding="1" cellspacing="1" class="qryTable">
+
+                <tr>
+                    <td>学员姓名：</td>
+                </tr>
+                <tr>
+                    <td>
+                        <input type="text" id="StudentsRealName" name="StudentsRealName" style="height:17px;width:150px;" />
+                    </td>
+                </tr>
+                <tr>
+                    <td>技能名称：</td>
+                </tr>
+                <tr>
+                    <td>
+                        <input type="text" id="SkillName" name="SkillName" style="height:17px;width:150px;" />
+                    </td>
+                </tr>
+                <tr>
+                    <td>要求例数：</td>
+                </tr>
+                <tr>
+                    <td>
+                        <input type="text" id="RequiredNum" name="RequiredNum" style="height:17px;width:150px;" />
+                    </td>
+                </tr>
+                <tr>
+                    <td>掌握程度：</td>
+                </tr>
+                <tr>
+                    <td>
+                        <input type="text" id="MasterDegree" name="MasterDegree" style="height:17px;width:150px;" />
+                    </td>
+                </tr>    
+
+                <tr>
+                    <td>
+                        <div style="text-align:center;">
+                            <input type="submit" id="Submit1" name="Submit2" value="查询" style="width:50px;height:25px;" />
+                            <input type="button" name="Submit2" value="重置" class="button" onclick="form1.reset();" style="width:50px;height:25px;" />
+                        </div>
+                    </td>
+                </tr>
+            </table>
+        </div>
+    }
+</body>
+</html>

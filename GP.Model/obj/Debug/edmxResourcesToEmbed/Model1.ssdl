@@ -1,0 +1,883 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Schema Namespace="GP_SystemModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2008" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+  <EntityType Name="GP_AdviceFeedback">
+    <Key>
+      <PropertyRef Name="Id" />
+    </Key>
+    <Property Name="Id" Type="nvarchar" MaxLength="50" Nullable="false" />
+    <Property Name="StudentsRealName" Type="nvarchar" MaxLength="50" />
+    <Property Name="StudentsName" Type="nvarchar" MaxLength="50" />
+    <Property Name="TrainingBaseCode" Type="nvarchar" MaxLength="50" />
+    <Property Name="TrainingBaseName" Type="nvarchar" MaxLength="50" />
+    <Property Name="ProfessionalBaseCode" Type="nvarchar" MaxLength="50" />
+    <Property Name="ProfessionalBaseName" Type="nvarchar" MaxLength="50" />
+    <Property Name="DeptCode" Type="nvarchar" MaxLength="50" />
+    <Property Name="DeptName" Type="nvarchar" MaxLength="500" />
+    <Property Name="RegisterDate" Type="nvarchar" MaxLength="50" />
+    <Property Name="Writor" Type="nvarchar" MaxLength="50" />
+    <Property Name="TeacherCheck" Type="nvarchar" MaxLength="50" />
+    <Property Name="KzrCheck" Type="nvarchar" MaxLength="50" />
+    <Property Name="BaseCheck" Type="nvarchar" MaxLength="50" />
+    <Property Name="ManagerCheck" Type="nvarchar" MaxLength="50" />
+    <Property Name="TeacherId" Type="nvarchar" MaxLength="50" />
+    <Property Name="TeacherName" Type="nvarchar" MaxLength="50" />
+    <Property Name="Comment" Type="nvarchar" MaxLength="1000" />
+    <Property Name="FeedbackInformation" Type="nvarchar" MaxLength="2000" />
+    <Property Name="ManagerReply" Type="nvarchar" MaxLength="2000" />
+    <Property Name="ManagerName" Type="nvarchar" MaxLength="50" />
+    <Property Name="ManagerDate" Type="nvarchar" MaxLength="50" />
+    <Property Name="ManagerHandle" Type="nvarchar" MaxLength="50" />
+  </EntityType>
+  <EntityType Name="GP_Area">
+    <Key>
+      <PropertyRef Name="id" />
+    </Key>
+    <Property Name="id" Type="nvarchar" MaxLength="50" Nullable="false" />
+    <Property Name="areaid" Type="nvarchar" MaxLength="50" />
+    <Property Name="area" Type="nvarchar" MaxLength="50" />
+    <Property Name="father" Type="nvarchar" MaxLength="50" />
+  </EntityType>
+  <EntityType Name="GP_AttendanceManagement">
+    <Key>
+      <PropertyRef Name="Id" />
+    </Key>
+    <Property Name="Id" Type="nvarchar" MaxLength="50" Nullable="false" />
+    <Property Name="StudentsRealName" Type="nvarchar" MaxLength="50" />
+    <Property Name="StudentsName" Type="nvarchar" MaxLength="50" />
+    <Property Name="TrainingBaseCode" Type="nvarchar" MaxLength="50" />
+    <Property Name="TrainingBaseName" Type="nvarchar" MaxLength="50" />
+    <Property Name="ProfessionalBaseCode" Type="nvarchar" MaxLength="50" />
+    <Property Name="ProfessionalBaseName" Type="nvarchar" MaxLength="50" />
+    <Property Name="DeptCode" Type="nvarchar" MaxLength="50" />
+    <Property Name="DeptName" Type="nvarchar" MaxLength="500" />
+    <Property Name="RegisterDate" Type="nvarchar" MaxLength="50" />
+    <Property Name="Writor" Type="nvarchar" MaxLength="50" />
+    <Property Name="TeacherCheck" Type="nvarchar" MaxLength="50" />
+    <Property Name="KzrCheck" Type="nvarchar" MaxLength="50" />
+    <Property Name="BaseCheck" Type="nvarchar" MaxLength="50" />
+    <Property Name="ManagerCheck" Type="nvarchar" MaxLength="50" />
+    <Property Name="TeacherId" Type="nvarchar" MaxLength="50" />
+    <Property Name="TeacherName" Type="nvarchar" MaxLength="50" />
+    <Property Name="Comment" Type="nvarchar" MaxLength="1000" />
+    <Property Name="AttendanceCategory" Type="nvarchar" MaxLength="50" />
+    <Property Name="FirstDate" Type="nvarchar" MaxLength="50" />
+    <Property Name="LastDate" Type="nvarchar" MaxLength="2000" />
+    <Property Name="Days" Type="nvarchar" MaxLength="50" />
+    <Property Name="Details" Type="nvarchar" MaxLength="2000" />
+  </EntityType>
+  <EntityType Name="GP_BigMedicalRecords2">
+    <Key>
+      <PropertyRef Name="Id" />
+    </Key>
+    <Property Name="Id" Type="nvarchar" MaxLength="50" Nullable="false" />
+    <Property Name="StudentsRealName" Type="nvarchar" MaxLength="50" />
+    <Property Name="StudentsName" Type="nvarchar" MaxLength="50" />
+    <Property Name="TrainingBaseCode" Type="nvarchar" MaxLength="50" />
+    <Property Name="TrainingBaseName" Type="nvarchar" MaxLength="50" />
+    <Property Name="ProfessionalBaseCode" Type="nvarchar" MaxLength="50" />
+    <Property Name="ProfessionalBaseName" Type="nvarchar" MaxLength="50" />
+    <Property Name="DeptCode" Type="nvarchar" MaxLength="50" />
+    <Property Name="DeptName" Type="nvarchar" MaxLength="500" />
+    <Property Name="RegisterDate" Type="nvarchar" MaxLength="50" />
+    <Property Name="Writor" Type="nvarchar" MaxLength="50" />
+    <Property Name="TeacherCheck" Type="nvarchar" MaxLength="50" />
+    <Property Name="KzrCheck" Type="nvarchar" MaxLength="50" />
+    <Property Name="BaseCheck" Type="nvarchar" MaxLength="50" />
+    <Property Name="ManagerCheck" Type="nvarchar" MaxLength="50" />
+    <Property Name="TeachersName" Type="nvarchar" MaxLength="50" />
+    <Property Name="TeachersRealName" Type="nvarchar" MaxLength="50" />
+    <Property Name="PatientNo" Type="nvarchar" MaxLength="50" />
+    <Property Name="InhospitalNo" Type="nvarchar" MaxLength="50" />
+    <Property Name="PatientName" Type="nvarchar" MaxLength="50" />
+    <Property Name="Sex" Type="nvarchar" MaxLength="50" />
+    <Property Name="Age" Type="nvarchar" MaxLength="50" />
+    <Property Name="Job" Type="nvarchar" MaxLength="500" />
+    <Property Name="Nation" Type="nvarchar" MaxLength="50" />
+    <Property Name="Marriage" Type="nvarchar" MaxLength="50" />
+    <Property Name="BirthProvinceCode" Type="nvarchar" MaxLength="50" />
+    <Property Name="BirthProvinceName" Type="nvarchar" MaxLength="50" />
+    <Property Name="BirthCityCode" Type="nvarchar" MaxLength="50" />
+    <Property Name="BirthCityName" Type="nvarchar" MaxLength="50" />
+    <Property Name="BirthAreaCode" Type="nvarchar" MaxLength="50" />
+    <Property Name="BirthAreaName" Type="nvarchar" MaxLength="50" />
+    <Property Name="BirthDetailAddress" Type="nvarchar" MaxLength="500" />
+    <Property Name="Company" Type="nvarchar" MaxLength="50" />
+    <Property Name="NowProvinceCode" Type="nvarchar" MaxLength="50" />
+    <Property Name="NowProvinceName" Type="nvarchar" MaxLength="50" />
+    <Property Name="NowCityCode" Type="nvarchar" MaxLength="50" />
+    <Property Name="NowCityName" Type="nvarchar" MaxLength="50" />
+    <Property Name="NowAreaCode" Type="nvarchar" MaxLength="50" />
+    <Property Name="NowAreaName" Type="nvarchar" MaxLength="50" />
+    <Property Name="NowDetailAddress" Type="nvarchar" MaxLength="500" />
+    <Property Name="Phone" Type="nvarchar" MaxLength="50" />
+    <Property Name="InhospitalDate" Type="nvarchar" MaxLength="50" />
+    <Property Name="RecordDate" Type="nvarchar" MaxLength="50" />
+    <Property Name="MedicalHistorySpeaker" Type="nvarchar" MaxLength="50" />
+    <Property Name="ReliableDegree" Type="nvarchar" MaxLength="50" />
+    <Property Name="ZhuSu" Type="nvarchar" MaxLength="2000" />
+    <Property Name="XBShi_FBQK" Type="nvarchar" MaxLength="2000" />
+    <Property Name="XBShi_ZYZZ" Type="nvarchar" MaxLength="2000" />
+    <Property Name="XBShi_BSZZ" Type="nvarchar" MaxLength="2000" />
+    <Property Name="XBShi_FBYL" Type="nvarchar" MaxLength="2000" />
+    <Property Name="XBShi_FBYLY" Type="nvarchar" MaxLength="2000" />
+    <Property Name="XBShi_QT" Type="nvarchar" MaxLength="2000" />
+    <Property Name="JWShi_YBJK" Type="nvarchar" MaxLength="2000" />
+    <Property Name="JWShi_JBS" Type="nvarchar" MaxLength="2000" />
+    <Property Name="JWShi_CRBS" Type="nvarchar" MaxLength="2000" />
+    <Property Name="JWShi_YFJZ" Type="nvarchar" MaxLength="2000" />
+    <Property Name="JWShi_SSWS" Type="nvarchar" MaxLength="2000" />
+    <Property Name="JWShi_SXS" Type="nvarchar" MaxLength="2000" />
+    <Property Name="JWShi_SWYW" Type="nvarchar" MaxLength="2000" />
+    <Property Name="JWShi_QT" Type="nvarchar" MaxLength="2000" />
+    <Property Name="XTHGu_HXXT" Type="nvarchar" MaxLength="2000" />
+    <Property Name="XTHGu_XHXT" Type="nvarchar" MaxLength="2000" />
+    <Property Name="XTHGu_XHuaXT" Type="nvarchar" MaxLength="2000" />
+    <Property Name="XTHGu_MNXT" Type="nvarchar" MaxLength="2000" />
+    <Property Name="XTHGu_ZXXT" Type="nvarchar" MaxLength="2000" />
+    <Property Name="XTHGu_NFMXT" Type="nvarchar" MaxLength="2000" />
+    <Property Name="XTHGu_SJJS" Type="nvarchar" MaxLength="2000" />
+    <Property Name="XTHGu_JRGG" Type="nvarchar" MaxLength="2000" />
+    <Property Name="GRShi" Type="nvarchar" MaxLength="2000" />
+    <Property Name="HYShi" Type="nvarchar" MaxLength="2000" />
+    <Property Name="YJShi" Type="nvarchar" MaxLength="2000" />
+    <Property Name="SYShi" Type="nvarchar" MaxLength="2000" />
+    <Property Name="JZShi" Type="nvarchar" MaxLength="2000" />
+    <Property Name="TGJCha_SMTZ_TiWen" Type="nvarchar" MaxLength="50" />
+    <Property Name="TGJCha_SMTZ_MaiBo" Type="nvarchar" MaxLength="50" />
+    <Property Name="TGJCha_SMTZ_HuXi" Type="nvarchar" MaxLength="50" />
+    <Property Name="TGJCha_SMTZ_XueYa1" Type="nvarchar" MaxLength="50" />
+    <Property Name="TGJCha_SMTZ_XueYa2" Type="nvarchar" MaxLength="50" />
+    <Property Name="TGJCha_SMTZ_TiZhong" Type="nvarchar" MaxLength="50" />
+    <Property Name="TGJCha_YBZK" Type="nvarchar" MaxLength="2000" />
+    <Property Name="TGJCha_PFNM" Type="nvarchar" MaxLength="2000" />
+    <Property Name="TGJCha_LBJ" Type="nvarchar" MaxLength="2000" />
+    <Property Name="TGJCha_TB_TL" Type="nvarchar" MaxLength="2000" />
+    <Property Name="TGJCha_TB_Y" Type="nvarchar" MaxLength="2000" />
+    <Property Name="TGJCha_TB_E" Type="nvarchar" MaxLength="2000" />
+    <Property Name="TGJCha_TB_B" Type="nvarchar" MaxLength="2000" />
+    <Property Name="TGJCha_TB_KQ" Type="nvarchar" MaxLength="2000" />
+    <Property Name="TGJCha_JB" Type="nvarchar" MaxLength="2000" />
+    <Property Name="TGJCha_XB" Type="nvarchar" MaxLength="2000" />
+    <Property Name="TGJCha_F_SZ" Type="nvarchar" MaxLength="2000" />
+    <Property Name="TGJCha_F_CZ" Type="nvarchar" MaxLength="2000" />
+    <Property Name="TGJCha_F_KZ" Type="nvarchar" MaxLength="2000" />
+    <Property Name="TGJCha_F_TZ" Type="nvarchar" MaxLength="2000" />
+    <Property Name="TGJCha_X_SZ" Type="nvarchar" MaxLength="2000" />
+    <Property Name="TGJCha_X_CZ" Type="nvarchar" MaxLength="2000" />
+    <Property Name="TGJCha_X_KZ" Type="nvarchar" MaxLength="2000" />
+    <Property Name="TGJCha_X_TZ" Type="nvarchar" MaxLength="2000" />
+    <Property Name="TGJCha_NDM" Type="nvarchar" MaxLength="2000" />
+    <Property Name="TGJCha_ZWXG" Type="nvarchar" MaxLength="2000" />
+    <Property Name="TGJCha_FB_FW" Type="nvarchar" MaxLength="2000" />
+    <Property Name="TGJCha_FB_SZ" Type="nvarchar" MaxLength="2000" />
+    <Property Name="TGJCha_FB_CZ" Type="nvarchar" MaxLength="2000" />
+    <Property Name="TGJCha_FB_GZ" Type="nvarchar" MaxLength="2000" />
+    <Property Name="TGJCha_FB_DN" Type="nvarchar" MaxLength="2000" />
+    <Property Name="TGJCha_FB_PZ" Type="nvarchar" MaxLength="2000" />
+    <Property Name="TGJCha_FB_ShenZ" Type="nvarchar" MaxLength="2000" />
+    <Property Name="TGJCha_FB_PG" Type="nvarchar" MaxLength="2000" />
+    <Property Name="TGJCha_FB_KZ" Type="nvarchar" MaxLength="2000" />
+    <Property Name="TGJCha_FB_TZ" Type="nvarchar" MaxLength="2000" />
+    <Property Name="TGJCha_GMZC" Type="nvarchar" MaxLength="2000" />
+    <Property Name="TGJCha_WSZQ" Type="nvarchar" MaxLength="2000" />
+    <Property Name="TGJCha_JZ" Type="nvarchar" MaxLength="2000" />
+    <Property Name="TGJCha_SZ" Type="nvarchar" MaxLength="2000" />
+    <Property Name="TGJCha_SJFS_SLFS" Type="nvarchar" MaxLength="2000" />
+    <Property Name="TGJCha_SJFS_BLFS" Type="nvarchar" MaxLength="2000" />
+    <Property Name="TGJCha_SJFS_NMCJ" Type="nvarchar" MaxLength="2000" />
+    <Property Name="TGJCha_SJFS_QT" Type="nvarchar" MaxLength="2000" />
+    <Property Name="TGJCha_ZKQK" Type="nvarchar" MaxLength="2000" />
+    <Property Name="SYSQXie" Type="nvarchar" MaxLength="2000" />
+    <Property Name="BLZYao" Type="nvarchar" MaxLength="2000" />
+    <Property Name="CBZDuan" Type="nvarchar" MaxLength="2000" />
+    <Property Name="RYZDuan" Type="nvarchar" MaxLength="2000" />
+    <Property Name="XZZDuan" Type="nvarchar" MaxLength="2000" />
+    <Property Name="Reviewer" Type="nvarchar" MaxLength="50" />
+    <Property Name="ReviewerDate" Type="nvarchar" MaxLength="50" />
+    <Property Name="RecordsStatus" Type="nvarchar" MaxLength="50" />
+    <Property Name="Tag1" Type="nvarchar" MaxLength="50" />
+    <Property Name="Tag2" Type="nvarchar" MaxLength="50" />
+    <Property Name="Tag3" Type="nvarchar" MaxLength="50" />
+  </EntityType>
+  <EntityType Name="GP_City">
+    <Key>
+      <PropertyRef Name="id" />
+    </Key>
+    <Property Name="id" Type="nvarchar" MaxLength="50" Nullable="false" />
+    <Property Name="cityid" Type="nvarchar" MaxLength="50" />
+    <Property Name="city" Type="nvarchar" MaxLength="50" />
+    <Property Name="father" Type="nvarchar" MaxLength="50" />
+  </EntityType>
+  <EntityType Name="GP_DeptManagement">
+    <Key>
+      <PropertyRef Name="Id" />
+    </Key>
+    <Property Name="Id" Type="nvarchar" MaxLength="50" Nullable="false" />
+    <Property Name="ManagersName" Type="nvarchar" MaxLength="50" />
+    <Property Name="ManagersRealName" Type="nvarchar" MaxLength="50" />
+    <Property Name="TrainingBaseCode" Type="nvarchar" MaxLength="50" />
+    <Property Name="TrainingBaseName" Type="nvarchar" MaxLength="50" />
+    <Property Name="ProfessionalBaseCode" Type="nvarchar" MaxLength="50" />
+    <Property Name="ProfessionalBaseName" Type="nvarchar" MaxLength="50" />
+    <Property Name="DeptCode" Type="nvarchar" MaxLength="50" />
+    <Property Name="DeptName" Type="nvarchar" MaxLength="500" />
+    <Property Name="DeptTime" Type="nvarchar" MaxLength="50" />
+    <Property Name="RealTime" Type="nvarchar" MaxLength="50" />
+    <Property Name="IsRequired" Type="nvarchar" MaxLength="50" />
+    <Property Name="TrainingTime" Type="nvarchar" MaxLength="50" />
+    <Property Name="TotalDeptTime" Type="nvarchar" MaxLength="50" />
+    <Property Name="TotalRealTime" Type="nvarchar" MaxLength="50" />
+    <Property Name="Tag1" Type="nvarchar" MaxLength="50" />
+    <Property Name="Tag2" Type="nvarchar" MaxLength="50" />
+    <Property Name="Tag3" Type="nvarchar" MaxLength="50" />
+  </EntityType>
+  <EntityType Name="GP_Disease_Register">
+    <Key>
+      <PropertyRef Name="id" />
+    </Key>
+    <Property Name="id" Type="nvarchar" MaxLength="50" Nullable="false" />
+    <Property Name="professional_base_code" Type="nvarchar" MaxLength="50" />
+    <Property Name="professional_base_name" Type="nvarchar" MaxLength="50" />
+    <Property Name="dept_code" Type="nvarchar" MaxLength="50" />
+    <Property Name="dept_name" Type="nvarchar" MaxLength="500" />
+    <Property Name="dept_time" Type="nvarchar" MaxLength="50" />
+    <Property Name="is_required" Type="nvarchar" MaxLength="50" />
+    <Property Name="disease_code" Type="nvarchar" MaxLength="50" />
+    <Property Name="disease_name" Type="nvarchar" MaxLength="500" />
+    <Property Name="required_num" Type="nvarchar" MaxLength="50" />
+    <Property Name="master_degree" Type="nvarchar" MaxLength="50" />
+    <Property Name="manage_patient" Type="nvarchar" MaxLength="50" />
+    <Property Name="full_manage" Type="nvarchar" MaxLength="50" />
+    <Property Name="outpatient" Type="nvarchar" MaxLength="50" />
+  </EntityType>
+  <EntityType Name="GP_Disease_Register2">
+    <Key>
+      <PropertyRef Name="id" />
+    </Key>
+    <Property Name="id" Type="nvarchar" MaxLength="50" Nullable="false" />
+    <Property Name="students_name" Type="nvarchar" MaxLength="50" />
+    <Property Name="students_real_name" Type="nvarchar" MaxLength="50" />
+    <Property Name="training_base_name" Type="nvarchar" MaxLength="50" />
+    <Property Name="professional_base_name" Type="nvarchar" MaxLength="50" />
+    <Property Name="dept_name" Type="nvarchar" MaxLength="500" />
+    <Property Name="disease_name" Type="nvarchar" MaxLength="500" />
+    <Property Name="required_num" Type="nvarchar" MaxLength="50" />
+    <Property Name="real_num" Type="nvarchar" MaxLength="50" />
+    <Property Name="master_degree" Type="nvarchar" MaxLength="50" />
+    <Property Name="patient_name" Type="nvarchar" MaxLength="50" />
+    <Property Name="case_num" Type="nvarchar" MaxLength="50" />
+    <Property Name="main_diagnosis" Type="nvarchar" MaxLength="1000" />
+    <Property Name="secondary_diagnosis" Type="nvarchar" MaxLength="1000" />
+    <Property Name="is_charge" Type="nvarchar" MaxLength="50" />
+    <Property Name="is_rescue" Type="nvarchar" MaxLength="50" />
+    <Property Name="cure_measure" Type="nvarchar" MaxLength="1000" />
+    <Property Name="visit_date" Type="nvarchar" MaxLength="50" />
+    <Property Name="comment" Type="nvarchar" MaxLength="1000" />
+    <Property Name="writor" Type="nvarchar" MaxLength="50" />
+    <Property Name="register_date" Type="nvarchar" MaxLength="50" />
+    <Property Name="training_base_code" Type="nvarchar" MaxLength="50" />
+    <Property Name="professional_base_code" Type="nvarchar" MaxLength="50" />
+    <Property Name="dept_code" Type="nvarchar" MaxLength="50" />
+    <Property Name="teacher_check" Type="nvarchar" MaxLength="50" />
+    <Property Name="kzr_check" Type="nvarchar" MaxLength="50" />
+    <Property Name="base_check" Type="nvarchar" MaxLength="50" />
+    <Property Name="manage_check" Type="nvarchar" MaxLength="50" />
+    <Property Name="condition" Type="nvarchar" MaxLength="50" />
+    <Property Name="TeacherId" Type="nvarchar" MaxLength="50" />
+    <Property Name="TeacherName" Type="nvarchar" MaxLength="50" />
+  </EntityType>
+  <EntityType Name="GP_Login">
+    <Key>
+      <PropertyRef Name="name" />
+    </Key>
+    <Property Name="id" Type="nvarchar" MaxLength="50" />
+    <Property Name="name" Type="nvarchar" MaxLength="50" Nullable="false" />
+    <Property Name="password" Type="nvarchar" MaxLength="50" />
+    <Property Name="real_name" Type="nvarchar" MaxLength="50" />
+    <Property Name="training_base_name" Type="nvarchar" MaxLength="50" />
+    <Property Name="training_base_code" Type="nvarchar" MaxLength="50" />
+    <Property Name="professional_base_name" Type="nvarchar" MaxLength="50" />
+    <Property Name="professional_base_code" Type="nvarchar" MaxLength="50" />
+    <Property Name="dept_name" Type="nvarchar" MaxLength="50" />
+    <Property Name="dept_code" Type="nvarchar" MaxLength="50" />
+    <Property Name="type" Type="nvarchar" MaxLength="50" />
+    <Property Name="LoginState" Type="nvarchar" MaxLength="50" />
+    <Property Name="RegisterDate" Type="nvarchar" MaxLength="50" />
+  </EntityType>
+  <EntityType Name="GP_NeiKeOption">
+    <Key>
+      <PropertyRef Name="Id" />
+    </Key>
+    <Property Name="SubjectName" Type="nvarchar" MaxLength="50" />
+    <Property Name="Question" Type="nvarchar" MaxLength="2000" />
+    <Property Name="OptionA" Type="nvarchar" MaxLength="1000" />
+    <Property Name="OptionB" Type="nvarchar" MaxLength="1000" />
+    <Property Name="OptionC" Type="nvarchar" MaxLength="1000" />
+    <Property Name="OptionD" Type="nvarchar" MaxLength="1000" />
+    <Property Name="OptionE" Type="nvarchar" MaxLength="1000" />
+    <Property Name="CorrectAnswer" Type="nvarchar" MaxLength="50" />
+    <Property Name="SubjectCode" Type="nvarchar" MaxLength="50" />
+    <Property Name="QuestionType" Type="nvarchar" MaxLength="50" />
+    <Property Name="Tag1" Type="nvarchar" MaxLength="50" />
+    <Property Name="Id" Type="nvarchar" MaxLength="50" Nullable="false" />
+    <Property Name="Tag2" Type="nvarchar" MaxLength="50" />
+    <Property Name="Tag3" Type="nvarchar" MaxLength="50" />
+  </EntityType>
+  <EntityType Name="GP_OutDept_Exam">
+    <Key>
+      <PropertyRef Name="id" />
+    </Key>
+    <Property Name="id" Type="nvarchar" MaxLength="50" Nullable="false" />
+    <Property Name="students_name" Type="nvarchar" MaxLength="50" />
+    <Property Name="students_real_name" Type="nvarchar" MaxLength="50" />
+    <Property Name="sex" Type="nvarchar" MaxLength="50" />
+    <Property Name="training_base_code" Type="nvarchar" MaxLength="50" />
+    <Property Name="training_base_name" Type="nvarchar" MaxLength="50" />
+    <Property Name="high_education" Type="nvarchar" MaxLength="50" />
+    <Property Name="high_education_time" Type="nvarchar" MaxLength="50" />
+    <Property Name="professional_base_code" Type="nvarchar" MaxLength="50" />
+    <Property Name="professional_base_name" Type="nvarchar" MaxLength="50" />
+    <Property Name="rotary_dept_code" Type="nvarchar" MaxLength="50" />
+    <Property Name="rotary_dept_name" Type="nvarchar" MaxLength="50" />
+    <Property Name="rotary_begin_time" Type="nvarchar" MaxLength="50" />
+    <Property Name="rotary_end_time" Type="nvarchar" MaxLength="50" />
+    <Property Name="instructor" Type="nvarchar" MaxLength="50" />
+    <Property Name="instructor_tag" Type="nvarchar" MaxLength="50" />
+    <Property Name="kqqk" Type="nvarchar" MaxLength="10" />
+    <Property Name="gztd" Type="nvarchar" MaxLength="10" />
+    <Property Name="ydyf" Type="nvarchar" MaxLength="10" />
+    <Property Name="llsp" Type="nvarchar" MaxLength="10" />
+    <Property Name="zdzx" Type="nvarchar" MaxLength="10" />
+    <Property Name="blsx" Type="nvarchar" MaxLength="10" />
+    <Property Name="clbrnl" Type="nvarchar" MaxLength="10" />
+    <Property Name="sjcznl" Type="nvarchar" MaxLength="10" />
+    <Property Name="czjn" Type="nvarchar" MaxLength="10" />
+    <Property Name="zdsp" Type="nvarchar" MaxLength="10" />
+    <Property Name="djnl" Type="nvarchar" MaxLength="10" />
+    <Property Name="total_score" Type="nvarchar" MaxLength="10" />
+    <Property Name="instructor_date" Type="nvarchar" MaxLength="50" />
+    <Property Name="is_pass" Type="nvarchar" MaxLength="10" />
+    <Property Name="dept_manager" Type="nvarchar" MaxLength="50" />
+    <Property Name="dept_manager_date" Type="nvarchar" MaxLength="10" />
+  </EntityType>
+  <EntityType Name="GP_Professional_Base">
+    <Key>
+      <PropertyRef Name="id" />
+    </Key>
+    <Property Name="id" Type="nvarchar" MaxLength="50" Nullable="false" />
+    <Property Name="professional_base_code" Type="nvarchar" MaxLength="50" />
+    <Property Name="professional_base_name" Type="nvarchar" MaxLength="50" />
+  </EntityType>
+  <EntityType Name="GP_Professional_Base_Dept">
+    <Key>
+      <PropertyRef Name="id" />
+    </Key>
+    <Property Name="id" Type="nvarchar" MaxLength="50" Nullable="false" />
+    <Property Name="professional_base_code" Type="nvarchar" MaxLength="50" />
+    <Property Name="professional_base_name" Type="nvarchar" MaxLength="50" />
+    <Property Name="dept_code" Type="nvarchar" MaxLength="50" />
+    <Property Name="dept_name" Type="nvarchar" MaxLength="500" />
+    <Property Name="dept_time" Type="nvarchar" MaxLength="50" />
+    <Property Name="is_required" Type="nvarchar" MaxLength="50" />
+  </EntityType>
+  <EntityType Name="GP_Province">
+    <Key>
+      <PropertyRef Name="id" />
+    </Key>
+    <Property Name="id" Type="nvarchar" MaxLength="50" Nullable="false" />
+    <Property Name="provinceid" Type="nvarchar" MaxLength="50" />
+    <Property Name="province" Type="nvarchar" MaxLength="50" />
+  </EntityType>
+  <EntityType Name="GP_Questionnaire">
+    <Key>
+      <PropertyRef Name="id" />
+    </Key>
+    <Property Name="id" Type="nvarchar" MaxLength="50" Nullable="false" />
+    <Property Name="training_base_name" Type="nvarchar" MaxLength="50" />
+    <Property Name="training_base_code" Type="nvarchar" MaxLength="50" />
+    <Property Name="professional_base_name" Type="nvarchar" MaxLength="50" />
+    <Property Name="professional_base_code" Type="nvarchar" MaxLength="50" />
+    <Property Name="rotary_dept_name" Type="nvarchar" MaxLength="50" />
+    <Property Name="rotary_dept_code" Type="nvarchar" MaxLength="50" />
+    <Property Name="instructor" Type="nvarchar" MaxLength="50" />
+    <Property Name="one" Type="nvarchar" MaxLength="10" />
+    <Property Name="two" Type="nvarchar" MaxLength="10" />
+    <Property Name="three" Type="nvarchar" MaxLength="10" />
+    <Property Name="four" Type="nvarchar" MaxLength="10" />
+    <Property Name="five" Type="nvarchar" MaxLength="10" />
+    <Property Name="six" Type="nvarchar" MaxLength="10" />
+    <Property Name="seven" Type="nvarchar" MaxLength="10" />
+    <Property Name="eight" Type="nvarchar" MaxLength="10" />
+    <Property Name="nine" Type="nvarchar" MaxLength="10" />
+    <Property Name="ten" Type="nvarchar" MaxLength="10" />
+    <Property Name="eleven" Type="nvarchar" MaxLength="10" />
+    <Property Name="twelve" Type="nvarchar" MaxLength="10" />
+    <Property Name="thirteen" Type="nvarchar" MaxLength="10" />
+    <Property Name="advice" Type="nvarchar" MaxLength="500" />
+    <Property Name="register_date" Type="nvarchar" MaxLength="50" />
+    <Property Name="writor" Type="nvarchar" MaxLength="50" />
+  </EntityType>
+  <EntityType Name="GP_ReleaseNews">
+    <Key>
+      <PropertyRef Name="Id" />
+    </Key>
+    <Property Name="Id" Type="nvarchar" MaxLength="50" Nullable="false" />
+    <Property Name="TrainingBaseCode" Type="nvarchar" MaxLength="50" />
+    <Property Name="TrainingBaseName" Type="nvarchar" MaxLength="50" />
+    <Property Name="ManagersName" Type="nvarchar" MaxLength="50" />
+    <Property Name="ManagersRealName" Type="nvarchar" MaxLength="50" />
+    <Property Name="Writor" Type="nvarchar" MaxLength="50" />
+    <Property Name="RegisterDate" Type="nvarchar" MaxLength="50" />
+    <Property Name="NewsTitle" Type="nvarchar" MaxLength="500" />
+    <Property Name="NewsContent" Type="nvarchar" MaxLength="2000" />
+    <Property Name="FilePath" Type="nvarchar" MaxLength="500" />
+    <Property Name="FileName" Type="nvarchar" MaxLength="500" />
+    <Property Name="Students" Type="nvarchar" MaxLength="50" />
+    <Property Name="Teachers" Type="nvarchar" MaxLength="50" />
+    <Property Name="Bases" Type="nvarchar" MaxLength="50" />
+    <Property Name="Tag1" Type="nvarchar" MaxLength="50" />
+    <Property Name="Tag2" Type="nvarchar" MaxLength="50" />
+    <Property Name="Tag3" Type="nvarchar" MaxLength="50" />
+  </EntityType>
+  <EntityType Name="GP_RotarySchedule">
+    <Key>
+      <PropertyRef Name="Id" />
+    </Key>
+    <Property Name="Id" Type="nvarchar" MaxLength="50" Nullable="false" />
+    <Property Name="ManagersName" Type="nvarchar" MaxLength="50" />
+    <Property Name="ManagersRealName" Type="nvarchar" MaxLength="50" />
+    <Property Name="TrainingBaseCode" Type="nvarchar" MaxLength="50" />
+    <Property Name="TrainingBaseName" Type="nvarchar" MaxLength="50" />
+    <Property Name="ProfessionalBaseCode" Type="nvarchar" MaxLength="50" />
+    <Property Name="ProfessionalBaseName" Type="nvarchar" MaxLength="50" />
+    <Property Name="BeginTimeList" Type="nvarchar" MaxLength="2000" />
+    <Property Name="EndTimeList" Type="nvarchar" MaxLength="2000" />
+    <Property Name="DaysList" Type="nvarchar" MaxLength="2000" />
+    <Property Name="DeptCodeList" Type="nvarchar" MaxLength="2000" />
+    <Property Name="DeptNameList" Type="nvarchar" MaxLength="2000" />
+    <Property Name="SchemeOrder" Type="int" />
+    <Property Name="RotaryBeginTime" Type="nvarchar" MaxLength="50" />
+    <Property Name="RotaryEndTime" Type="nvarchar" MaxLength="50" />
+    <Property Name="TotalRealTime" Type="nvarchar" MaxLength="50" />
+    <Property Name="TrainingTime" Type="nvarchar" MaxLength="50" />
+    <Property Name="Tag1" Type="nvarchar" MaxLength="50" />
+    <Property Name="Tag2" Type="nvarchar" MaxLength="50" />
+    <Property Name="Tag3" Type="nvarchar" MaxLength="50" />
+  </EntityType>
+  <EntityType Name="GP_SchoolInformation">
+    <Key>
+      <PropertyRef Name="Id" />
+    </Key>
+    <Property Name="Id" Type="nvarchar" MaxLength="50" Nullable="false" />
+    <Property Name="ProvinceName" Type="nvarchar" MaxLength="50" />
+    <Property Name="SchoolName" Type="nvarchar" MaxLength="50" />
+    <Property Name="ManageUnit" Type="nvarchar" MaxLength="50" />
+    <Property Name="CityName" Type="nvarchar" MaxLength="50" />
+    <Property Name="SchoolLevel" Type="nvarchar" MaxLength="50" />
+    <Property Name="SchoolType" Type="nvarchar" MaxLength="50" />
+    <Property Name="Tag1" Type="nvarchar" MaxLength="50" />
+  </EntityType>
+  <EntityType Name="GP_SkillRequirement">
+    <Key>
+      <PropertyRef Name="Id" />
+    </Key>
+    <Property Name="Id" Type="nvarchar" MaxLength="50" Nullable="false" />
+    <Property Name="ProfessionalBaseCode" Type="nvarchar" MaxLength="50" />
+    <Property Name="ProfessionalBaseName" Type="nvarchar" MaxLength="50" />
+    <Property Name="DeptCode" Type="nvarchar" MaxLength="50" />
+    <Property Name="DeptName" Type="nvarchar" MaxLength="500" />
+    <Property Name="DeptTime" Type="nvarchar" MaxLength="50" />
+    <Property Name="IsRequired" Type="nvarchar" MaxLength="50" />
+    <Property Name="SkillCode" Type="nvarchar" MaxLength="50" />
+    <Property Name="SkillName" Type="nvarchar" MaxLength="500" />
+    <Property Name="RequiredNum" Type="nvarchar" MaxLength="50" />
+    <Property Name="MasterDegree" Type="nvarchar" MaxLength="50" />
+    <Property Name="Tag1" Type="nvarchar" MaxLength="50" />
+    <Property Name="Tag2" Type="nvarchar" MaxLength="50" />
+    <Property Name="Tag3" Type="nvarchar" MaxLength="50" />
+  </EntityType>
+  <EntityType Name="GP_SkillRequirement2">
+    <Key>
+      <PropertyRef Name="Id" />
+    </Key>
+    <Property Name="Id" Type="nvarchar" MaxLength="50" Nullable="false" />
+    <Property Name="StudentsRealName" Type="nvarchar" MaxLength="50" />
+    <Property Name="StudentsName" Type="nvarchar" MaxLength="50" />
+    <Property Name="TrainingBaseCode" Type="nvarchar" MaxLength="50" />
+    <Property Name="TrainingBaseName" Type="nvarchar" MaxLength="50" />
+    <Property Name="ProfessionalBaseCode" Type="nvarchar" MaxLength="50" />
+    <Property Name="ProfessionalBaseName" Type="nvarchar" MaxLength="50" />
+    <Property Name="DeptCode" Type="nvarchar" MaxLength="50" />
+    <Property Name="DeptName" Type="nvarchar" MaxLength="500" />
+    <Property Name="RegisterDate" Type="nvarchar" MaxLength="50" />
+    <Property Name="Writor" Type="nvarchar" MaxLength="50" />
+    <Property Name="TeacherCheck" Type="nvarchar" MaxLength="50" />
+    <Property Name="KzrCheck" Type="nvarchar" MaxLength="50" />
+    <Property Name="BaseCheck" Type="nvarchar" MaxLength="50" />
+    <Property Name="ManagerCheck" Type="nvarchar" MaxLength="50" />
+    <Property Name="TeacherId" Type="nvarchar" MaxLength="50" />
+    <Property Name="TeacherName" Type="nvarchar" MaxLength="50" />
+    <Property Name="Comment" Type="nvarchar" MaxLength="1000" />
+    <Property Name="SkillName" Type="nvarchar" MaxLength="500" />
+    <Property Name="RequiredNum" Type="nvarchar" MaxLength="50" />
+    <Property Name="RealNum" Type="nvarchar" MaxLength="50" />
+    <Property Name="MasterDegree" Type="nvarchar" MaxLength="50" />
+    <Property Name="PatientName" Type="nvarchar" MaxLength="50" />
+    <Property Name="CaseNum" Type="nvarchar" MaxLength="50" />
+    <Property Name="IsOk" Type="nvarchar" MaxLength="50" />
+    <Property Name="OperateDate" Type="nvarchar" MaxLength="50" />
+  </EntityType>
+  <EntityType Name="GP_StudentsPersonalInformation2">
+    <Key>
+      <PropertyRef Name="Id" />
+    </Key>
+    <Property Name="Id" Type="nvarchar" MaxLength="50" Nullable="false" />
+    <Property Name="Name" Type="nvarchar" MaxLength="50" />
+    <Property Name="RealName" Type="nvarchar" MaxLength="50" />
+    <Property Name="ImagePath" Type="nvarchar" MaxLength="500" />
+    <Property Name="Sex" Type="nvarchar" MaxLength="50" />
+    <Property Name="IdNumber" Type="nvarchar" MaxLength="50" />
+    <Property Name="DateBirth" Type="nvarchar" MaxLength="50" />
+    <Property Name="MinZu" Type="nvarchar" MaxLength="50" />
+    <Property Name="Telephon" Type="nvarchar" MaxLength="50" />
+    <Property Name="Mail" Type="nvarchar" MaxLength="50" />
+    <Property Name="BkSchool" Type="nvarchar" MaxLength="50" />
+    <Property Name="BkMajor" Type="nvarchar" MaxLength="50" />
+    <Property Name="GraduationTime" Type="nvarchar" MaxLength="50" />
+    <Property Name="HighEducation" Type="nvarchar" MaxLength="50" />
+    <Property Name="HighSchool" Type="nvarchar" MaxLength="50" />
+    <Property Name="HighMajor" Type="nvarchar" MaxLength="50" />
+    <Property Name="HighEducationTime" Type="nvarchar" MaxLength="50" />
+    <Property Name="IdentityType" Type="nvarchar" MaxLength="50" />
+    <Property Name="SendUnit" Type="nvarchar" MaxLength="50" />
+    <Property Name="TrainingBaseCode" Type="nvarchar" MaxLength="50" />
+    <Property Name="TrainingBaseName" Type="nvarchar" MaxLength="50" />
+    <Property Name="CollaborativeUnit" Type="nvarchar" MaxLength="50" />
+    <Property Name="ProfessionalBaseCode" Type="nvarchar" MaxLength="50" />
+    <Property Name="ProfessionalBaseName" Type="nvarchar" MaxLength="50" />
+    <Property Name="TrainingTime" Type="nvarchar" MaxLength="50" />
+    <Property Name="PlanTrainingTime" Type="nvarchar" MaxLength="50" />
+    <Property Name="Tag1" Type="nvarchar" MaxLength="50" />
+    <Property Name="Tag2" Type="nvarchar" MaxLength="50" />
+    <Property Name="Tag3" Type="nvarchar" MaxLength="50" />
+    <Property Name="TrainingBaseProvinceCode" Type="nvarchar" MaxLength="50" />
+    <Property Name="TrainingBaseProvinceName" Type="nvarchar" MaxLength="50" />
+  </EntityType>
+  <EntityType Name="GP_StudentsRotaryInformation2">
+    <Key>
+      <PropertyRef Name="Id" />
+    </Key>
+    <Property Name="Id" Type="nvarchar" MaxLength="50" Nullable="false" />
+    <Property Name="Name" Type="nvarchar" MaxLength="50" />
+    <Property Name="RealName" Type="nvarchar" MaxLength="50" />
+    <Property Name="TrainingBaseCode" Type="nvarchar" MaxLength="50" />
+    <Property Name="TrainingBaseName" Type="nvarchar" MaxLength="50" />
+    <Property Name="ProfessionalBaseCode" Type="nvarchar" MaxLength="50" />
+    <Property Name="ProfessionalBaseName" Type="nvarchar" MaxLength="50" />
+    <Property Name="DeptCode" Type="nvarchar" MaxLength="50" />
+    <Property Name="DeptName" Type="nvarchar" MaxLength="500" />
+    <Property Name="RotaryBeginTime" Type="nvarchar" MaxLength="50" />
+    <Property Name="RotaryEndTime" Type="nvarchar" MaxLength="50" />
+    <Property Name="RotaryDays" Type="nvarchar" MaxLength="50" />
+    <Property Name="RotaryOrder" Type="int" />
+    <Property Name="TeachersName" Type="nvarchar" MaxLength="50" />
+    <Property Name="TeachersRealName" Type="nvarchar" MaxLength="50" />
+    <Property Name="OutdeptStatus" Type="nvarchar" MaxLength="50" />
+    <Property Name="OutdeptApplication" Type="nvarchar" MaxLength="50" />
+    <Property Name="QuestionnaireStatus" Type="nvarchar" MaxLength="50" />
+    <Property Name="Tag1" Type="nvarchar" MaxLength="50" />
+    <Property Name="Tag2" Type="nvarchar" MaxLength="50" />
+    <Property Name="Tag3" Type="nvarchar" MaxLength="50" />
+  </EntityType>
+  <EntityType Name="GP_Teachers_Appoint_Information">
+    <Key>
+      <PropertyRef Name="id" />
+    </Key>
+    <Property Name="id" Type="nvarchar" MaxLength="50" Nullable="false" />
+    <Property Name="teachers_name" Type="nvarchar" MaxLength="50" />
+    <Property Name="teachers_real_name" Type="nvarchar" MaxLength="50" />
+    <Property Name="appoint_begin_time" Type="nvarchar" MaxLength="50" />
+    <Property Name="appoint_end_time" Type="nvarchar" MaxLength="50" />
+    <Property Name="training_content" Type="nvarchar" MaxLength="2000" />
+    <Property Name="total_num" Type="nvarchar" MaxLength="50" />
+    <Property Name="class_num" Type="nvarchar" MaxLength="50" />
+    <Property Name="each_class_num" Type="nvarchar" MaxLength="50" />
+    <Property Name="comment" Type="nvarchar" MaxLength="2000" />
+    <Property Name="is_pass" Type="nvarchar" MaxLength="50" />
+    <Property Name="type" Type="nvarchar" MaxLength="50" />
+    <Property Name="training_base_code" Type="nvarchar" MaxLength="50" />
+    <Property Name="training_base_name" Type="nvarchar" MaxLength="50" />
+    <Property Name="professional_base_code" Type="nvarchar" MaxLength="50" />
+    <Property Name="professional_base_name" Type="nvarchar" MaxLength="50" />
+    <Property Name="dept_code" Type="nvarchar" MaxLength="50" />
+    <Property Name="dept_name" Type="nvarchar" MaxLength="50" />
+    <Property Name="register_date" Type="nvarchar" MaxLength="50" />
+    <Property Name="FileName" Type="nvarchar" MaxLength="100" />
+    <Property Name="FilePath" Type="nvarchar" MaxLength="500" />
+    <Property Name="IsReceive" Type="nvarchar" MaxLength="50" />
+  </EntityType>
+  <EntityType Name="GP_TeachingActivities">
+    <Key>
+      <PropertyRef Name="Id" />
+    </Key>
+    <Property Name="Id" Type="nvarchar" MaxLength="50" Nullable="false" />
+    <Property Name="StudentsRealName" Type="nvarchar" MaxLength="50" />
+    <Property Name="StudentsName" Type="nvarchar" MaxLength="50" />
+    <Property Name="TrainingBaseCode" Type="nvarchar" MaxLength="50" />
+    <Property Name="TrainingBaseName" Type="nvarchar" MaxLength="50" />
+    <Property Name="ProfessionalBaseCode" Type="nvarchar" MaxLength="50" />
+    <Property Name="ProfessionalBaseName" Type="nvarchar" MaxLength="50" />
+    <Property Name="DeptCode" Type="nvarchar" MaxLength="50" />
+    <Property Name="DeptName" Type="nvarchar" MaxLength="500" />
+    <Property Name="RegisterDate" Type="nvarchar" MaxLength="50" />
+    <Property Name="Writor" Type="nvarchar" MaxLength="50" />
+    <Property Name="TeacherCheck" Type="nvarchar" MaxLength="50" />
+    <Property Name="KzrCheck" Type="nvarchar" MaxLength="50" />
+    <Property Name="BaseCheck" Type="nvarchar" MaxLength="50" />
+    <Property Name="ManagerCheck" Type="nvarchar" MaxLength="50" />
+    <Property Name="TeachersName" Type="nvarchar" MaxLength="50" />
+    <Property Name="TeachersRealName" Type="nvarchar" MaxLength="50" />
+    <Property Name="ActivityForm" Type="nvarchar" MaxLength="50" />
+    <Property Name="ActivityContent" Type="nvarchar" MaxLength="2000" />
+    <Property Name="MainSpeaker" Type="nvarchar" MaxLength="50" />
+    <Property Name="ClassHour" Type="nvarchar" MaxLength="50" />
+    <Property Name="ActivityDate" Type="nvarchar" MaxLength="100" />
+    <Property Name="Comment" Type="nvarchar" MaxLength="1000" />
+    <Property Name="Tag1" Type="nvarchar" MaxLength="50" />
+    <Property Name="Tag2" Type="nvarchar" MaxLength="50" />
+    <Property Name="Tag3" Type="nvarchar" MaxLength="50" />
+  </EntityType>
+  <EntityType Name="GP_TiKuResult">
+    <Key>
+      <PropertyRef Name="Id" />
+    </Key>
+    <Property Name="Id" Type="nvarchar" MaxLength="50" Nullable="false" />
+    <Property Name="StudentsName" Type="nvarchar" MaxLength="50" />
+    <Property Name="StudentsRealName" Type="nvarchar" MaxLength="50" />
+    <Property Name="TrainingBaseCode" Type="nvarchar" MaxLength="50" />
+    <Property Name="TrainingBaseName" Type="nvarchar" MaxLength="50" />
+    <Property Name="SubjectName" Type="nvarchar" MaxLength="50" />
+    <Property Name="SubjectCode" Type="nvarchar" MaxLength="50" />
+    <Property Name="TotalScore" Type="nvarchar" MaxLength="50" />
+    <Property Name="TotalNum" Type="nvarchar" MaxLength="50" />
+    <Property Name="UndoNum" Type="nvarchar" MaxLength="50" />
+    <Property Name="CorrectNum" Type="nvarchar" MaxLength="50" />
+    <Property Name="ErrorNum" Type="nvarchar" MaxLength="50" />
+    <Property Name="RegisterDate" Type="nvarchar" MaxLength="50" />
+    <Property Name="Tag1" Type="nvarchar" MaxLength="50" />
+    <Property Name="Tag2" Type="nvarchar" MaxLength="50" />
+    <Property Name="Tag3" Type="nvarchar" MaxLength="50" />
+  </EntityType>
+  <!--生成过程中发现错误:
+警告 6002: 表/视图“GP_System.dbo.RotaryInformationJoin”未定义主键。已推断出该键，并将定义创建为只读的表/视图。-->
+  <EntityType Name="RotaryInformationJoin">
+    <Key>
+      <PropertyRef Name="Id" />
+    </Key>
+    <Property Name="Id" Type="nvarchar" MaxLength="50" Nullable="false" />
+    <Property Name="Name" Type="nvarchar" MaxLength="50" />
+    <Property Name="RealName" Type="nvarchar" MaxLength="50" />
+    <Property Name="TrainingBaseCode" Type="nvarchar" MaxLength="50" />
+    <Property Name="TrainingBaseName" Type="nvarchar" MaxLength="50" />
+    <Property Name="ProfessionalBaseCode" Type="nvarchar" MaxLength="50" />
+    <Property Name="ProfessionalBaseName" Type="nvarchar" MaxLength="50" />
+    <Property Name="DeptCode" Type="nvarchar" MaxLength="50" />
+    <Property Name="DeptName" Type="nvarchar" MaxLength="500" />
+    <Property Name="RotaryBeginTime" Type="nvarchar" MaxLength="50" />
+    <Property Name="RotaryEndTime" Type="nvarchar" MaxLength="50" />
+    <Property Name="RotaryDays" Type="nvarchar" MaxLength="50" />
+    <Property Name="RotaryOrder" Type="int" />
+    <Property Name="TeachersName" Type="nvarchar" MaxLength="50" />
+    <Property Name="TeachersRealName" Type="nvarchar" MaxLength="50" />
+    <Property Name="OutdeptStatus" Type="nvarchar" MaxLength="50" />
+    <Property Name="OutdeptApplication" Type="nvarchar" MaxLength="50" />
+    <Property Name="QuestionnaireStatus" Type="nvarchar" MaxLength="50" />
+    <Property Name="Tag1" Type="nvarchar" MaxLength="50" />
+    <Property Name="Tag2" Type="nvarchar" MaxLength="50" />
+    <Property Name="Tag3" Type="nvarchar" MaxLength="50" />
+    <Property Name="InfoName" Type="nvarchar" MaxLength="50" />
+    <Property Name="InfoRealName" Type="nvarchar" MaxLength="50" />
+    <Property Name="ImagePath" Type="nvarchar" MaxLength="500" />
+    <Property Name="Sex" Type="nvarchar" MaxLength="50" />
+    <Property Name="IdNumber" Type="nvarchar" MaxLength="50" />
+    <Property Name="DateBirth" Type="nvarchar" MaxLength="50" />
+    <Property Name="MinZu" Type="nvarchar" MaxLength="50" />
+    <Property Name="Telephon" Type="nvarchar" MaxLength="50" />
+    <Property Name="Mail" Type="nvarchar" MaxLength="50" />
+    <Property Name="BkSchool" Type="nvarchar" MaxLength="50" />
+    <Property Name="BkMajor" Type="nvarchar" MaxLength="50" />
+    <Property Name="HighEducation" Type="nvarchar" MaxLength="50" />
+    <Property Name="HighSchool" Type="nvarchar" MaxLength="50" />
+    <Property Name="GraduationTime" Type="nvarchar" MaxLength="50" />
+    <Property Name="HighMajor" Type="nvarchar" MaxLength="50" />
+    <Property Name="HighEducationTime" Type="nvarchar" MaxLength="50" />
+    <Property Name="IdentityType" Type="nvarchar" MaxLength="50" />
+    <Property Name="SendUnit" Type="nvarchar" MaxLength="50" />
+    <Property Name="InfoTrainingBaseCode" Type="nvarchar" MaxLength="50" />
+    <Property Name="InfoTrainingBaseName" Type="nvarchar" MaxLength="50" />
+    <Property Name="CollaborativeUnit" Type="nvarchar" MaxLength="50" />
+    <Property Name="InfoProfessionalBaseCode" Type="nvarchar" MaxLength="50" />
+    <Property Name="InfoProfessionalBaseName" Type="nvarchar" MaxLength="50" />
+    <Property Name="TrainingTime" Type="nvarchar" MaxLength="50" />
+    <Property Name="PlanTrainingTime" Type="nvarchar" MaxLength="50" />
+    <Property Name="InfoTag1" Type="nvarchar" MaxLength="50" />
+    <Property Name="InfoTag2" Type="nvarchar" MaxLength="50" />
+    <Property Name="InfoTag3" Type="nvarchar" MaxLength="50" />
+    <Property Name="TrainingBaseProvinceCode" Type="nvarchar" MaxLength="50" />
+    <Property Name="TrainingBaseProvinceName" Type="nvarchar" MaxLength="50" />
+  </EntityType>
+  <Function Name="QuestionnaireChart" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+    <Parameter Name="sum" Type="int" Mode="InOut" />
+    <Parameter Name="one_a" Type="int" Mode="InOut" />
+    <Parameter Name="one_b" Type="int" Mode="InOut" />
+    <Parameter Name="one_c" Type="int" Mode="InOut" />
+    <Parameter Name="one_d" Type="int" Mode="InOut" />
+    <Parameter Name="one_e" Type="int" Mode="InOut" />
+    <Parameter Name="two_a" Type="int" Mode="InOut" />
+    <Parameter Name="two_b" Type="int" Mode="InOut" />
+    <Parameter Name="two_c" Type="int" Mode="InOut" />
+    <Parameter Name="two_d" Type="int" Mode="InOut" />
+    <Parameter Name="two_e" Type="int" Mode="InOut" />
+    <Parameter Name="three_a" Type="int" Mode="InOut" />
+    <Parameter Name="three_b" Type="int" Mode="InOut" />
+    <Parameter Name="three_c" Type="int" Mode="InOut" />
+    <Parameter Name="three_d" Type="int" Mode="InOut" />
+    <Parameter Name="three_e" Type="int" Mode="InOut" />
+    <Parameter Name="four_a" Type="int" Mode="InOut" />
+    <Parameter Name="four_b" Type="int" Mode="InOut" />
+    <Parameter Name="four_c" Type="int" Mode="InOut" />
+    <Parameter Name="four_d" Type="int" Mode="InOut" />
+    <Parameter Name="four_e" Type="int" Mode="InOut" />
+    <Parameter Name="five_a" Type="int" Mode="InOut" />
+    <Parameter Name="five_b" Type="int" Mode="InOut" />
+    <Parameter Name="five_c" Type="int" Mode="InOut" />
+    <Parameter Name="five_d" Type="int" Mode="InOut" />
+    <Parameter Name="five_e" Type="int" Mode="InOut" />
+    <Parameter Name="six_a" Type="int" Mode="InOut" />
+    <Parameter Name="six_b" Type="int" Mode="InOut" />
+    <Parameter Name="six_c" Type="int" Mode="InOut" />
+    <Parameter Name="six_d" Type="int" Mode="InOut" />
+    <Parameter Name="six_e" Type="int" Mode="InOut" />
+    <Parameter Name="seven_a" Type="int" Mode="InOut" />
+    <Parameter Name="seven_b" Type="int" Mode="InOut" />
+    <Parameter Name="seven_c" Type="int" Mode="InOut" />
+    <Parameter Name="seven_d" Type="int" Mode="InOut" />
+    <Parameter Name="seven_e" Type="int" Mode="InOut" />
+    <Parameter Name="eight_a" Type="int" Mode="InOut" />
+    <Parameter Name="eight_b" Type="int" Mode="InOut" />
+    <Parameter Name="eight_c" Type="int" Mode="InOut" />
+    <Parameter Name="eight_d" Type="int" Mode="InOut" />
+    <Parameter Name="eight_e" Type="int" Mode="InOut" />
+    <Parameter Name="nine_a" Type="int" Mode="InOut" />
+    <Parameter Name="nine_b" Type="int" Mode="InOut" />
+    <Parameter Name="nine_c" Type="int" Mode="InOut" />
+    <Parameter Name="nine_d" Type="int" Mode="InOut" />
+    <Parameter Name="nine_e" Type="int" Mode="InOut" />
+    <Parameter Name="ten_a" Type="int" Mode="InOut" />
+    <Parameter Name="ten_b" Type="int" Mode="InOut" />
+    <Parameter Name="ten_c" Type="int" Mode="InOut" />
+    <Parameter Name="ten_d" Type="int" Mode="InOut" />
+    <Parameter Name="ten_e" Type="int" Mode="InOut" />
+    <Parameter Name="eleven_a" Type="int" Mode="InOut" />
+    <Parameter Name="eleven_b" Type="int" Mode="InOut" />
+    <Parameter Name="eleven_c" Type="int" Mode="InOut" />
+    <Parameter Name="eleven_d" Type="int" Mode="InOut" />
+    <Parameter Name="eleven_e" Type="int" Mode="InOut" />
+    <Parameter Name="twelve_a" Type="int" Mode="InOut" />
+    <Parameter Name="twelve_b" Type="int" Mode="InOut" />
+    <Parameter Name="twelve_c" Type="int" Mode="InOut" />
+    <Parameter Name="twelve_d" Type="int" Mode="InOut" />
+    <Parameter Name="twelve_e" Type="int" Mode="InOut" />
+    <Parameter Name="thirteen_a" Type="int" Mode="InOut" />
+    <Parameter Name="thirteen_b" Type="int" Mode="InOut" />
+    <Parameter Name="thirteen_c" Type="int" Mode="InOut" />
+    <Parameter Name="thirteen_d" Type="int" Mode="InOut" />
+    <Parameter Name="thirteen_e" Type="int" Mode="InOut" />
+    <Parameter Name="training_base_code" Type="nvarchar" Mode="In" />
+    <Parameter Name="professional_base_code" Type="nvarchar" Mode="In" />
+    <Parameter Name="dept_code" Type="nvarchar" Mode="In" />
+    <Parameter Name="instructor" Type="nvarchar" Mode="In" />
+  </Function>
+  <EntityContainer Name="GP_SystemModelStoreContainer">
+    <EntitySet Name="GP_AdviceFeedback" EntityType="Self.GP_AdviceFeedback" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="GP_Area" EntityType="Self.GP_Area" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="GP_AttendanceManagement" EntityType="Self.GP_AttendanceManagement" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="GP_BigMedicalRecords2" EntityType="Self.GP_BigMedicalRecords2" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="GP_City" EntityType="Self.GP_City" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="GP_DeptManagement" EntityType="Self.GP_DeptManagement" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="GP_Disease_Register" EntityType="Self.GP_Disease_Register" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="GP_Disease_Register2" EntityType="Self.GP_Disease_Register2" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="GP_Login" EntityType="Self.GP_Login" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="GP_NeiKeOption" EntityType="Self.GP_NeiKeOption" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="GP_OutDept_Exam" EntityType="Self.GP_OutDept_Exam" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="GP_Professional_Base" EntityType="Self.GP_Professional_Base" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="GP_Professional_Base_Dept" EntityType="Self.GP_Professional_Base_Dept" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="GP_Province" EntityType="Self.GP_Province" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="GP_Questionnaire" EntityType="Self.GP_Questionnaire" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="GP_ReleaseNews" EntityType="Self.GP_ReleaseNews" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="GP_RotarySchedule" EntityType="Self.GP_RotarySchedule" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="GP_SchoolInformation" EntityType="Self.GP_SchoolInformation" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="GP_SkillRequirement" EntityType="Self.GP_SkillRequirement" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="GP_SkillRequirement2" EntityType="Self.GP_SkillRequirement2" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="GP_StudentsPersonalInformation2" EntityType="Self.GP_StudentsPersonalInformation2" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="GP_StudentsRotaryInformation2" EntityType="Self.GP_StudentsRotaryInformation2" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="GP_Teachers_Appoint_Information" EntityType="Self.GP_Teachers_Appoint_Information" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="GP_TeachingActivities" EntityType="Self.GP_TeachingActivities" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="GP_TiKuResult" EntityType="Self.GP_TiKuResult" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="RotaryInformationJoin" EntityType="Self.RotaryInformationJoin" store:Type="Views" store:Schema="dbo">
+      <DefiningQuery>SELECT 
+[RotaryInformationJoin].[Id] AS [Id], 
+[RotaryInformationJoin].[Name] AS [Name], 
+[RotaryInformationJoin].[RealName] AS [RealName], 
+[RotaryInformationJoin].[TrainingBaseCode] AS [TrainingBaseCode], 
+[RotaryInformationJoin].[TrainingBaseName] AS [TrainingBaseName], 
+[RotaryInformationJoin].[ProfessionalBaseCode] AS [ProfessionalBaseCode], 
+[RotaryInformationJoin].[ProfessionalBaseName] AS [ProfessionalBaseName], 
+[RotaryInformationJoin].[DeptCode] AS [DeptCode], 
+[RotaryInformationJoin].[DeptName] AS [DeptName], 
+[RotaryInformationJoin].[RotaryBeginTime] AS [RotaryBeginTime], 
+[RotaryInformationJoin].[RotaryEndTime] AS [RotaryEndTime], 
+[RotaryInformationJoin].[RotaryDays] AS [RotaryDays], 
+[RotaryInformationJoin].[RotaryOrder] AS [RotaryOrder], 
+[RotaryInformationJoin].[TeachersName] AS [TeachersName], 
+[RotaryInformationJoin].[TeachersRealName] AS [TeachersRealName], 
+[RotaryInformationJoin].[OutdeptStatus] AS [OutdeptStatus], 
+[RotaryInformationJoin].[OutdeptApplication] AS [OutdeptApplication], 
+[RotaryInformationJoin].[QuestionnaireStatus] AS [QuestionnaireStatus], 
+[RotaryInformationJoin].[Tag1] AS [Tag1], 
+[RotaryInformationJoin].[Tag2] AS [Tag2], 
+[RotaryInformationJoin].[Tag3] AS [Tag3], 
+[RotaryInformationJoin].[InfoName] AS [InfoName], 
+[RotaryInformationJoin].[InfoRealName] AS [InfoRealName], 
+[RotaryInformationJoin].[ImagePath] AS [ImagePath], 
+[RotaryInformationJoin].[Sex] AS [Sex], 
+[RotaryInformationJoin].[IdNumber] AS [IdNumber], 
+[RotaryInformationJoin].[DateBirth] AS [DateBirth], 
+[RotaryInformationJoin].[MinZu] AS [MinZu], 
+[RotaryInformationJoin].[Telephon] AS [Telephon], 
+[RotaryInformationJoin].[Mail] AS [Mail], 
+[RotaryInformationJoin].[BkSchool] AS [BkSchool], 
+[RotaryInformationJoin].[BkMajor] AS [BkMajor], 
+[RotaryInformationJoin].[HighEducation] AS [HighEducation], 
+[RotaryInformationJoin].[HighSchool] AS [HighSchool], 
+[RotaryInformationJoin].[GraduationTime] AS [GraduationTime], 
+[RotaryInformationJoin].[HighMajor] AS [HighMajor], 
+[RotaryInformationJoin].[HighEducationTime] AS [HighEducationTime], 
+[RotaryInformationJoin].[IdentityType] AS [IdentityType], 
+[RotaryInformationJoin].[SendUnit] AS [SendUnit], 
+[RotaryInformationJoin].[InfoTrainingBaseCode] AS [InfoTrainingBaseCode], 
+[RotaryInformationJoin].[InfoTrainingBaseName] AS [InfoTrainingBaseName], 
+[RotaryInformationJoin].[CollaborativeUnit] AS [CollaborativeUnit], 
+[RotaryInformationJoin].[InfoProfessionalBaseCode] AS [InfoProfessionalBaseCode], 
+[RotaryInformationJoin].[InfoProfessionalBaseName] AS [InfoProfessionalBaseName], 
+[RotaryInformationJoin].[TrainingTime] AS [TrainingTime], 
+[RotaryInformationJoin].[PlanTrainingTime] AS [PlanTrainingTime], 
+[RotaryInformationJoin].[InfoTag1] AS [InfoTag1], 
+[RotaryInformationJoin].[InfoTag2] AS [InfoTag2], 
+[RotaryInformationJoin].[InfoTag3] AS [InfoTag3], 
+[RotaryInformationJoin].[TrainingBaseProvinceCode] AS [TrainingBaseProvinceCode], 
+[RotaryInformationJoin].[TrainingBaseProvinceName] AS [TrainingBaseProvinceName]
+FROM [dbo].[RotaryInformationJoin] AS [RotaryInformationJoin]</DefiningQuery>
+    </EntitySet>
+  </EntityContainer>
+</Schema>

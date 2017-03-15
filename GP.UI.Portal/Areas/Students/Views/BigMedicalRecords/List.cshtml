@@ -1,0 +1,1216 @@
+﻿@using GP.Common
+@{
+    Layout = null;
+    
+}
+
+<!DOCTYPE html>
+
+<html>
+<head>
+    <meta name="viewport" content="width=device-width" />
+    <title>列表页</title>
+    <script src="~/Scripts/jquery-1.8.2.min.js"></script>
+    <script src="~/Scripts/MyJs/global.js"></script>
+    <script src="~/Scripts/MyJs/MyPageList/PageList1.js"></script>
+    <script src="~/Scripts/MyJs/bootstrap-2.3.3/js/bootstrap.min.js"></script>
+    <script src="~/Scripts/MyJs/autosize.js"></script>
+    <script src="~/Scripts/MyJs/showTips.js"></script>
+    <script src="~/Scripts/MyJs/jquery-form.js"></script>
+    <script src="~/Scripts/MyJs/My97DatePicker/WdatePicker.js"></script>
+    <link href="~/Content/MyCss/global.css" rel="stylesheet" />
+    <link href="~/Content/MyCss/bootstrapNoTable/bootstrap.css" rel="stylesheet" />
+    <script type="text/javascript">
+        var deptName = '@CommonFunc.SafeGetStringFromObj(ViewData["DeptName"])';
+        var teachersRealName = '@CommonFunc.SafeGetStringFromObj(ViewData["TeachersRealName"])';
+        var registerDate = '@CommonFunc.SafeGetStringFromObj(ViewData["RegisterDate"])';
+        var patientName = '@CommonFunc.SafeGetStringFromObj(ViewData["PatientName"])';
+        var patientNo = '@CommonFunc.SafeGetStringFromObj(ViewData["PatientNo"])';
+        var inhospitalNo = '@CommonFunc.SafeGetStringFromObj(ViewData["InhospitalNo"])';
+        $(function () {
+            loadPageList(1);
+
+            showDIVTip();
+            loadInfo();
+            loadProvinceCityArea("#BirthProvinceCode", "#BirthCityCode", "#BirthAreaCode", "#BirthProvinceName", "#BirthCityName", "#BirthAreaName");
+            loadProvinceCityArea("#NowProvinceCode", "#NowCityCode", "#NowAreaCode", "#NowProvinceName", "#NowCityName", "#NowAreaName");
+            
+        });
+
+        function loadPageList(pi) {
+            $.post('@Url.Action("PageList")', {
+                "pi": pi, "DeptName": deptName,
+                "TeacherName": teachersRealName, "RegisterDate": registerDate, "PatientName": patientName, "PatientNo": patientNo, "InhospitalNo": inhospitalNo
+            },
+              function (data) {
+                  var jsonArr = data;
+                  if (jsonArr.data == null) {
+                      $("#tbList tr:gt(0)").remove();
+                  } else {
+                      createRows(jsonArr.data, pi);
+                  }
+                  createPageBar($("#PageList"), pi, jsonArr.totalCount, jsonArr.pageCount);
+
+              });
+        }
+
+        function createRows(jsonArr, pi) {
+            var tbL = $("#tbList");
+            $("#tbList tr:gt(0)").remove();
+            for (i = 0; i < jsonArr.length; i++) {
+                var trHTML = "<tr class='listTableContentRow'>";
+                trHTML += "<td style='height:25px'>" + jsonArr[i].DeptName + "</td>";
+                trHTML += "<td>" + jsonArr[i].TeachersRealName + "</td>";
+                trHTML += "<td>" + jsonArr[i].RegisterDate + "</td>";
+                trHTML += "<td>" + jsonArr[i].PatientNo + "</td>";
+                trHTML += "<td>" + jsonArr[i].InhospitalNo + "</td>";
+                trHTML += "<td>" + jsonArr[i].PatientName + "</td>";
+                if (jsonArr[i].RecordsStatus == "0") {
+                    trHTML += "<td><a onclick=\"handle('" + jsonArr[i].RecordsStatus + "','" + jsonArr[i].Id + "','" + pi + "');\" href='#'style='text-decoration:none;color:red;'>提交至科室审核</a></td>";
+                } else {
+                    trHTML += "<td style='color:red;'>已提交至科室审核</td>";
+                }
+
+                trHTML += "<td style='color:red'>" + jsonArr[i].TeacherCheck + "</td>";
+                trHTML += "<td><a href='#' onclick=\"show('" + jsonArr[i].Id + "','" + pi + "');\"><img alt='查看详细资料' src='/images/imgs/icon_show.gif'/></a></td>";
+                trHTML += "<td><a href='#' onclick=\"check('" + jsonArr[i].TeacherCheck + "','" + jsonArr[i].Id + "','" + pi + "');\"><img alt='修改该记录' src='/images/imgs/icon_edit.gif'/></a></td>";
+                trHTML += "</tr>";
+                tbL.append(trHTML);
+
+
+            }
+
+            $("#tbList tr:gt(0)").mouseover(function () {
+                $(this).removeClass("listTab  leContentRow");
+                $(this).addClass("listTableContentRowMouseOver");
+            });
+
+            $("#tbList tr:gt(0)").mouseout(function () {
+                $(this).removeClass("listTableContentRowMouseOver");
+                $(this).addClass("listTableContentRow");
+            });
+
+        }
+        function show(id, pi) {
+            $("#submit").hide();
+            LoadData(id, pi);
+            $("#myModal").modal('show');
+        }
+
+        function check(RecordsStatus, id, pi) {
+            if (RecordsStatus == "1") {
+                alert("大病历已提交，无法进行修改");
+                return;
+            } else {
+                $("#submit").show();
+                LoadData(id, pi);
+                $("#myModal").modal('show');
+            }
+        }
+        function handle(RecordsStatus, id, pi) {
+            if (confirm("提交后无法进行修改")) {
+                $.ajax({
+                    cache: false,
+                    asycn: true,
+                    type: "get",
+                    url: '@Url.Action("Handle")',
+                    dataType: "text",
+                    data: { id: id, recordsStatus: RecordsStatus },
+                    success: function (data) {
+                        if (data == "1") {
+                            alert("大病历登记信息提交成功");
+                            loadPageList(pi);
+                            return;
+                        } else {
+                            alert("大病历登记信息提交失败");
+                        }
+
+                    },
+                    error: function () {
+                        alert("系统繁忙，请联系管理员");
+                    }
+
+                });
+            }
+
+        }
+    </script>
+</head>
+<body>
+    <table style="width:100%;">
+        <tr>
+            <td class="listTableHeadTR">
+                <img height="16" src="/images/imgs/Query.gif" width="16" style="vertical-align: middle" />大病历信息查询结果
+            </td>
+        </tr>
+    </table>
+    <div>
+        <table id="tbList" class="listTable" cellspacing="1" cellpadding="0" style="width:100%;">
+            <tr id="tr0" class="listTableTitleRow">
+                <td>轮转科室</td>
+                <td>指导医师</td>
+                <td>登记日期</td>
+                <td>门诊号</td>
+                <td>住院号</td>
+                <td>患者姓名</td>
+                <td>操作</td>
+                <td>审核</td>
+                <td>查看</td>
+                <td>修改完善</td>
+            </tr>
+
+        </table>
+        <div id="PageList" style="text-align:center; margin-top:10px;"></div>
+    </div>
+    <form id="form1" name="form1">
+
+        <div class="modal fade" id="myModal" tabindex="-2" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true" data-backdrop="static" style="display:none;max-height:500px;min-height:200px;width:98%;margin-left:-49%;top:5%;">
+            <div class="modal-dialog">
+                <div class="modal-content">
+
+                    <div class="modal-body" style="max-height: 500px; min-height: 200px; padding: 1px;">
+                        <div align="center">
+                            <input type="hidden" id="pi" name="pi" />
+                            <input type="hidden" id="Id" name="Id" />
+                            <input type="hidden" id="RecordsStatus" name="RecordsStatus" />
+                            <input type="hidden" id="TeacherCheck" name="TeacherCheck" />
+                            <input type="hidden" id="BaseCheck" name="BaseCheck" />
+                            <input type="hidden" id="KzrCheck" name="KzrCheck" />
+                            <input type="hidden" id="ManagerCheck" name="ManagerCheck" />
+                            <table border="0" style="border-collapse: collapse;width:100%;" cellpadding="0" cellspacing="1" class="detailTable">
+                                <tr>
+                                    <td height="24" align="center" colspan="10" class="detailHead">大病历</td>
+                                </tr>
+                                <tr>
+                                    <td width="10%" class="detailTitle" style="height: 15px;">姓名<span style="color: #ff0000">*</span></td>
+                                    <td width="10%" class="detailContent" style="height:15px;">
+                                        <span class="detailContent" style="height: 15px">
+                                            <input type="text" id="StudentsRealName" name="StudentsRealName" readonly="readonly" style="width: 100px;" />
+                                            <input type="hidden" id="StudentsName" name="StudentsName" />
+                                        </span>
+                                    </td>
+                                    <td width="10%" class="detailTitle" style="height: 15px;">培训基地<span style="color: #ff0000">*</span></td>
+                                    <td width="10%" class="detailContent" style="height:15px;">
+                                        <span class="detailContent" style="height: 15px">
+                                            <input type="text" id="TrainingBaseName" name="TrainingBaseName" readonly="readonly" style="width: 120px;" />
+                                            <input type="hidden" id="TrainingBaseCode" name="TrainingBaseCode" />
+                                        </span>
+                                    </td>
+                                    <td width="10%" class="detailTitle" style="height: 15px;">专业基地<span style="color: #ff0000">*</span></td>
+                                    <td width="10%" class="detailContent" style="height:15px;">
+                                        <span class="detailContent" style="height: 15px">
+                                            <input type="text" id="ProfessionalBaseName" name="ProfessionalBaseName" readonly="readonly" style="width: 100px;" />
+                                            <input type="hidden" id="ProfessionalBaseCode" name="ProfessionalBaseCode" />
+                                        </span>
+                                    </td>
+                                    <td width="10%" class="detailTitle" style="height: 15px;">轮转科室<span style="color: #ff0000">*</span></td>
+                                    <td width="10%" class="detailContent" style="height:15px;">
+                                        <span class="detailContent" style="height: 15px">
+                                            <select id="DeptCode" name="DeptCode" style="width:150px">
+                                                <option value="">==请选择==</option>
+                                            </select><input type="hidden" id="DeptName" name="DeptName" />
+                                        </span>
+                                    </td>
+                                    <td width="10%" class="detailTitle" style="height: 15px;">指导医师<span style="color: #ff0000">*</span></td>
+                                    <td width="10%" class="detailContent" style="height:15px;">
+                                        <span class="detailContent" style="height: 15px">
+                                            <select id="TeachersName" name="TeachersName" style="width:100px">
+                                                <option value="">==请选择==</option>
+                                            </select><input type="hidden" id="TeachersRealName" name="TeachersRealName" />
+                                        </span>
+                                    </td>
+                                </tr>
+                                @*<tr><td height="1" colspan="10"><hr style="width:100%;color:#000;" size="1" /></td></tr>*@
+                                <tr>
+                                    <td width="10%" class="detailTitle" style="height: 15px;">门诊号<span style="color: #ff0000">*</span></td>
+                                    <td width="10%" class="detailContent" style="height:15px;">
+                                        <span class="detailContent" style="height: 15px">
+                                            <input type="text" name="PatientNo" id="PatientNo" style="width:100px" />
+                                        </span>
+                                    </td>
+                                    <td width="10%" class="detailTitle" style="height: 15px;">住院号<span style="color: #ff0000">*</span></td>
+                                    <td width="10%" class="detailContent" style="height:15px;">
+                                        <span class="detailContent" style="height: 15px">
+                                            <input type="text" name="InhospitalNo" id="InhospitalNo" style="width:100px" />
+                                        </span>
+                                    </td>
+                                    <td class="detailContent" style="height:15px;" colspan="6"></td>
+                                </tr>
+                                <tr>
+                                    <td width="10%" class="detailTitle" style="height: 15px;">患者姓名<span style="color: #ff0000">*</span></td>
+                                    <td width="10%" class="detailContent" style="height:15px;">
+                                        <span class="detailContent" style="height: 15px">
+                                            <input type="text" name="PatientName" id="PatientName" style="width:100px" />
+                                        </span>
+                                    </td>
+                                    <td width="10%" class="detailTitle" style="height: 15px;">性别<span style="color: #ff0000">*</span></td>
+                                    <td width="10%" class="detailContent" style="height:15px;">
+                                        <span class="detailContent" style="height: 15px">
+                                            <label><input type="radio" id="Man" name="Sex" value="男" />男</label>
+                                            <label><input type="radio" id="Woman" name="Sex" value="女" />女</label>
+                                        </span>
+                                    </td>
+                                    <td width="10%" class="detailTitle" style="height: 15px;">年龄<span style="color: #ff0000">*</span></td>
+                                    <td width="10%" class="detailContent" style="height:15px;">
+                                        <span class="detailContent" style="height: 15px">
+                                            <input type="text" name="Age" id="Age" style="width:100px" />
+                                        </span>
+                                    </td>
+                                    <td width="10%" class="detailTitle" style="height: 15px;">职业<span style="color: #ff0000">*</span></td>
+                                    <td width="10%" class="detailContent" style="height:15px;">
+                                        <span class="detailContent" style="height: 15px">
+                                            <input type="text" name="Job" id="Job" style="width:100px" />
+                                        </span>
+                                    </td>
+                                    <td width="10%" class="detailTitle" style="height: 15px;">民族<span style="color: #ff0000">*</span></td>
+                                    <td width="10%" class="detailContent" style="height:15px;">
+                                        <span class="detailContent" style="height: 15px">
+                                            <select id="Nation" name="Nation" style="width:100px">
+                                                <option value="">==请选择==</option>
+                                                <option value="汉族">汉族</option>
+                                                <option value="蒙古族">蒙古族</option>
+                                                <option value="彝族">彝族</option>
+                                                <option value="侗族">侗族</option>
+                                                <option value="哈萨克族">哈萨克族</option>
+                                                <option value="畲族">畲族</option>
+                                                <option value="纳西族">纳西族</option>
+                                                <option value="仫佬族">仫佬族</option>
+                                                <option value="仡佬族">仡佬族</option>
+                                                <option value="怒族">怒族</option>
+                                                <option value="保安族">保安族</option>
+                                                <option value="鄂伦春族">鄂伦春族</option>
+                                                <option value="回族">回族</option>
+                                                <option value="壮族">壮族</option>
+                                                <option value="瑶族">瑶族</option>
+                                                <option value="傣族">傣族</option>
+                                                <option value="高山族">高山族</option>
+                                                <option value="景颇族">景颇族</option>
+                                                <option value="羌族">羌族</option>
+                                                <option value="锡伯族">锡伯族</option>
+                                                <option value="乌孜别克族">乌孜别克族</option>
+                                                <option value="裕固族">裕固族</option>
+                                                <option value="赫哲族">赫哲族</option>
+                                                <option value="藏族">藏族</option>
+                                                <option value="布依族">布依族</option>
+                                                <option value="白族">白族</option>
+                                                <option value="黎族">黎族</option>
+                                                <option value="拉祜族">拉祜族</option>
+                                                <option value="柯尔克孜族">柯尔克孜族</option>
+                                                <option value="布朗族">布朗族</option>
+                                                <option value="阿昌族">阿昌族</option>
+                                                <option value="俄罗斯族">俄罗斯族</option>
+                                                <option value="京族">京族</option>
+                                                <option value="门巴族">门巴族</option>
+                                                <option value="维吾尔族">维吾尔族</option>
+                                                <option value="朝鲜族">朝鲜族</option>
+                                                <option value="土家族">土家族</option>
+                                                <option value="傈僳族">傈僳族</option>
+                                                <option value="水族">水族</option>
+                                                <option value="土族">土族</option>
+                                                <option value="撒拉族">撒拉族</option>
+                                                <option value="普米族">普米族</option>
+                                                <option value="鄂温克族">鄂温克族</option>
+                                                <option value="塔塔尔族">塔塔尔族</option>
+                                                <option value="珞巴族">珞巴族</option>
+                                                <option value="苗族">苗族</option>
+                                                <option value="满族">满族</option>
+                                                <option value="哈尼族">哈尼族</option>
+                                                <option value="佤族">佤族</option>
+                                                <option value="东乡族">东乡族</option>
+                                                <option value="达斡尔族">达斡尔族</option>
+                                                <option value="毛南族">毛南族</option>
+                                                <option value="塔吉克族">塔吉克族</option>
+                                                <option value="德昂族">德昂族</option>
+                                                <option value="独龙族">独龙族</option>
+                                                <option value="基诺族">基诺族</option>
+                                            </select>
+                                        </span>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td width="10%" class="detailTitle" style="height: 15px;">婚姻<span style="color: #ff0000">*</span></td>
+                                    <td width="10%" class="detailContent" style="height:15px;" colspan="2">
+                                        <span class="detailContent" style="height: 15px">
+                                            <select id="Marriage" name="Marriage" style="width:100px">
+                                                <option value="">==请选择==</option>
+                                                <option value="未婚">未婚</option>
+                                                <option value="已婚">已婚</option>
+                                                <option value="离婚">离婚</option>
+                                                <option value="再婚">再婚</option>
+                                                <option value="丧偶">丧偶</option>
+                                                <option value="独居">独居</option>
+                                                <option value="未明婚姻">未明婚姻</option>
+                                            </select>
+                                        </span>
+                                    </td>
+                                    <td width="10%" class="detailTitle" style="height: 15px;">出生地<span style="color: #ff0000">*</span></td>
+                                    <td width="70%" class="detailContent" style="height:15px;" colspan="6">
+                                        <span class="detailContent" style="height: 15px">
+                                            <select id="BirthProvinceCode" name="BirthProvinceCode" style="width:100px;">
+                                                <option value="">==请选择==</option>
+                                            </select><input type="hidden" id="BirthProvinceName" name="BirthProvinceName" />
+                                            <select id="BirthCityCode" name="BirthCityCode" style="width:100px;">
+                                                <option value="">==请选择==</option>
+                                            </select><input type="hidden" id="BirthCityName" name="BirthCityName" />
+                                            <select id="BirthAreaCode" name="BirthAreaCode" style="width:100px;">
+                                                <option value="">==请选择==</option>
+                                            </select><input type="hidden" id="BirthAreaName" name="BirthAreaName" />
+                                            <input type="text" id="BirthDetailAddress" name="BirthDetailAddress" style="width:200px" />
+                                        </span>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td width="10%" class="detailTitle" style="height: 15px;">工作单位<span style="color: #ff0000">*</span></td>
+                                    <td width="10%" class="detailContent" style="height:15px;" colspan="2">
+                                        <span class="detailContent" style="height: 15px">
+                                            <input type="text" name="Company" id="Company" style="width:200px;" />
+                                        </span>
+                                    </td>
+                                    <td width="10%" class="detailTitle" style="height: 15px;">现住址<span style="color: #ff0000">*</span></td>
+                                    <td width="70%" class="detailContent" style="height:15px;" colspan="6">
+                                        <span class="detailContent" style="height: 15px">
+                                            <select id="NowProvinceCode" name="NowProvinceCode" style="width:100px;">
+                                                <option value="">==请选择==</option>
+                                            </select><input type="hidden" id="NowProvinceName" name="NowProvinceName" />
+                                            <select id="NowCityCode" name="NowCityCode" style="width:100px;">
+                                                <option value="">==请选择==</option>
+                                            </select><input type="hidden" id="NowCityName" name="NowCityName" />
+                                            <select id="NowAreaCode" name="NowAreaCode" style="width:100px;">
+                                                <option value="">==请选择==</option>
+                                            </select><input type="hidden" id="NowAreaName" name="NowAreaName" />
+                                            <input type="text" id="NowDetailAddress" name="NowDetailAddress" style="width:200px" />
+                                        </span>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td colspan="10" align="center" style="background-color: #f1f3f5">
+                                        <table>
+                                            <tr>
+                                                <td width="9%" class="detailTitle" style="height: 15px;">电话<span style="color: #ff0000">*</span></td>
+                                                <td width="9%" class="detailContent" style="height:15px;">
+                                                    <span class="detailContent" style="height: 15px">
+                                                        <input type="text" name="Phone" id="Phone" style="width:100px;" />
+                                                    </span>
+                                                </td>
+                                                <td width="10%" class="detailTitle" style="height: 15px;">入院日期<span style="color: #ff0000">*</span></td>
+                                                <td width="9%" class="detailContent" style="height:15px;">
+                                                    <span class="detailContent" style="height: 15px">
+                                                        <input type="text" name="InhospitalDate" id="InhospitalDate" style="width:100px;" onclick="WdatePicker({ maxDate: '%y-%M-%d' });" />
+                                                    </span>
+                                                </td>
+                                                <td width="10%" class="detailTitle" style="height: 15px;">记录日期<span style="color: #ff0000">*</span></td>
+                                                <td width="10%" class="detailContent" style="height:15px;">
+                                                    <span class="detailContent" style="height: 15px">
+                                                        <input type="text" name="RecordDate" id="RecordDate" style="width:100px;" onclick="WdatePicker({ dateFmt: 'yyyy-MM-dd HH时', maxDate: '%y-%M-%d' });" />
+                                                    </span>
+                                                </td>
+                                                <td width="13%" class="detailTitle" style="height: 15px;">病史叙述者<span style="color: #ff0000">*</span></td>
+                                                <td width="10%" class="detailContent" style="height:15px;">
+                                                    <span class="detailContent" style="height: 15px">
+                                                        <input type="text" name="MedicalHistorySpeaker" id="MedicalHistorySpeaker" style="width:100px;" />
+                                                    </span>
+                                                </td>
+                                                <td width="10%" class="detailTitle" style="height: 15px;">可靠程度<span style="color: #ff0000">*</span></td>
+                                                <td width="10%" class="detailContent" style="height:15px;">
+                                                    <span class="detailContent" style="height: 15px">
+                                                        <select id="ReliableDegree" name="ReliableDegree" style="width:100px">
+                                                            <option value="">==不清楚==</option>
+                                                            <option value="非常可靠">非常可靠</option>
+                                                            <option value="较可靠">较可靠</option>
+                                                            <option value="可靠">可靠</option>
+                                                            <option value="不可靠">不可靠</option>
+                                                        </select>
+                                                    </span>
+                                                </td>
+                                            </tr>
+                                        </table>
+                                    </td>
+                                </tr>
+
+                                <tr>
+                                    <td style="height: 25px;text-align:center;font-weight:bold;" class="detailContent" colspan="10">病史</td>
+                                </tr>
+                                <tr>
+                                    <td width="10%" class="detailTitle" style="height: 15px;font-weight:bold;">主诉</td>
+                                    <td width="10%" class="detailContent" colspan="9">
+                                        <div style="display: none" id="DZhuSu"></div>
+                                        <textarea id="ZhuSu" name="ZhuSu" style="width: 100%; min-height: 40px; max-height: 80px;"></textarea>
+                                    </td>
+                                </tr>
+
+                                <tr>
+                                    <td width="10%" class="detailTitle" style="height: 15px;font-weight:bold;" rowspan="6">现病史</td>
+                                    <td width="10%" class="detailContent" style="height: 15px;">发病情况</td>
+                                    <td class="detailContent" colspan="8">
+                                        <div style="display: none" id="DXBShi_FBQK"></div>
+                                        <textarea id="XBShi_FBQK" name="XBShi_FBQK" style="width: 100%; min-height: 40px; max-height: 80px;"></textarea>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td width="10%" class="detailContent" style="height: 15px;">主要症状特点及其发展变化情况</td>
+                                    <td class="detailContent" colspan="8">
+                                        <div style="display: none" id="DXBShi_ZYZZ"></div>
+                                        <textarea id="XBShi_ZYZZ" name="XBShi_ZYZZ" style="width: 100%; min-height: 40px; max-height: 80px;"></textarea>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td width="10%" class="detailContent" style="height: 15px;">伴随症状</td>
+                                    <td class="detailContent" colspan="8">
+                                        <div style="display: none" id="DXBShi_BSZZ"></div>
+                                        <textarea id="XBShi_BSZZ" name="XBShi_BSZZ" style="width: 100%; min-height: 40px; max-height: 80px;"></textarea>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td width="10%" class="detailContent" style="height: 15px;">发病以来诊治经过及结果</td>
+                                    <td class="detailContent" colspan="8">
+                                        <div style="display: none" id="DXBShi_FBYL"></div>
+                                        <textarea id="XBShi_FBYL" name="XBShi_FBYL" style="width: 100%; min-height: 40px; max-height: 80px;"></textarea>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td width="10%" class="detailContent" style="height: 15px;">发病以来一般情况</td>
+                                    <td class="detailContent" colspan="8">
+                                        <div style="display: none" id="DXBShi_FBYLY"></div>
+                                        <textarea id="XBShi_FBYLY" name="XBShi_FBYLY" style="width: 100%; min-height: 40px; max-height: 80px;"></textarea>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td width="10%" class="detailContent" style="height: 15px;">其他</td>
+                                    <td class="detailContent" colspan="8">
+                                        <div style="display: none" id="DXBShi_QT"></div>
+                                        <textarea id="XBShi_QT" name="XBShi_QT" style="width: 100%; min-height: 40px; max-height: 80px;"></textarea>
+                                    </td>
+                                </tr>
+                                <tr style="border-top:1px solid #000; ">
+                                    <td width="10%" class="detailTitle" style="height: 15px;font-weight:bold;" rowspan="8">既往史</td>
+                                    <td width="10%" class="detailContent" style="height: 15px;">一般健康状况</td>
+                                    <td class="detailContent" colspan="8">
+                                        <div style="display: none" id="DJWShi_YBJK"></div>
+                                        <textarea id="JWShi_YBJK" name="JWShi_YBJK" style="width: 100%; min-height: 40px; max-height: 80px;"></textarea>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td width="10%" class="detailContent" style="height: 15px;">疾病史</td>
+                                    <td class="detailContent" colspan="8">
+                                        <div style="display: none" id="DJWShi_JBS"></div>
+                                        <textarea id="JWShi_JBS" name="JWShi_JBS" style="width: 100%; min-height: 40px; max-height: 80px;"></textarea>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td width="10%" class="detailContent" style="height: 15px;">传染病史</td>
+                                    <td class="detailContent" colspan="8">
+                                        <div style="display: none" id="DJWShi_CRBS"></div>
+                                        <textarea id="JWShi_CRBS" name="JWShi_CRBS" style="width: 100%; min-height: 40px; max-height: 80px;"></textarea>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td width="10%" class="detailContent" style="height: 15px;">预防接种史</td>
+                                    <td class="detailContent" colspan="8">
+                                        <div style="display: none" id="DJWShi_YFJZ"></div>
+                                        <textarea id="JWShi_YFJZ" name="JWShi_YFJZ" style="width: 100%; min-height: 40px; max-height: 80px;"></textarea>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td width="10%" class="detailContent" style="height: 15px;">手术外伤史</td>
+                                    <td class="detailContent" colspan="8">
+                                        <div style="display: none" id="DJWShi_SSWS"></div>
+                                        <textarea id="JWShi_SSWS" name="JWShi_SSWS" style="width: 100%; min-height: 40px; max-height: 80px;"></textarea>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td width="10%" class="detailContent" style="height: 15px;">输血史</td>
+                                    <td class="detailContent" colspan="8">
+                                        <div style="display: none" id="DJWShi_SXS"></div>
+                                        <textarea id="JWShi_SXS" name="JWShi_SXS" style="width: 100%; min-height: 40px; max-height: 80px;"></textarea>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td width="10%" class="detailContent" style="height: 15px;">食物或药物过敏史</td>
+                                    <td class="detailContent" colspan="8">
+                                        <div style="display: none" id="DJWShi_SWYW"></div>
+                                        <textarea id="JWShi_SWYW" name="JWShi_SWYW" style="width: 100%; min-height: 40px; max-height: 80px;"></textarea>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td width="10%" class="detailContent" style="height: 15px;">其他</td>
+                                    <td class="detailContent" colspan="8">
+                                        <div style="display: none" id="DJWShi_QT"></div>
+                                        <textarea id="JWShi_QT" name="JWShi_QT" style="width: 100%; min-height: 40px; max-height: 80px;"></textarea>
+                                    </td>
+                                </tr>
+                                <tr style="border-top:1px solid #000; ">
+                                    <td width="10%" class="detailTitle" style="height: 15px;font-weight:bold;" rowspan="8">系统回顾</td>
+                                    <td width="10%" class="detailContent" style="height: 15px;">呼吸系统</td>
+                                    <td class="detailContent" colspan="8">
+                                        <div style="display: none" id="DXTHGu_HXXT"></div>
+                                        <textarea id="XTHGu_HXXT" name="XTHGu_HXXT" style="width: 100%; min-height: 40px; max-height: 80px;"></textarea>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td width="10%" class="detailContent" style="height: 15px;">循环系统</td>
+                                    <td class="detailContent" colspan="8">
+                                        <div style="display: none" id="DXTHGu_XHXT"></div>
+                                        <textarea id="XTHGu_XHXT" name="XTHGu_XHXT" style="width: 100%; min-height: 40px; max-height: 80px;"></textarea>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td width="10%" class="detailContent" style="height: 15px;">消化系统</td>
+                                    <td class="detailContent" colspan="8">
+                                        <div style="display: none" id="DXTHGu_XHuaXT"></div>
+                                        <textarea id="XTHGu_XHuaXT" name="XTHGu_XHuaXT" style="width: 100%; min-height: 40px; max-height: 80px;"></textarea>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td width="10%" class="detailContent" style="height: 15px;">泌尿系统</td>
+                                    <td class="detailContent" colspan="8">
+                                        <div style="display: none" id="DXTHGu_MNXT"></div>
+                                        <textarea id="XTHGu_MNXT" name="XTHGu_MNXT" style="width: 100%; min-height: 40px; max-height: 80px;"></textarea>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td width="10%" class="detailContent" style="height: 15px;">造血系统</td>
+                                    <td class="detailContent" colspan="8">
+                                        <div style="display: none" id="DXTHGu_ZXXT"></div>
+                                        <textarea id="XTHGu_ZXXT" name="XTHGu_ZXXT" style="width: 100%; min-height: 40px; max-height: 80px;"></textarea>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td width="10%" class="detailContent" style="height: 15px;">内分泌系统及代谢</td>
+                                    <td class="detailContent" colspan="8">
+                                        <div style="display: none" id="DXTHGu_NFMXT"></div>
+                                        <textarea id="XTHGu_NFMXT" name="XTHGu_NFMXT" style="width: 100%; min-height: 40px; max-height: 80px;"></textarea>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td width="10%" class="detailContent" style="height: 15px;">神经精神系统</td>
+                                    <td class="detailContent" colspan="8">
+                                        <div style="display: none" id="DXTHGu_SJJS"></div>
+                                        <textarea id="XTHGu_SJJS" name="XTHGu_SJJS" style="width: 100%; min-height: 40px; max-height: 80px;"></textarea>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td width="10%" class="detailContent" style="height: 15px;">肌肉骨骼系统</td>
+                                    <td class="detailContent" colspan="8">
+                                        <div style="display: none" id="DXTHGu_JRGG"></div>
+                                        <textarea id="XTHGu_JRGG" name="XTHGu_JRGG" style="width: 100%; min-height: 40px; max-height: 80px;"></textarea>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td width="10%" class="detailTitle" style="height: 15px;font-weight:bold;">个人史</td>
+                                    <td class="detailContent" colspan="9">
+                                        <div style="display: none" id="DGRShi"></div>
+                                        <textarea id="GRShi" name="GRShi" style="width: 100%; min-height: 40px; max-height: 80px;"></textarea>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td width="10%" class="detailTitle" style="height: 15px;font-weight:bold;">婚姻史</td>
+                                    <td class="detailContent" colspan="9">
+                                        <div style="display: none" id="DHYShi"></div>
+                                        <textarea id="HYShi" name="HYShi" style="width: 100%; min-height: 40px; max-height: 80px;"></textarea>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td width="10%" class="detailTitle" style="height: 15px;font-weight:bold;">月经史</td>
+                                    <td class="detailContent" colspan="9">
+                                        <div style="display: none" id="DYJShi"></div>
+                                        <textarea id="YJShi" name="YJShi" style="width: 100%; min-height: 40px; max-height: 80px;"></textarea>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td width="10%" class="detailTitle" style="height: 15px;font-weight:bold;">生育史</td>
+                                    <td class="detailContent" colspan="9">
+                                        <div style="display: none" id="DSYShi"></div>
+                                        <textarea id="SYShi" name="SYShi" style="width: 100%; min-height: 40px; max-height: 80px;"></textarea>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td width="10%" class="detailTitle" style="height: 15px;font-weight:bold;">家族史</td>
+                                    <td class="detailContent" colspan="9">
+                                        <div style="display: none" id="DJZShi"></div>
+                                        <textarea id="JZShi" name="JZShi" style="width: 100%; min-height: 40px; max-height: 80px;"></textarea>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td style="height: 25px;text-align:center;font-weight:bold;" class="detailContent" colspan="10">体格检查</td>
+                                </tr>
+                                <tr>
+                                    <td width="11%" class="detailTitle" style="height: 15px; font-weight: bold;">生命体征</td>
+                                    <td class="detailContent" style="height: 15px;" colspan="9">
+                                        <span class="detailContent" style="height: 15px">
+                                            体温<input type="text" id="TGJCha_SMTZ_TiWen" name="TGJCha_SMTZ_TiWen" style="width: 50px" />℃
+                                            脉搏<input type="text" id="TGJCha_SMTZ_MaiBo" name="TGJCha_SMTZ_MaiBo" style="width: 50px" />次/分
+                                            呼吸<input type="text" id="TGJCha_SMTZ_HuXi" name="TGJCha_SMTZ_HuXi" style="width: 50px" />次/分
+                                            血压<input type="text" id="TGJCha_SMTZ_XueYa1" name="TGJCha_SMTZ_XueYa1" style="width: 40px" />/<input type="text" id="TGJCha_SMTZ_XueYa2" name="TGJCha_SMTZ_XueYa2" style="width: 40px" />mmHg
+                                            体重<input type="text" id="TGJCha_SMTZ_TiZhong" name="TGJCha_SMTZ_TiZhong" style="width: 50px" />kg
+                                        </span>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td width="10%" class="detailTitle" style="height: 15px;font-weight:bold;">一般状况</td>
+                                    <td class="detailContent" colspan="9">
+                                        <div style="display: none" id="DTGJCha_YBZK"></div>
+                                        <textarea id="TGJCha_YBZK" name="TGJCha_YBZK" style="width: 100%; min-height: 40px; max-height: 80px;"></textarea>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td width="10%" class="detailTitle" style="height: 15px;font-weight:bold;">皮肤、黏膜</td>
+                                    <td class="detailContent" colspan="9">
+                                        <div style="display: none" id="DTGJCha_PFNM"></div>
+                                        <textarea id="TGJCha_PFNM" name="TGJCha_PFNM" style="width: 100%; min-height: 40px; max-height: 80px;"></textarea>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td width="10%" class="detailTitle" style="height: 15px;font-weight:bold;">淋巴结</td>
+                                    <td class="detailContent" colspan="9">
+                                        <div style="display: none" id="DTGJCha_LBJ"></div>
+                                        <textarea id="TGJCha_LBJ" name="TGJCha_LBJ" style="width: 100%; min-height: 40px; max-height: 80px;"></textarea>
+                                    </td>
+                                </tr>
+                                <tr style="border-top:1px solid #000; ">
+                                    <td width="10%" class="detailTitle" style="height: 15px;font-weight:bold;" rowspan="5">头部及器官</td>
+                                    <td width="10%" class="detailContent" style="height: 15px;">头颅</td>
+                                    <td class="detailContent" colspan="8">
+                                        <div style="display: none" id="DTGJCha_TB_TL"></div>
+                                        <textarea id="TGJCha_TB_TL" name="TGJCha_TB_TL" style="width: 100%; min-height: 40px; max-height: 80px;"></textarea>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td width="10%" class="detailContent" style="height: 15px;">眼</td>
+                                    <td class="detailContent" colspan="8">
+                                        <div style="display: none" id="DTGJCha_TB_Y"></div>
+                                        <textarea id="TGJCha_TB_Y" name="TGJCha_TB_Y" style="width: 100%; min-height: 40px; max-height: 80px;"></textarea>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td width="10%" class="detailContent" style="height: 15px;">耳</td>
+                                    <td class="detailContent" colspan="8">
+                                        <div style="display: none" id="DTGJCha_TB_E"></div>
+                                        <textarea id="TGJCha_TB_E" name="TGJCha_TB_E" style="width: 100%; min-height: 40px; max-height: 80px;"></textarea>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td width="10%" class="detailContent" style="height: 15px;">鼻</td>
+                                    <td class="detailContent" colspan="8">
+                                        <div style="display: none" id="DTGJCha_TB_B"></div>
+                                        <textarea id="TGJCha_TB_B" name="TGJCha_TB_B" style="width: 100%; min-height: 40px; max-height: 80px;"></textarea>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td width="10%" class="detailContent" style="height: 15px;">口腔</td>
+                                    <td class="detailContent" colspan="8">
+                                        <div style="display: none" id="DTGJCha_TB_KQ"></div>
+                                        <textarea id="TGJCha_TB_KQ" name="TGJCha_TB_KQ" style="width: 100%; min-height: 40px; max-height: 80px;"></textarea>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td width="10%" class="detailTitle" style="height: 15px; font-weight: bold;">颈部</td>
+                                    <td class="detailContent" colspan="8">
+                                        <div style="display: none" id="DTGJCha_JB"></div>
+                                        <textarea id="TGJCha_JB" name="TGJCha_JB" style="width: 100%; min-height: 40px; max-height: 80px;"></textarea>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td width="10%" class="detailTitle" style="height: 15px; font-weight: bold;">胸部</td>
+                                    <td class="detailContent" colspan="8">
+                                        <div style="display: none" id="DTGJCha_XB"></div>
+                                        <textarea id="TGJCha_XB" name="TGJCha_XB" style="width: 100%; min-height: 40px; max-height: 80px;"></textarea>
+                                    </td>
+                                </tr>
+                                <tr style="border-top:1px solid #000; ">
+                                    <td width="10%" class="detailTitle" style="height: 15px;font-weight:bold;" rowspan="4">肺</td>
+                                    <td width="10%" class="detailContent" style="height: 15px;">视诊</td>
+                                    <td class="detailContent" colspan="8">
+                                        <div style="display: none" id="DTGJCha_F_SZ"></div>
+                                        <textarea id="TGJCha_F_SZ" name="TGJCha_F_SZ" style="width: 100%; min-height: 40px; max-height: 80px;"></textarea>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td width="10%" class="detailContent" style="height: 15px;">触诊</td>
+                                    <td class="detailContent" colspan="8">
+                                        <div style="display: none" id="DTGJCha_F_CZ"></div>
+                                        <textarea id="TGJCha_F_CZ" name="TGJCha_F_CZ" style="width: 100%; min-height: 40px; max-height: 80px;"></textarea>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td width="10%" class="detailContent" style="height: 15px;">叩诊</td>
+                                    <td class="detailContent" colspan="8">
+                                        <div style="display: none" id="DTGJCha_F_KZ"></div>
+                                        <textarea id="TGJCha_F_KZ" name="TGJCha_F_KZ" style="width: 100%; min-height: 40px; max-height: 80px;"></textarea>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td width="10%" class="detailContent" style="height: 15px;">听诊</td>
+                                    <td class="detailContent" colspan="8">
+                                        <div style="display: none" id="DTGJCha_F_TZ"></div>
+                                        <textarea id="TGJCha_F_TZ" name="TGJCha_F_TZ" style="width: 100%; min-height: 40px; max-height: 80px;"></textarea>
+                                    </td>
+                                </tr>
+                                <tr style="border-top:1px solid #000; ">
+                                    <td width="10%" class="detailTitle" style="height: 15px;font-weight:bold;" rowspan="4">心</td>
+                                    <td width="10%" class="detailContent" style="height: 15px;">视诊</td>
+                                    <td class="detailContent" colspan="8">
+                                        <div style="display: none" id="DTGJCha_X_SZ"></div>
+                                        <textarea id="TGJCha_X_SZ" name="TGJCha_X_SZ" style="width: 100%; min-height: 40px; max-height: 80px;"></textarea>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td width="10%" class="detailContent" style="height: 15px;">触诊</td>
+                                    <td class="detailContent" colspan="8">
+                                        <div style="display: none" id="DTGJCha_X_CZ"></div>
+                                        <textarea id="TGJCha_X_CZ" name="TGJCha_X_CZ" style="width: 100%; min-height: 40px; max-height: 80px;"></textarea>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td width="10%" class="detailContent" style="height: 15px;">叩诊</td>
+                                    <td class="detailContent" colspan="8">
+                                        <div style="display: none" id="DTGJCha_X_KZ"></div>
+                                        <textarea id="TGJCha_X_KZ" name="TGJCha_X_KZ" style="width: 100%; min-height: 40px; max-height: 80px;"></textarea>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td width="10%" class="detailContent" style="height: 15px;">听诊</td>
+                                    <td class="detailContent" colspan="8">
+                                        <div style="display: none" id="DTGJCha_X_TZ"></div>
+                                        <textarea id="TGJCha_X_TZ" name="TGJCha_X_TZ" style="width: 100%; min-height: 40px; max-height: 80px;"></textarea>
+                                    </td>
+                                </tr>
+
+                                <tr>
+                                    <td width="10%" class="detailTitle" style="height: 15px;font-weight:bold;">桡动脉</td>
+                                    <td class="detailContent" colspan="9">
+                                        <div style="display: none" id="DTGJCha_NDM"></div>
+                                        <textarea id="TGJCha_NDM" name="TGJCha_NDM" style="width: 100%; min-height: 40px; max-height: 80px;"></textarea>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td width="10%" class="detailTitle" style="height: 15px;font-weight:bold;">周围血管征</td>
+                                    <td class="detailContent" colspan="9">
+                                        <div style="display: none" id="DTGJCha_ZWXG"></div>
+                                        <textarea id="TGJCha_ZWXG" name="TGJCha_ZWXG" style="width: 100%; min-height: 40px; max-height: 80px;"></textarea>
+                                    </td>
+                                </tr>
+                                <tr style="border-top:1px solid #000; ">
+                                    <td width="10%" class="detailTitle" style="height: 15px;font-weight:bold;" rowspan="10">腹部</td>
+                                    <td width="10%" class="detailContent" style="height: 15px;">腹围</td>
+                                    <td class="detailContent" colspan="8">
+                                        <div style="display: none" id="DTGJCha_FB_FW"></div>
+                                        <textarea id="TGJCha_FB_FW" name="TGJCha_FB_FW" style="width: 100%; min-height: 40px; max-height: 80px;"></textarea>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td width="10%" class="detailContent" style="height: 15px;">视诊</td>
+                                    <td class="detailContent" colspan="8">
+                                        <div style="display: none" id="DTGJCha_FB_SZ"></div>
+                                        <textarea id="TGJCha_FB_SZ" name="TGJCha_FB_SZ" style="width: 100%; min-height: 40px; max-height: 80px;"></textarea>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td width="10%" class="detailContent" style="height: 15px;">触诊</td>
+                                    <td class="detailContent" colspan="8">
+                                        <div style="display: none" id="DTGJCha_FB_CZ"></div>
+                                        <textarea id="TGJCha_FB_CZ" name="TGJCha_FB_CZ" style="width: 100%; min-height: 40px; max-height: 80px;"></textarea>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td width="10%" class="detailContent" style="height: 15px;">肝脏</td>
+                                    <td class="detailContent" colspan="8">
+                                        <div style="display: none" id="DTGJCha_FB_GZ"></div>
+                                        <textarea id="TGJCha_FB_GZ" name="TGJCha_FB_GZ" style="width: 100%; min-height: 40px; max-height: 80px;"></textarea>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td width="10%" class="detailContent" style="height: 15px;">胆囊</td>
+                                    <td class="detailContent" colspan="8">
+                                        <div style="display: none" id="DTGJCha_FB_DN"></div>
+                                        <textarea id="TGJCha_FB_DN" name="TGJCha_FB_DN" style="width: 100%; min-height: 40px; max-height: 80px;"></textarea>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td width="10%" class="detailContent" style="height: 15px;">脾脏</td>
+                                    <td class="detailContent" colspan="8">
+                                        <div style="display: none" id="DTGJCha_FB_PZ"></div>
+                                        <textarea id="TGJCha_FB_PZ" name="TGJCha_FB_PZ" style="width: 100%; min-height: 40px; max-height: 80px;"></textarea>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td width="10%" class="detailContent" style="height: 15px;">肾脏</td>
+                                    <td class="detailContent" colspan="8">
+                                        <div style="display: none" id="DTGJCha_FB_ShenZ"></div>
+                                        <textarea id="TGJCha_FB_ShenZ" name="TGJCha_FB_ShenZ" style="width: 100%; min-height: 40px; max-height: 80px;"></textarea>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td width="10%" class="detailContent" style="height: 15px;">膀胱</td>
+                                    <td class="detailContent" colspan="8">
+                                        <div style="display: none" id="DTGJCha_FB_PG"></div>
+                                        <textarea id="TGJCha_FB_PG" name="TGJCha_FB_PG" style="width: 100%; min-height: 40px; max-height: 80px;"></textarea>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td width="10%" class="detailContent" style="height: 15px;">叩诊</td>
+                                    <td class="detailContent" colspan="8">
+                                        <div style="display: none" id="DTGJCha_FB_KZ"></div>
+                                        <textarea id="TGJCha_FB_KZ" name="TGJCha_FB_KZ" style="width: 100%; min-height: 40px; max-height: 80px;"></textarea>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td width="10%" class="detailContent" style="height: 15px;">听诊</td>
+                                    <td class="detailContent" colspan="8">
+                                        <div style="display: none" id="DTGJCha_FB_TZ"></div>
+                                        <textarea id="TGJCha_FB_TZ" name="TGJCha_FB_TZ" style="width: 100%; min-height: 40px; max-height: 80px;"></textarea>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td width="10%" class="detailTitle" style="height: 15px;font-weight:bold;">肛门、直肠</td>
+                                    <td class="detailContent" colspan="9">
+                                        <div style="display: none" id="DTGJCha_GMZC"></div>
+                                        <textarea id="TGJCha_GMZC" name="TGJCha_GMZC" style="width: 100%; min-height: 40px; max-height: 80px;"></textarea>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td width="10%" class="detailTitle" style="height: 15px;font-weight:bold;">外生殖器</td>
+                                    <td class="detailContent" colspan="9">
+                                        <div style="display: none" id="DTGJCha_WSZQ"></div>
+                                        <textarea id="TGJCha_WSZQ" name="TGJCha_WSZQ" style="width: 100%; min-height: 40px; max-height: 80px;"></textarea>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td width="10%" class="detailTitle" style="height: 15px;font-weight:bold;">脊柱</td>
+                                    <td class="detailContent" colspan="9">
+                                        <div style="display: none" id="DTGJCha_JZ"></div>
+                                        <textarea id="TGJCha_JZ" name="TGJCha_JZ" style="width: 100%; min-height: 40px; max-height: 80px;"></textarea>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td width="10%" class="detailTitle" style="height: 15px;font-weight:bold;">四肢</td>
+                                    <td class="detailContent" colspan="9">
+                                        <div style="display: none" id="DTGJCha_SZ"></div>
+                                        <textarea id="TGJCha_SZ" name="TGJCha_SZ" style="width: 100%; min-height: 40px; max-height: 80px;"></textarea>
+                                    </td>
+                                </tr>
+                                <tr style="border-top:1px solid #000; ">
+                                    <td width="10%" class="detailTitle" style="height: 15px;font-weight:bold;" rowspan="4">神经反射</td>
+                                    <td width="10%" class="detailContent" style="height: 15px;">生理反射</td>
+                                    <td class="detailContent" colspan="8">
+                                        <div style="display: none" id="DTGJCha_SJFS_SLFS"></div>
+                                        <textarea id="TGJCha_SJFS_SLFS" name="TGJCha_SJFS_SLFS" style="width: 100%; min-height: 40px; max-height: 80px;"></textarea>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td width="10%" class="detailContent" style="height: 15px;">病理反射</td>
+                                    <td class="detailContent" colspan="8">
+                                        <div style="display: none" id="DTGJCha_SJFS_BLFS"></div>
+                                        <textarea id="TGJCha_SJFS_BLFS" name="TGJCha_SJFS_BLFS" style="width: 100%; min-height: 40px; max-height: 80px;"></textarea>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td width="10%" class="detailContent" style="height: 15px;">脑膜刺激征</td>
+                                    <td class="detailContent" colspan="8">
+                                        <div style="display: none" id="DTGJCha_SJFS_NMCJ"></div>
+                                        <textarea id="TGJCha_SJFS_NMCJ" name="TGJCha_SJFS_NMCJ" style="width: 100%; min-height: 40px; max-height: 80px;"></textarea>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td width="10%" class="detailContent" style="height: 15px;">其他</td>
+                                    <td class="detailContent" colspan="8">
+                                        <div style="display: none" id="DTGJCha_SJFS_QT"></div>
+                                        <textarea id="TGJCha_SJFS_QT" name="TGJCha_SJFS_QT" style="width: 100%; min-height: 40px; max-height: 80px;"></textarea>
+                                    </td>
+                                </tr>
+
+                                <tr>
+                                    <td width="10%" class="detailTitle" style="height: 15px;font-weight:bold;">专科情况</td>
+                                    <td class="detailContent" colspan="9">
+                                        <div style="display: none" id="DTGJCha_ZKQK"></div>
+                                        <textarea id="TGJCha_ZKQK" name="TGJCha_ZKQK" style="width: 100%; min-height: 40px; max-height: 80px;"></textarea>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td style="height: 25px;text-align:center;font-weight:bold;" class="detailContent" colspan="10">实验室及器械检查</td>
+                                </tr>
+                                <tr>
+                                    <td width="10%" class="detailContent" style="height: 15px;" colspan="10">
+                                        <textarea id="SYSQXie" name="SYSQXie" style="width: 100%; min-height: 50px; max-height: 100px;"></textarea>
+
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td style="height: 25px;text-align:center;font-weight:bold;" class="detailContent" colspan="10">病历摘要</td>
+                                </tr>
+                                <tr>
+                                    <td width="10%" class="detailContent" style="height: 15px;" colspan="10">
+                                        <textarea id="BLZYao" name="BLZYao" style="width:100%;min-height:50px;max-height:100px;"></textarea>
+
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td style="height: 25px;text-align:center;font-weight:bold;" class="detailContent" colspan="10">诊断</td>
+                                </tr>
+                                <tr>
+                                    <td width="11%" class="detailTitle" style="height: 15px; font-weight: bold;" rowspan="1">初步诊断</td>
+                                    <td width="10%" class="detailContent" style="height: 15px;" colspan="9">
+                                        <textarea id="CBZDuan" name="CBZDuan" style="width: 100%; min-height: 50px; max-height: 100px;"></textarea>
+
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td width="11%" class="detailTitle" style="height: 15px; font-weight: bold;" rowspan="1">入院诊断</td>
+                                    <td width="10%" class="detailContent" style="height: 15px;" colspan="9">
+                                        <textarea id="RYZDuan" name="RYZDuan" style="width: 100%; min-height: 50px; max-height: 100px;"></textarea>
+
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td width="11%" class="detailTitle" style="height: 15px; font-weight: bold;" rowspan="1">修正诊断</td>
+                                    <td width="10%" class="detailContent" style="height: 15px;" colspan="9">
+                                        <textarea id="XZZDuan" name="XZZDuan" style="width: 100%; min-height: 50px; max-height: 100px;" disabled="disabled"></textarea>
+
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td width="100%" class="detailContent" style="height: 25px;text-align:right;" colspan="10">
+                                        <table align="right">
+                                            <tr>
+
+                                                <td width="20%" class="detailTitle" style="height: 25px">填写人<span style="color: #ff0000">*</span></td>
+                                                <td width="20%" class="detailContent" style="height: 25px">
+                                                    <span class="detailContent" style="height: 25px">
+                                                        <input type="text" id="Writor" name="Writor" style="width: 100px;" />
+                                                    </span>
+                                                </td>
+                                                <td width="30%" class="detailTitle" style="height: 25px">登记日期<span style="color: #ff0000">*</span></td>
+                                                <td width="20%" class="detailContent" style="height: 25px">
+                                                    <span class="detailContent" style="height: 25px">
+                                                        <input type="text" id="RegisterDate" name="RegisterDate" style="width: 100px;" onclick="WdatePicker({ maxDate: '%y-%M-%d' });" />
+                                                    </span>
+                                                </td>
+                                            </tr>
+                                        </table>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td width="100%" class="detailContent" style="height: 25px;text-align:right;" colspan="10">
+                                        <table align="right">
+                                            <tr>
+
+                                                <td width="20%" class="detailTitle" style="height: 25px">评审人<span style="color: #ff0000">*</span></td>
+                                                <td width="20%" class="detailContent" style="height: 25px">
+                                                    <span class="detailContent" style="height: 25px">
+                                                        <input type="text" id="Reviewer" name="Reviewer" style="width: 100px;" disabled="disabled" />
+                                                    </span>
+                                                </td>
+                                                <td width="30%" class="detailTitle" style="height: 25px">评审日期<span style="color: #ff0000">*</span></td>
+                                                <td width="20%" class="detailContent" style="height: 25px">
+                                                    <span class="detailContent" style="height: 25px">
+                                                        <input type="text" id="ReviewerDate" name="ReviewerDate" style="width: 100px;" disabled="disabled" onclick="WdatePicker({ maxDate: '%y-%M-%d' });" />
+                                                    </span>
+                                                </td>
+                                            </tr>
+                                        </table>
+                                    </td>
+                                </tr>
+                                
+                            </table>
+
+                        </div>
+                    </div>
+
+                    <div class="modal-footer" style="margin: auto; text-align: center;">
+                        <input type="button" id="close" name="close" class="btn btn-default" data-dismiss="modal" value="关闭" />
+                        <input type="button" id="submit" name="submit" class="btn btn-success" value="修改" onclick="Update()" />
+
+                    </div>
+                </div>
+                <!-- /.modal-content -->
+            </div>
+            <!-- /.modal -->
+        </div>
+    </form>
+    <script type="text/javascript">
+        $(function () {
+            $("textarea").autosize();
+        });
+
+        function LoadData(id, pi) {
+            $.ajax({
+                cache: false,
+                asycn: true,
+                type: "get",
+                url: '@Url.Action("LoadData")',
+                dataType: "text",
+                data: { id: id },
+                success: function (data) {
+                    var jsonArr = eval("(" + data + ")");
+                    $("#pi").val(pi);
+                    
+                    $("#Id").val(jsonArr.Id);
+                    $("#StudentsRealName").val(jsonArr.StudentsRealName);
+                    $("#StudentsName").val(jsonArr.StudentsName);
+                    $("#TrainingBaseCode").val(jsonArr.TrainingBaseCode);
+                    $("#TrainingBaseName").val(jsonArr.TrainingBaseName);
+                    $("#ProfessionalBaseCode").val(jsonArr.ProfessionalBaseCode);
+                    $("#ProfessionalBaseName").val(jsonArr.ProfessionalBaseName);
+                    $("#DeptCode").val(jsonArr.DeptCode);
+                    $("#DeptName").val(jsonArr.DeptName);
+                    $("#RegisterDate").val(jsonArr.RegisterDate);
+                    $("#Writor").val(jsonArr.Writor);
+                    $("#TeacherCheck").val(jsonArr.TeacherCheck);
+                    $("#KzrCheck").val(jsonArr.KzrCheck);
+                    $("#BaseCheck").val(jsonArr.BaseCheck);
+                    $("#ManagerCheck").val(jsonArr.ManagerCheck);
+
+                    loadTeacher(jsonArr.TrainingBaseCode, jsonArr.DeptCode, jsonArr.TeachersName);
+                    $("#TeachersName").val(jsonArr.TeachersName);
+                    $("#TeachersRealName").val(jsonArr.TeachersRealName);
+
+                    $("#PatientNo").val(jsonArr.PatientNo);
+                    $("#InhospitalNo").val(jsonArr.InhospitalNo);
+                    $("#PatientName").val(jsonArr.PatientName);
+
+                    $("input:radio[name=Sex][value=" + jsonArr.Sex + "]").attr("checked", "true");
+
+                    $("#Age").val(jsonArr.Age);
+                    $("#Job").val(jsonArr.Job);
+                    $("#Nation").val(jsonArr.Nation);
+                    $("#Marriage").val(jsonArr.Marriage);
+
+                    loadUpdateCA(jsonArr.BirthProvinceCode, "#BirthCityCode", jsonArr.BirthCityCode, "#BirthAreaCode", jsonArr.BirthAreaCode);
+                    $("#BirthProvinceCode").val(jsonArr.BirthProvinceCode);
+                    $("#BirthProvinceName").val(jsonArr.BirthProvinceName);
+                    $("#BirthCityCode").val(jsonArr.BirthCityCode);
+                    $("#BirthCityName").val(jsonArr.BirthCityName);
+                    $("#BirthAreaCode").val(jsonArr.BirthAreaCode);
+                    $("#BirthAreaName").val(jsonArr.BirthAreaName);
+                    $("#BirthDetailAddress").val(jsonArr.BirthDetailAddress);
+
+                    $("#Company").val(jsonArr.Company);
+
+                    loadUpdateCA(jsonArr.NowProvinceCode, "#NowCityCode", jsonArr.NowCityCode, "#NowAreaCode", jsonArr.NowAreaCode)
+                    $("#NowProvinceCode").val(jsonArr.NowProvinceCode);
+                    $("#NowProvinceName").val(jsonArr.NowProvinceName);
+                    $("#NowCityCode").val(jsonArr.NowCityCode);
+                    $("#NowCityName").val(jsonArr.NowCityName);
+                    $("#NowAreaCode").val(jsonArr.NowAreaCode);
+                    $("#NowAreaName").val(jsonArr.NowAreaName);
+                    $("#NowDetailAddress").val(jsonArr.NowDetailAddress);
+
+                    $("#Phone").val(jsonArr.Phone);
+                    $("#InhospitalDate").val(jsonArr.InhospitalDate);
+                    $("#RecordDate").val(jsonArr.RecordDate);
+                    $("#MedicalHistorySpeaker").val(jsonArr.MedicalHistorySpeaker);
+                    $("#ReliableDegree").val(jsonArr.ReliableDegree);
+                    $("#ZhuSu").val(jsonArr.ZhuSu);
+                    $("#XBShi_FBQK").val(jsonArr.XBShi_FBQK);
+                    $("#XBShi_ZYZZ").val(jsonArr.XBShi_ZYZZ);
+                    $("#XBShi_BSZZ").val(jsonArr.XBShi_BSZZ);
+                    $("#XBShi_FBYL").val(jsonArr.XBShi_FBYL);
+                    $("#XBShi_FBYLY").val(jsonArr.XBShi_FBYLY);
+                    $("#XBShi_QT").val(jsonArr.XBShi_QT);
+                    $("#JWShi_YBJK").val(jsonArr.JWShi_YBJK);
+                    $("#JWShi_JBS").val(jsonArr.JWShi_JBS);
+                    $("#JWShi_CRBS").val(jsonArr.JWShi_CRBS);
+                    $("#JWShi_YFJZ").val(jsonArr.JWShi_YFJZ);
+                    $("#JWShi_SSWS").val(jsonArr.JWShi_SSWS);
+                    $("#JWShi_SXS").val(jsonArr.JWShi_SXS);
+                    $("#JWShi_SWYW").val(jsonArr.JWShi_SWYW);
+                    $("#JWShi_QT").val(jsonArr.JWShi_QT);
+                    $("#XTHGu_HXXT").val(jsonArr.XTHGu_HXXT);
+                    $("#XTHGu_XHXT").val(jsonArr.XTHGu_XHXT);
+                    $("#XTHGu_XHuaXT").val(jsonArr.XTHGu_XHuaXT);
+                    $("#XTHGu_MNXT").val(jsonArr.XTHGu_MNXT);
+                    $("#XTHGu_ZXXT").val(jsonArr.XTHGu_ZXXT);
+                    $("#XTHGu_NFMXT").val(jsonArr.XTHGu_NFMXT);
+                    $("#XTHGu_SJJS").val(jsonArr.XTHGu_SJJS);
+                    $("#XTHGu_JRGG").val(jsonArr.XTHGu_JRGG);
+                    $("#GRShi").val(jsonArr.GRShi);
+                    $("#HYShi").val(jsonArr.HYShi);
+                    $("#YJShi").val(jsonArr.YJShi);
+                    $("#SYShi").val(jsonArr.SYShi);
+                    $("#JZShi").val(jsonArr.JZShi);
+                    $("#TGJCha_SMTZ_TiWen").val(jsonArr.TGJCha_SMTZ_TiWen);
+                    $("#TGJCha_SMTZ_MaiBo").val(jsonArr.TGJCha_SMTZ_MaiBo);
+                    $("#TGJCha_SMTZ_HuXi").val(jsonArr.TGJCha_SMTZ_HuXi);
+                    $("#TGJCha_SMTZ_XueYa1").val(jsonArr.TGJCha_SMTZ_XueYa1);
+                    $("#TGJCha_SMTZ_XueYa2").val(jsonArr.TGJCha_SMTZ_XueYa2);
+                    $("#TGJCha_SMTZ_TiZhong").val(jsonArr.TGJCha_SMTZ_TiZhong);
+                    $("#TGJCha_YBZK").val(jsonArr.TGJCha_YBZK);
+                    $("#TGJCha_PFNM").val(jsonArr.TGJCha_PFNM);
+                    $("#TGJCha_LBJ").val(jsonArr.TGJCha_LBJ);
+                    $("#TGJCha_TB_TL").val(jsonArr.TGJCha_TB_TL);
+                    $("#TGJCha_TB_Y").val(jsonArr.TGJCha_TB_Y);
+                    $("#TGJCha_TB_E").val(jsonArr.TGJCha_TB_E);
+                    $("#TGJCha_TB_B").val(jsonArr.TGJCha_TB_B);
+                    $("#TGJCha_TB_KQ").val(jsonArr.TGJCha_TB_KQ);
+                    $("#TGJCha_JB").val(jsonArr.TGJCha_JB);
+                    $("#TGJCha_XB").val(jsonArr.TGJCha_XB);
+                    $("#TGJCha_F_SZ").val(jsonArr.TGJCha_F_SZ);
+                    $("#TGJCha_F_CZ").val(jsonArr.TGJCha_F_CZ);
+                    $("#TGJCha_F_KZ").val(jsonArr.TGJCha_F_KZ);
+                    $("#TGJCha_F_TZ").val(jsonArr.TGJCha_F_TZ);
+                    $("#TGJCha_X_SZ").val(jsonArr.TGJCha_X_SZ);
+                    $("#TGJCha_X_CZ").val(jsonArr.TGJCha_X_CZ);
+                    $("#TGJCha_X_KZ").val(jsonArr.TGJCha_X_KZ);
+                    $("#TGJCha_X_TZ").val(jsonArr.TGJCha_X_TZ);
+                    $("#TGJCha_NDM").val(jsonArr.TGJCha_NDM);
+                    $("#TGJCha_ZWXG").val(jsonArr.TGJCha_ZWXG);
+                    $("#TGJCha_FB_ZW").val(jsonArr.TGJCha_FB_ZW);
+                    $("#TGJCha_FB_SZ").val(jsonArr.TGJCha_FB_SZ);
+                    $("#TGJCha_FB_CZ").val(jsonArr.TGJCha_FB_CZ);
+                    $("#TGJCha_FB_GZ").val(jsonArr.TGJCha_FB_GZ);
+                    $("#TGJCha_FB_DN").val(jsonArr.TGJCha_FB_DN);
+                    $("#TGJCha_FB_PZ").val(jsonArr.TGJCha_FB_PZ);
+                    $("#TGJCha_FB_ShenZ").val(jsonArr.TGJCha_FB_ShenZ);
+                    $("#TGJCha_FB_PG").val(jsonArr.TGJCha_FB_PG);
+                    $("#TGJCha_FB_KZ").val(jsonArr.TGJCha_FB_KZ);
+                    $("#TGJCha_FB_TZ").val(jsonArr.TGJCha_FB_TZ);
+                    $("#TGJCha_GMZC").val(jsonArr.TGJCha_GMZC);
+                    $("#TGJCha_WSZQ").val(jsonArr.TGJCha_WSZQ);
+                    $("#TGJCha_JZ").val(jsonArr.TGJCha_JZ);
+                    $("#TGJCha_SZ").val(jsonArr.TGJCha_SZ);
+                    $("#TGJCha_SJFS_SLFS").val(jsonArr.TGJCha_SJFS_SLFS);
+                    $("#TGJCha_SJFS_BLFS").val(jsonArr.TGJCha_SJFS_BLFS);
+                    $("#TGJCha_SJFS_NMCJ").val(jsonArr.TGJCha_SJFS_NMCJ);
+                    $("#TGJCha_SJFS_QT").val(jsonArr.TGJCha_SJFS_QT);
+                    $("#TGJCha_ZKQK").val(jsonArr.TGJCha_ZKQK);
+                    $("#SYSQXie").val(jsonArr.SYSQXie);
+                    $("#BLZYao").val(jsonArr.BLZYao);
+                    $("#CBZDuan").val(jsonArr.CBZDuan);
+                    $("#RYZDuan").val(jsonArr.RYZDuan);
+                    $("#XZZDuan").val(jsonArr.XZZDuan);
+                    $("#Reviewer").val(jsonArr.Reviewer);
+                    $("#ReviewerDate").val(jsonArr.ReviewerDate);
+                    $("#RecordsStatus").val(jsonArr.RecordsStatus);
+                    $("#Tag1").val(jsonArr.Tag1);
+                    $("#Tag2").val(jsonArr.Tag2);
+                    $("#Tag3").val(jsonArr.Tag3);
+                   
+                },
+                error: function () {
+                    alert("系统繁忙，请联系管理员")
+                }
+            });
+        }
+
+        function Update() {
+            if ($("#StudentsRealName").val() == "") { alert("姓名不能为空"); return false; }
+            if ($("#TrainingBaseName").val() == "") { alert("培训基地不能为空"); return false; }
+            if ($("#ProfessionalBaseName").val() == "") { alert("专业基地不能为空"); return false; }
+            if ($("#DeptCode").val() == "") { alert("轮转科室不能为空"); return false; }
+            if ($("#TeachersName").val() == "") { alert("指导医师不能为空"); return false; }
+            if ($("#PatientNo").val() == "") { alert("门诊号不能为空"); return false; }
+            if ($("#InhospitalNo").val() == "") { alert("住院号不能为空"); return false; }
+            if ($("#PatientName").val() == "") { alert("患者姓名不能为空"); return false; }
+            $("#form1").ajaxSubmit({
+                type: "post",
+                url: '@Url.Action("Update")',
+                dataType: "text",
+                success: function (data) {
+                    alert(data);
+                    $("#myModal").modal("hide");
+                    loadPageList($("#pi").val());
+                }
+            });
+        }
+    </script>
+</body>
+</html>

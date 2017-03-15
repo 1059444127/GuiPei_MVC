@@ -1,0 +1,104 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<objects xmlns="http://www.springframework.net">
+
+  <object name="loginService" type="GP.BLL.LoginService, GP.BLL" singleton="false" >
+    <!--<property name="CurrentDbSession" ref="CurrentDbSession" />-->
+    <property name="CurrentDal" ref="LoginDal" />
+    <!--<constructor-arg index="0" ref="DbSession" />-->
+    <property name="loginDal" ref="LoginDal" />
+  </object>
+
+  <object name="GP_LoginService" type="GP.BLL.GP_LoginService, GP.BLL" singleton="false" >
+    <property name="CurrentDal" ref="GP_LoginDal" />
+  </object>
+
+  <object name="professionalBaseService" type="GP.BLL.GP_Professional_BaseService, GP.BLL" singleton="false" >
+    <property name="CurrentDal" ref="GP_Professional_BaseDal" />
+    <property name="professionalBaseDal" ref="GP_Professional_BaseDal" />
+  </object>
+
+  <object name="schoolInformationService" type="GP.BLL.GP_SchoolInformationService, GP.BLL" singleton="false" >
+    <property name="CurrentDal" ref="GP_SchoolInformationDal" />
+  </object>
+  <object name="studentsPersonalInformation" type="GP.BLL.GP_StudentsPersonalInformation2Service, GP.BLL" singleton="false" >
+    <property name="CurrentDal" ref="GP_StudentsPersonalInformation2Dal" />
+  </object>
+
+  <object name="studentsRotaryInformation2" type="GP.BLL.GP_StudentsRotaryInformation2Service, GP.BLL" singleton="false" >
+    <property name="CurrentDal" ref="GP_StudentsRotaryInformation2Dal" />
+    <property name="studentsRotaryInfoDal" ref="GP_StudentsRotaryInformation2Dal" />
+  </object>
+
+  <object name="questionnaireService" type="GP.BLL.GP_QuestionnaireService, GP.BLL" singleton="false" >
+    <property name="CurrentDal" ref="GP_QuestionnaireDal" />
+    <property name="questionnaireDal" ref="GP_QuestionnaireDal" />
+  </object>
+
+  <object name="GP_RotaryScheduleService" type="GP.BLL.GP_RotaryScheduleService, GP.BLL" singleton="false" >
+    <property name="CurrentDal" ref="GP_RotaryScheduleDal" />
+  </object>
+  <object name="GP_DeptManagementService" type="GP.BLL.GP_DeptManagementService, GP.BLL" singleton="false" >
+    <property name="CurrentDal" ref="GP_DeptManagementDal" />
+  </object>
+  <object name="GP_Professional_Base_DeptService" type="GP.BLL.GP_Professional_Base_DeptService, GP.BLL" singleton="false" >
+    <property name="CurrentDal" ref="GP_Professional_Base_DeptDal" />
+  </object>
+  <object name="GP_Disease_RegisterService" type="GP.BLL.GP_Disease_RegisterService, GP.BLL" singleton="false" >
+    <property name="CurrentDal" ref="GP_Disease_RegisterDal" />
+  </object>
+  <object name="GP_Disease_Register2Service" type="GP.BLL.GP_Disease_Register2Service, GP.BLL" singleton="false" >
+    <property name="CurrentDal" ref="GP_Disease_Register2Dal" />
+  </object>
+<object name="GP_SkillRequirementService" type="GP.BLL.GP_SkillRequirementService, GP.BLL" singleton="false" >
+  <property name="CurrentDal" ref="GP_SkillRequirementDal" />
+</object>
+  <object name="GP_SkillRequirement2Service" type="GP.BLL.GP_SkillRequirement2Service, GP.BLL" singleton="false" >
+    <property name="CurrentDal" ref="GP_SkillRequirement2Dal" />
+  </object>
+<object name="GP_ProvinceService" type="GP.BLL.GP_ProvinceService, GP.BLL" singleton="false" >
+  <property name="CurrentDal" ref="GP_ProvinceDal" />
+</object>
+  <object name="GP_CityService" type="GP.BLL.GP_CityService, GP.BLL" singleton="false" >
+    <property name="CurrentDal" ref="GP_CityDal" />
+  </object>
+  <object name="GP_AreaService" type="GP.BLL.GP_AreaService, GP.BLL" singleton="false" >
+    <property name="CurrentDal" ref="GP_AreaDal" />
+  </object>
+  <object name="GP_BigMedicalRecords2Service" type="GP.BLL.GP_BigMedicalRecords2Service, GP.BLL" singleton="false" >
+    <property name="CurrentDal" ref="GP_BigMedicalRecords2Dal" />
+  </object>
+
+<object name="GP_TeachingActivitiesService" type="GP.BLL.GP_TeachingActivitiesService, GP.BLL" singleton="false" >
+  <property name="CurrentDal" ref="GP_TeachingActivitiesDal" />
+</object>
+<object name="GP_AttendanceManagementService" type="GP.BLL.GP_AttendanceManagementService, GP.BLL" singleton="false" >
+  <property name="CurrentDal" ref="GP_AttendanceManagementDal" />
+</object>
+<object name="GP_AdviceFeedbackService" type="GP.BLL.GP_AdviceFeedbackService, GP.BLL" singleton="false" >
+  <property name="CurrentDal" ref="GP_AdviceFeedbackDal" />
+</object>
+<object name="GP_ReleaseNewsService" type="GP.BLL.GP_ReleaseNewsService, GP.BLL" singleton="false" >
+  <property name="CurrentDal" ref="GP_ReleaseNewsDal" />
+</object>
+<object name="GP_NeiKeOptionService" type="GP.BLL.GP_NeiKeOptionService, GP.BLL" singleton="false" >
+  <property name="CurrentDal" ref="GP_NeiKeOptionDal" />
+</object>
+  <object name="GP_TiKuResultService" type="GP.BLL.GP_TiKuResultService, GP.BLL" singleton="false" >
+    <property name="CurrentDal" ref="GP_TiKuResultDal" />
+  </object>
+<object name="RotaryInformationJoinService" type="GP.BLL.RotaryInformationJoinService, GP.BLL" singleton="false" >
+  <property name="CurrentDal" ref="RotaryInformationJoinDal" />
+</object>
+<object name="GP_OutDept_ExamService" type="GP.BLL.GP_OutDept_ExamService, GP.BLL" singleton="false" >
+  <property name="CurrentDal" ref="GP_OutDept_ExamDal" />
+</object>
+<object name="GP_Teachers_Appoint_InformationService" type="GP.BLL.GP_Teachers_Appoint_InformationService, GP.BLL" singleton="false" >
+  <property name="CurrentDal" ref="GP_Teachers_Appoint_InformationDal" />
+</object>
+
+
+
+
+
+
+</objects>

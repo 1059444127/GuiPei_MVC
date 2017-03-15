@@ -1,0 +1,106 @@
+﻿@using GP.Common
+@{
+    Layout = null;
+}
+
+<!DOCTYPE html>
+
+<html>
+<head>
+    <meta name="viewport" content="width=device-width" />
+    <title>列表页</title>
+    <script src="~/Scripts/jquery-1.8.2.min.js"></script>
+    <script src="~/Scripts/MyJs/global.js"></script>
+    <script src="~/Scripts/MyJs/MyPageList/PageList1.js"></script>
+    <script src="~/Scripts/MyJs/bootstrap-2.3.3/js/bootstrap.min.js"></script>
+    <link href="~/Content/MyCss/global.css" rel="stylesheet" />
+    <link href="~/Content/MyCss/bootstrapNoTable/bootstrap.css" rel="stylesheet" />
+
+    <script type="text/javascript">
+        var students_real_name = '@CommonFunc.SafeGetStringFromObj(ViewData["students_real_name"])';
+        var rotary_begin_time = '@CommonFunc.SafeGetStringFromObj(ViewData["rotary_begin_time"])';
+        var rotary_end_time = '@CommonFunc.SafeGetStringFromObj(ViewData["rotary_end_time"])';
+        var total_score = '@CommonFunc.SafeGetStringFromObj(ViewData["total_score"])';
+        $(window).load(function () {
+            loadPageList(1);
+        });
+
+        function loadPageList(pi) {
+
+            $.post('@Url.Action("PageList")', {
+                "pi": pi, 
+                "students_real_name": students_real_name, "rotary_begin_time": rotary_begin_time, "rotary_end_time": rotary_end_time, "total_score": total_score
+            },
+              function (data) {
+                  var jsonArr = data;
+                  if (jsonArr.data == null) {
+                      $("#tbList tr:gt(0)").remove();
+                  } else {
+                      createRows(jsonArr.data, pi);
+                  }
+                  createPageBar($("#PageList"), pi, jsonArr.totalCount, jsonArr.pageCount);
+              });
+        }
+
+        function createRows(jsonArr, pi) {
+            var tbL = $("#tbList");
+            $("#tbList tr:gt(0)").remove();
+            for (i = 0; i < jsonArr.length; i++) {
+                var jbjn = parseFloat(jsonArr[i].blsx) + parseFloat(jsonArr[i].clbrnl) + parseFloat(jsonArr[i].sjcznl) + parseFloat(jsonArr[i].czjn) + parseFloat(jsonArr[i].zdsp);
+                var trHTML = "<tr class='listTableContentRow'>";
+                trHTML += "<td style='height:25px;'>" + jsonArr[i].students_real_name + "</td>";
+                trHTML += "<td>" + jsonArr[i].rotary_begin_time + "</td>";
+                trHTML += "<td>" + jsonArr[i].rotary_end_time + "</td>";
+                trHTML += "<td>" + jsonArr[i].kqqk + "</td>";
+                trHTML += "<td>" + jsonArr[i].gztd + "</td>";
+                trHTML += "<td>" + jsonArr[i].ydyf + "</td>";
+                trHTML += "<td>" + jsonArr[i].llsp + "</td>";
+                trHTML += "<td>" + jsonArr[i].zdzx + "</td>";
+                trHTML += "<td>" + jbjn + "</td>";
+                trHTML += "<td>" + jsonArr[i].djnl + "</td>";
+                trHTML += "<td>" + jsonArr[i].total_score + "</td>";
+                if (jsonArr[i].is_pass == "1") {
+                    trHTML += "<td style='color:red'><font color='red'>同意出科</font></td>";
+                } else {
+                    trHTML += "<td style='color:red'><font color='red'>顺延一期</font></td>";
+                }
+                trHTML += "</tr>";
+                tbL.append(trHTML);
+            }
+            MouseAnimate();
+        }
+
+    </script>
+</head>
+<body>
+    <div>
+        <table class="listTableHead" cellspacing="0" cellpadding="0" style="width:100%;">
+            <tr>
+                <td class="listTableHeadTR" style="height: 22px;" width="20%">
+                    <img height="16" src="/images/imgs/Query.gif" width="16" style="vertical-align: middle" />学员出科考核信息
+                </td>
+
+            </tr>
+        </table>
+        <table id="tbList" class="listTable" cellspacing="1" cellpadding="0" style="width:100%;">
+            <tr id="tr0" class="listTableTitleRow">
+                <td>姓名</td>
+                <td>轮转开始时间</td>
+                <td>轮转结束时间</td>
+                <td>考勤情况</td>
+                <td>工作态度</td>
+                <td>医德医风</td>
+                <td>理论水平</td>
+                <td>制度执行</td>
+                <td>基本技能</td>
+                <td>带教能力</td>
+                <td>合计得分</td>
+                <td>出科情况</td>
+            </tr>
+        </table>
+        <div id="PageList" style="text-align:center;vertical-align:middle; margin-top:10px;"></div>
+
+    </div>
+
+</body>
+</html>

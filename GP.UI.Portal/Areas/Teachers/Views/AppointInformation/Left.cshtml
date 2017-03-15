@@ -1,0 +1,58 @@
+﻿@{
+    Layout = null;
+}
+
+<!DOCTYPE html>
+
+<html>
+<head>
+    <meta name="viewport" content="width=device-width" />
+    <title>左侧页</title>
+    <script src="~/Scripts/jquery-1.8.2.min.js"></script>
+    <script src="~/Scripts/MyJs/global.js"></script>
+    <script src="~/Scripts/MyJs/My97DatePicker/WdatePicker.js"></script>
+    <link href="~/Content/MyCss/global.css" rel="stylesheet" />
+
+</head>
+<body>
+    @using (Ajax.BeginForm("LeftToList", "AppointInformation", new AjaxOptions() { HttpMethod = "Post" }, new { id = "form1", target = "frmright" }))
+    {
+        <div>
+            <table cellpadding="1" cellspacing="1" class="qryTable">
+
+                <tr>
+                    <td>预约时间：</td>
+                </tr>
+                <tr>
+                    <td>
+                        从
+                        <input type="text" id="appoint_begin_time" name="appoint_begin_time" onclick="WdatePicker({ dateFmt: 'yyyy-MM-dd', position: { left: -20, top: 0 } })" style="height:17px;width:130px;" />
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        到
+                        <input type="text" id="appoint_end_time" name="appoint_end_time" onclick="WdatePicker({ dateFmt: 'yyyy-MM-dd', position: { left: -20, top: 0 } })" style="height:17px;width:130px;" />
+                    </td>
+                </tr>
+                <tr>
+                    <td>审核结果：</td>
+                </tr>
+                <tr>
+                    <td>
+                        <input type="text" id="is_pass" name="is_pass" style="height:17px;width:150px;" />
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        <div style="text-align:center;">
+                            <input type="submit" id="Submit1" name="Submit2" value="查询" style="width:50px;height:25px;" />
+                            <input type="button" name="Submit2" value="重置" class="button" onclick="form1.reset();" style="width:50px;height:25px;" />
+                        </div>
+                    </td>
+                </tr>
+            </table>
+        </div>
+    }
+</body>
+</html>

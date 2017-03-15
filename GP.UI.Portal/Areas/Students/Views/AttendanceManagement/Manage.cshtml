@@ -1,0 +1,246 @@
+﻿@{
+    Layout = null;
+}
+
+<!DOCTYPE html>
+
+<html>
+<head>
+    <meta name="viewport" content="width=device-width" />
+    <title>出勤记录登记</title>
+    <script src="~/Scripts/jquery-1.8.2.min.js"></script>
+    <script src="~/Scripts/MyJs/global.js"></script>
+    <script src="~/Scripts/MyJs/autosize.js"></script>
+    <script src="~/Scripts/MyJs/showTips.js"></script>
+    <script src="~/Scripts/MyJs/My97DatePicker/WdatePicker.js"></script>
+    <script src="~/Scripts/MyJs/jquery-form.js"></script>
+    <link href="~/Content/MyCss/global.css" rel="stylesheet" />
+    <script type="text/javascript">
+        $(function () {
+            $("textarea").autosize();
+            loadInfo2();
+            $("#RegisterDate").val('@DateTime.Now.Date.ToString("yyyy-MM-dd")');
+            $("#Id").val('@Guid.NewGuid().ToString()');
+
+            $("#Days").focus(function () {
+                var fDate = new Date($("#FirstDate").val().replace(/-/g, "/"));
+                var lDate = new Date($("#LastDate").val().replace(/-/g, "/"));
+                if (IsDate($("#FirstDate").val()) && IsDate($("#LastDate").val())) {
+                    if (fDate > lDate) {
+                        alert("开始日期不能大于结束日期");
+                        $("#FirstDate").val("").blur();
+                        $("#LastDate").val("").blur();
+                        return false;
+                    } else {
+                        var dDate = DateDiff($("#LastDate").val(), $("#FirstDate").val());
+                        $("#Days").val(parseInt(dDate));
+                    }
+                }
+
+            });
+
+            function IsDate(mystring) {
+                var reg = /^(\d{4})-(\d{2})-(\d{2})$/;
+                var str = mystring;
+                var arr = reg.exec(str);
+                if (str == "") { alert("日期不能为空"); return false; }
+                if (!reg.test(str) && RegExp.$2 <= 12 && RegExp.$3 <= 31) {
+                    alert("请保证输入的日期格式为yyyy-mm-dd或正确的日期!");
+                    return false;
+                }
+                return true;
+            }
+
+            $("#AttendanceCategory").change(function () {
+                if ($("#AttendanceCategory").val() == "正常签到") {
+                    //$("#FirstDate").val(new Date().toLocaleDateString("yyyy-MM-dd").replace(/年|月/g, '-').replace(/日/g, ''));
+                    $("#FirstDate").val('@DateTime.Now.Date.ToString("yyyy-MM-dd")');
+                    $("#FirstDate").removeAttr("onclick").attr("ReadOnly", true);
+                    //$("#LastDate").val(new Date().toLocaleDateString("yyyy-MM-dd").replace(/年|月/g, '-').replace(/日/g, ''));
+                    $("#LastDate").val('@DateTime.Now.Date.ToString("yyyy-MM-dd")');
+                    $("#LastDate").removeAttr("onclick").attr("ReadOnly", true);
+                    $("#Days").val("0").attr("ReadOnly", true);
+                    $("#Details").val("").attr("disabled", true);
+                } else {
+                    $("#FirstDate").val("").attr("disabled", false).attr("onclick", "WdatePicker();");
+                    $("#LastDate").val("").attr("disabled", false).attr("onclick", "WdatePicker();");
+                    $("#Days").val("").attr("disabled", false); $("#Details").attr("disabled", false);
+                }
+            });
+
+
+        });
+        function saveOrUpdate() {
+            if ($("#DeptCode").val() == "") { alert("轮转科室不能为空"); return false; }
+            if ($("#TeachersName").val() == "") { alert("指导医师不能为空"); return false; }
+            if ($("#AttendanceCategory").val() == "") { alert("类型不能为空"); return false; }
+            if ($("#FirstDate").val() == "") { alert("开始日期不能为空"); return false; }
+            if ($("#LastDate").val() == "") { alert("结束日期不能为空"); return false; }
+            if ($("#Days").val() == "") { alert("请假天数不能为空"); return false; }
+            if ($("#Writor").val() == "") { alert("填写人不能为空"); return false; }
+            if ($("#RegisterDate").val() == "") { alert("登记日期不能为空"); return false; }
+
+            $("#form1").ajaxSubmit({
+                type: "post",
+                url: '@Url.Action("Add")',
+                dataType: "text",
+                success: function (data) {
+                    if (data == "0") {
+                        alert("出勤记录信息保存失败");
+                        return false;
+                    } else {
+                        alert("出勤记录信息保存成功");
+                        window.opener.parent.frames.bodyFrame.frames.frmright.window.loadPageList(1);
+                    }
+                }
+            });
+        }
+
+    </script>
+</head>
+<body>
+    <form id="form1" name="form1">
+        <div align="center">
+            <input type="hidden" id="Id" name="Id" />
+            <table  border="0" style="border-collapse: collapse;width:100%;" cellpadding="0" cellspacing="1" class="detailTable">
+                <tr>
+                    <td height="24" align="center" colspan="4" class="detailHead">出勤记录</td>
+                </tr>
+                <tr>
+                    <td width="15%" class="detailTitle" style="height: 25px;">姓名<span style="color: #ff0000">*</span></td>
+                    <td width="35%" class="detailContent" style="height:25px;" colspan="3">
+                        <span class="detailContent" style="height: 25px">
+                            <input type="text" id="StudentsRealName" name="StudentsRealName" readonly="readonly" style="width: 150px;" />
+                            <input type="hidden" id="StudentsName" name="StudentsName" />
+                        </span>
+                    </td>
+
+                </tr>
+
+                <tr>
+                    <td width="15%" class="detailTitle" style="height: 25px;">培训基地<span style="color: #ff0000">*</span></td>
+                    <td width="35%" class="detailContent" style="height:25px;">
+                        <span class="detailContent" style="height: 25px">
+                            <input type="text" id="TrainingBaseName" name="TrainingBaseName" readonly="readonly" style="width: 150px;" />
+                            <input type="hidden" id="TrainingBaseCode" name="TrainingBaseCode" />
+                        </span>
+                    </td>
+                    <td width="15%" class="detailTitle" style="height: 25px;">专业基地<span style="color: #ff0000">*</span></td>
+                    <td width="35%" class="detailContent" style="height:25px;">
+                        <span class="detailContent" style="height: 25px">
+                            <input type="text" id="ProfessionalBaseName" name="ProfessionalBaseName" readonly="readonly" style="width: 150px;" />
+                            <input type="hidden" id="ProfessionalBaseCode" name="ProfessionalBaseCode" />
+                        </span>
+                    </td>
+                </tr>
+                <tr>
+                    <td width="15%" class="detailTitle" style="height: 25px;">轮转科室<span style="color: #ff0000">*</span></td>
+                    <td width="35%" class="detailContent" style="height:25px;">
+                        <span class="detailContent" style="height: 25px">
+                            <select id="DeptCode" name="DeptCode" style="width:200px">
+                                <option value="-1">==请选择==</option>
+                            </select><input type="hidden" id="DeptName" name="DeptName" />
+                        </span>
+                    </td>
+                    <td width="15%" class="detailTitle" style="height: 25px;">指导医师<span style="color: #ff0000">*</span></td>
+                    <td width="35%" class="detailContent" style="height:25px;">
+                        <span class="detailContent" style="height: 25px">
+                            <select id="TeacherId" name="TeacherId" style="width:150px">
+                                <option value="-1">==请选择==</option>
+                            </select><input type="hidden" id="TeacherName" name="TeacherName" />
+                        </span>
+                    </td>
+                </tr>
+                <tr>
+                    <td width="15%" class="detailTitle" style="height: 25px;">类型<span style="color: #ff0000">*</span></td>
+                    <td width="70%" class="detailContent" style="height:25px;" colspan="3">
+                        <span class="detailContent" style="height: 25px">
+                            <select id="AttendanceCategory" name="AttendanceCategory" style="width:150px;">
+                                <option value="">==请选择==</option>
+                                <option value="正常签到">正常签到</option>
+                                <option value="事假">事假</option>
+                                <option value="病假">病假</option>
+                                <option value="其他假">其他假</option>
+                            </select>
+                        </span>
+                    </td>
+                </tr>
+                <tr>
+                    <td colspan="4" class="detailContent" align="center">
+                        <table align="center">
+                            <tr>
+                                <td width="15%" class="detailTitle" style="height: 25px;">开始日期<span style="color: #ff0000">*</span></td>
+                                <td width="15%" class="detailContent" style="height: 25px;">
+                                    <span class="detailContent" style="height: 25px">
+                                        <input type="text" id="FirstDate" name="FirstDate" style="width:100px;" onclick="WdatePicker();" />
+                                    </span>
+                                </td>
+                                <td width="15%" class="detailTitle" style="height: 25px;">结束日期<span style="color: #ff0000">*</span></td>
+                                <td width="15%" class="detailContent" style="height: 25px;">
+                                    <span class="detailContent" style="height: 25px">
+                                        <input type="text" id="LastDate" name="LastDate" style="width:100px;" onclick="WdatePicker();" />
+                                    </span>
+                                </td>
+                                <td width="15%" class="detailTitle" style="height: 25px;">请假天数<span style="color: #ff0000">*</span></td>
+                                <td width="15%" class="detailContent" style="height: 25px;">
+                                    <span class="detailContent" style="height: 25px">
+                                        <input type="text" id="Days" name="Days" style="width:100px;" />
+                                    </span>
+                                </td>
+                            </tr>
+                        </table>
+                    </td>
+                </tr>
+
+                <tr>
+                    <td width="15%" class="detailTitle" style="height: 25px;">具体情况</td>
+                    <td width="70%" class="detailContent" style="height:25px;" colspan="3">
+                        <span class="detailContent" style="height: 25px">
+                            <textarea id="Details" name="Details" style="width:95%; min-height: 100px; max-height: 150px;"></textarea>
+                        </span>
+                    </td>
+                </tr>
+                <tr>
+                    <td width="15%" class="detailTitle" style="height: 25px;">备注</td>
+                    <td width="70%" class="detailContent" style="height: 25px;" colspan="3">
+                        <span class="detailContent" style="height: 25px">
+                            <textarea id="Comment" name="Comment" style="width:95%; min-height: 100px; max-height: 150px;"></textarea>
+                        </span>
+                    </td>
+
+                </tr>
+                <tr>
+                    <td width="85%" class="detailContent" style="height: 25px;text-align:right" colspan="6">
+                        <table align="right">
+                            <tr>
+
+                                <td width="20%" class="detailTitle" style="height: 25px">填写人<span style="color: #ff0000">*</span></td>
+                                <td width="20%" class="detailContent" style="height: 25px">
+                                    <span class="detailContent">
+                                        <input type="text" style="width:100px;" id="Writor" name="Writor" />
+                                    </span>
+                                </td>
+                                <td width="30%" class="detailTitle" style="height: 25px">登记日期<span style="color: #ff0000">*</span></td>
+                                <td width="20%" class="detailContent" style="height: 25px">
+                                    <span class="detailContent">
+                                        <input type="text" style="width:100px;" id="RegisterDate" name="RegisterDate" onclick="WdatePicker({ maxDate: '%y-%M-%d' });" />
+                                    </span>
+                                </td>
+                            </tr>
+                        </table>
+                    </td>
+                </tr>
+                <tr id="last">
+                    <td colspan="10" style="height: 25px; border-left: 1px solid white; border-right: 1px solid white; border-bottom: 1px solid white">
+                        <div style="text-align: center; margin-top: 8px;">
+                            <input id="SaveOrUpdate" name="SaveOrUpdate" type="button" style="cursor: pointer; background-image: url(/images/tijiao.jpg); border: none; height: 21px; width: 88px;" onclick="saveOrUpdate()" />
+
+                        </div>
+                    </td>
+                </tr>
+            </table>
+
+        </div>
+    </form>
+</body>
+</html>

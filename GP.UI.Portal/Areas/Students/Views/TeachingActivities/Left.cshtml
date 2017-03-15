@@ -1,0 +1,80 @@
+﻿@{
+    Layout = null;
+}
+
+<!DOCTYPE html>
+
+<html>
+<head>
+    <meta name="viewport" content="width=device-width" />
+    <title>左侧页</title>
+    <script src="~/Scripts/MyJs/global.js"></script>
+    <script src="~/Scripts/MyJs/My97DatePicker/WdatePicker.js"></script>
+    <link href="~/Content/MyCss/global.css" rel="stylesheet" />
+</head>
+<body>
+    @using (Ajax.BeginForm("LeftToList", "TeachingActivities", new AjaxOptions() { HttpMethod = "Post" }, new { id = "form1", target = "frmright" }))
+    {
+        <div>
+            <table cellpadding="1" cellspacing="1" class="qryTable">
+
+                <tr>
+                    <td>轮转科室：</td>
+                </tr>
+                <tr>
+                    <td>
+                        <input type="text" id="DeptName" name="DeptName" style="height:17px;width:150px;" />
+                    </td>
+                </tr>
+                <tr>
+                    <td>活动形式：</td>
+                </tr>
+                <tr>
+                    <td>
+                        <select name="ActivityForm" id="ActivityForm" style="height:20px;width:150px;">
+                            <option value="">==请选择==</option>
+                            <option value="病历讨论(疑难、死亡)">病历讨论(疑难、死亡)</option>
+                            <option value="主任查房">主任查房</option>
+                            <option value="学术活动">学术活动</option>
+                            <option value="其他学习情况">其他学习情况</option>
+                        </select>
+                    </td>
+                </tr>
+                <tr>
+                    <td>主讲人：</td>
+                </tr>
+                <tr>
+                    <td>
+                        <input type="text" id="MainSpeaker" name="MainSpeaker" style="height:17px;width:150px;" />
+                    </td>
+                </tr>
+                <tr>
+                    <td>学时：</td>
+                </tr>
+                <tr>
+                    <td>
+                        <input type="text" id="ClassHour" name="ClassHour" style="height:17px;width:150px;" />
+                    </td>
+                </tr>
+                <tr>
+                    <td>活动日期：</td>
+                </tr>
+                <tr>
+                    <td>
+                        <input type="text" id="ActivityDate" name="Condition" style="height:17px;width:150px;" onclick="WdatePicker({position:{left:-25,top:0}})" />
+                    </td>
+                </tr>
+
+                <tr>
+                    <td>
+                        <div style="text-align:center;">
+                            <input type="submit" id="Submit1" name="Submit2" value="查询" style="width:50px;height:25px;" />
+                            <input type="button" name="Submit2" value="重置" class="button" onclick="form1.reset();" style="width:50px;height:25px;" />
+                        </div>
+                    </td>
+                </tr>
+            </table>
+        </div>
+    }
+</body>
+</html>

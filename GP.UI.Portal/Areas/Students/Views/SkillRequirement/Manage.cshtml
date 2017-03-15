@@ -1,0 +1,365 @@
+﻿@{
+    Layout = null;
+}
+
+<!DOCTYPE html>
+
+<html>
+<head>
+    <meta name="viewport" content="width=device-width" />
+    <title>操作技能登记</title>
+    <script src="~/Scripts/jquery-1.8.2.min.js"></script>
+    <script src="~/Scripts/MyJs/bootstrap-2.3.3/js/bootstrap.min.js"></script>
+    <script src="~/Scripts/MyJs/global.js"></script>
+    <script src="~/Scripts/MyJs/autosize.js"></script>
+    <script src="~/Scripts/MyJs/My97DatePicker/WdatePicker.js"></script>
+    <script src="~/Scripts/MyJs/jquery-form.js"></script>
+    <link href="~/Content/MyCss/global.css" rel="stylesheet" />
+    <link href="~/Content/MyCss/bootstrapNoTable/bootstrap.css" rel="stylesheet" />
+    <script type="text/javascript">
+        $(function () {
+            $("#DeptCode option:not(:first)").remove();
+            $("#Rows tr:gt(0)").remove();
+            $("#TeacherId option:not(:first)").remove();
+            $.ajax({
+                cache: false,
+                asycn: true,
+                type: "get",
+                url: '@Url.Action("GetInfo", "Common")',
+                dataType: "text",
+                success: function (data) {
+                    var jsonArr = eval("(" + data + ")");
+                    if (jsonArr.msg == "0") {
+                        alert("请完善个人基本信息");
+                        return false;
+                    } else {
+                        var personalJson = jsonArr.personalInfo;
+                        var deptJson = jsonArr.deptInfo;
+                        $("#StudentsName").val(personalJson.Name);
+                        $("#StudentsRealName").val(personalJson.RealName);
+                        $("#TrainingBaseCode").val(personalJson.TrainingBaseCode);
+                        $("#TrainingBaseName").val(personalJson.TrainingBaseName);
+                        $("#ProfessionalBaseCode").val(personalJson.ProfessionalBaseCode);
+                        $("#ProfessionalBaseName").val(personalJson.ProfessionalBaseName);
+                        $("#Writor").val(personalJson.RealName);
+                        $("#RegisterDate").val('@DateTime.Now.Date.ToString("yyyy-MM-dd")');
+                        for (var i = 0; i < deptJson.length; i++) {
+                            $("#DeptCode").append("<option value=" + deptJson[i].dept_code + ">" + deptJson[i].dept_name + "</option>");
+                        }
+                    }
+                },
+                error: function () {
+                    alert("系统繁忙，请联系管理员")
+                }
+            });
+        });
+        
+        function loadTeachers() {
+            $("#TeacherId option:not(:first)").remove();
+
+            $.ajax({
+                cache: false,
+                type: "get",
+                url: '@Url.Action("GetTeachers", "Common")',
+                dataType: "text",
+                data: { TrainingBaseCode: $("#TrainingBaseCode").val(), DeptCode: $("#DeptCode").val() },
+                success: function (data) {
+                    var jsonArr = eval("(" + data + ")");
+                    if (jsonArr.msg == "0") {
+                        alert("尚无指导医师信息，请联系管理员");
+                        return false;
+                    } else {
+                        var Teachers = jsonArr.teachersInfo;
+                        for (var i = 0; i < Teachers.length; i++) {
+                            $("#TeacherId").append("<option value=" + Teachers[i].name + ">" + Teachers[i].real_name + "</option>");
+                        }
+                    }
+                    if ($("#DeptCode").val() == "") {
+                        $("#DeptName").val("");
+                        $("#TeacherName").val("");
+                    } else {
+                        $("#DeptName").val($("#DeptCode").find("option:selected").text());
+
+                    }
+                },
+                error: function () {
+                    alert("系统繁忙，请联系管理员");
+                }
+            });
+        }
+        function loadSkill() {
+            if ($("#TeacherId").val == "") {
+                $("#TeacherName").val("");
+            } else {
+                $("#TeacherName").val($("#TeacherId").find("option:selected").text());
+            }
+            $("#Rows tr:gt(0)").remove();
+            if ($("#TeacherId").val() != "") {
+                var deptCode = $("#DeptCode").val();
+                $.ajax({
+                    cache: false,
+                    type: "get",
+                    url: '@Url.Action("LoadSkill")',
+                    dataType: "text",
+                    data: { DeptCode: deptCode },
+                    success: function (data) {
+                        var jsonArr = eval("(" + data + ")");
+
+                        var k = 1;
+                        var trHTML = "";
+                        for (i = 0; i < jsonArr.length; i++) {
+
+                            trHTML += "<tr class='listTableContentRow'>";
+
+                            trHTML += "<td align='center' style='height:25px'>" + k + "</td>";
+                            trHTML += "<td align='center'>" + jsonArr[i].SkillName + "</td>";
+                            if (jsonArr[i].RequiredNum == null || jsonArr[i].RequiredNum == "") {
+                                trHTML += "<td align='center'>" + '无' + "</td>";
+                            } else {
+                                trHTML += "<td align='center'>" + jsonArr[i].RequiredNum + "</td>";
+                            }
+                            trHTML += "<td align='center'>" + jsonArr[i].MasterDegree + "</td>";
+                            trHTML += "<td align='center'>" +
+                                "<a onclick=\"initSkill('" + jsonArr[i].SkillName + "','" + jsonArr[i].RequiredNum + "','" + jsonArr[i].MasterDegree + "');\" " +
+                                "style='text-decoration:none;' data-toggle='modal' data-target='#myModal2' href='#'>登记</a></td>";
+                            k += 1;
+                            trHTML += "</tr>";
+
+                        }
+                        $("#Rows").append(trHTML);
+
+
+                        $("#Rows tr:gt(0)").mouseover(function () {
+                            $(this).removeClass("listTableContentRow");
+                            $(this).addClass("listTableContentRowMouseOver");
+                        });
+
+                        $("#Rows tr:gt(0)").mouseout(function () {
+                            $(this).removeClass("listTableContentRowMouseOver");
+                            $(this).addClass("listTableContentRow");
+                        });
+                        $("#Rows").append("<tr><td colspan='5'align='left'><input type='button' class='btn btn-success' value='新增病种登记' data-toggle='modal' data-target='#myModal2' id='addDisease' name='addDisease'></td></tr>");
+                    },
+                    error: function () {
+                        alert("系统繁忙，请联系管理员");
+                    }
+                });
+            }
+        }
+
+        function initSkill(skillName, requiredNum, masterDegree) {
+            $("#SkillName").val(skillName);
+
+            if (requiredNum == "null") {
+                $("#RequiredNum").val("");
+            } else {
+                $("#RequiredNum").val(requiredNum);
+            }
+            if (masterDegree == "null") {
+                $("#MasterDegree").val("");
+            } else {
+                $("#MasterDegree").val(masterDegree);
+            }
+        }
+
+        function submitSkillRequirement() {
+
+            if ($("#PatientName").val() == "") { alert("病人姓名不能为空"); return false; }
+            if ($("#CaseNum").val() == "") { alert("病历号不能为空"); return false; }
+            if ($("#Comment").val() == "") { alert("详细说明不能为空"); return false; }
+            $("#form1").ajaxSubmit({
+                type: "post",
+                url: '@Url.Action("Add")',
+                dataType: "text",//如果是json的话，不用eval()在解析
+                success: function (data) {
+                    if (data == "0") {
+                        alert("技能登记信息保存失败");
+                        return false;
+                    } else {
+                        alert("技能登记信息保存成功");
+                        $("#myModal2").modal("hide");
+                        //$("#frmright").contentWindow.loadPageList(1);
+                        //window.frames["frmright"].window.loadPageList(1);
+                        window.opener.parent.frames.bodyFrame.frames.frmright.window.loadPageList(1);
+                    }
+                }
+            });
+        }
+    </script>
+</head>
+<body>
+    <form id="form1">
+        <div align="center">
+            <table border="0" style="border-collapse: collapse;width:100%;" cellpadding="0" cellspacing="1" class="detailTable">
+                <tr>
+                    <td height="24" align="center" colspan="8" class="detailHead">技能操作登记</td>
+                </tr>
+                <tr>
+                    <td width="3%" class="detailTitle" style="height: 25px;">姓名<span style="color: #ff0000">*</span></td>
+                    <td width="6%" class="detailContent" style="height:25px;">
+                        <span class="detailContent" style="height: 25px">
+                            <input type="text" id="StudentsRealName" name="StudentsRealName" readonly="readonly" style="width:150px;" />
+                        </span><input type="hidden" id="StudentsName" name="StudentsName" />
+                        <input type="hidden" id="Id" name="Id" value="@Guid.NewGuid().ToString()" />
+                    </td>
+                    <td width="12%" class="detailTitle" style="height: 25px;">培训基地<span style="color: #ff0000">*</span></td>
+                    <td width="15%" class="detailContent" style="height:25px;">
+                        <span class="detailContent" style="height: 25px">
+                            <input type="text" id="TrainingBaseName" name="TrainingBaseName" readonly="readonly" style="width:150px;" />
+
+                        </span><input type="hidden" id="TrainingBaseCode" name="TrainingBaseCode" />
+                    </td>
+                    <td width="12%" class="detailTitle" style="height: 25px;">专业基地<span style="color: #ff0000">*</span></td>
+                    <td width="15%" class="detailContent" style="height:25px;">
+                        <span class="detailContent" style="height: 25px">
+                            <input type="text" id="ProfessionalBaseName" name="ProfessionalBaseName" readonly="readonly" style="width:150px;" />
+                        </span><input type="hidden" id="ProfessionalBaseCode" name="ProfessionalBaseCode" />
+                    </td>
+
+                </tr>
+                <tr>
+                    <td colspan="6" align="center">
+                        <table>
+                            <tr>
+                                <td width="25%" class="detailTitle" style="height: 25px;">轮转科室<span style="color: #ff0000">*</span></td>
+                                <td width="25%" class="detailContent" style="height: 25px;">
+                                    <span class="detailContent" style="height: 25px">
+                                        <select id="DeptCode" name="DeptCode" style="width:150px;" onchange="loadTeachers()">
+                                            <option value="">==请选择==</option>
+                                        </select>
+                                    </span><input type="hidden" id="DeptName" name="DeptName" />
+                                </td>
+                                <td width="25%" class="detailTitle" style="height: 25px;">指导医师<span style="color: #ff0000">*</span></td>
+                                <td width="25%" class="detailContent" style="height: 25px;">
+                                    <span class="detailContent" style="height: 25px">
+                                        <select id="TeacherId" name="TeacherId" style="width:100px;" onchange="loadSkill()">
+                                            <option value="">==请选择==</option>
+                                        </select>
+                                    </span><input type="hidden" id="TeacherName" name="TeacherName" />
+                                </td>
+                            </tr>
+                        </table>
+                    </td>
+                </tr>
+                <tr>
+
+                    <td colspan="6">
+                        <table class="listTable" id="Rows" style="border: 1px;border-style: solid;width:100%;">
+                            <tr class="listTableTitleRow">
+                                <td width="10%" style="height: 25px;" align="center">序号</td>
+                                <td width="60%" style="height: 25px;" align="center">技能要求</td>
+                                <td width="10%" style="height: 25px;" align="center">要求例数</td>
+                                <td width="10%" style="height: 25px;" align="center">掌握程度</td>
+                                <td width="10%" style="height: 25px;" align="center">登记</td>
+                            </tr>
+                            <tr>
+                                <td colspan="5" align="center" bgcolor="#f1f3f5">请选择轮转科室进行技能操作登记</td>
+                            </tr>
+
+
+                        </table>
+
+                    </td>
+                </tr>
+
+                <tr>
+
+                    <td width="15%" class="detailContent" style="height: 25px"></td>
+                    <td width="85%" class="detailContent" style="height: 25px" colspan="7">
+                        <table align="right">
+                            <tr>
+
+                                <td width="20%" class="detailTitle" style="height: 25px">填写人<span style="color: #ff0000">*</span></td>
+                                <td width="20%" class="detailContent" style="height: 25px">
+                                    <span class="detailContent" style="height: 25px">
+                                        <input type="text" id="Writor" name="Writor" />
+                                    </span>
+                                </td>
+                                <td width="30%" class="detailTitle" style="height: 25px">登记日期<span style="color: #ff0000">*</span></td>
+                                <td width="20%" class="detailContent" style="height: 25px">
+                                    <span class="detailContent" style="height: 25px">
+                                        <input type="text" id="RegisterDate" name="RegisterDate" readonly="readonly" onclick="WdatePicker({ maxDate: '%y-%M-%d' });" />
+                                    </span>
+                                </td>
+                            </tr>
+                        </table>
+                    </td>
+                </tr>
+            </table>
+        </div>
+
+        <div class="modal fade" id="myModal2" tabindex="-2" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true" data-backdrop="static" style="display:none;max-height:500px;min-height:200px;width:60%;margin-left:-30%;top:5%;">
+            <div class="modal-dialog">
+                <div class="modal-content">
+
+                    <div class="modal-body" style="max-height: 500px; min-height: 200px; padding: 1px;">
+                        <div align="center">
+                            <table border="0" style="border-collapse: collapse;width:100%;" cellpadding="0" cellspacing="1" class="detailTable">
+                                <tr>
+                                    <td width="20%" class="detailTitle" style="height: 25px;">技能名称：<span style="color: #ff0000">*</span></td>
+                                    <td colspan="3" width="70%" class="detailContent" style="height:25px;">
+                                        <span class="detailContent" style="height: 25px">
+                                            <input type="text" id="SkillName" name="SkillName" style="width:200px" />
+                                            <input type="hidden" id="RequiredNum" name="RequiredNum" />
+                                            <input type="hidden" id="MasterDegree" name="MasterDegree" />
+
+                                        </span>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td width="20%" class="detailTitle" style="height: 25px;">病人姓名：<span style="color: #ff0000">*</span></td>
+                                    <td width="30%" class="detailContent" style="height:25px;">
+                                        <span class="detailContent" style="height: 25px">
+                                            <input type="text" id="PatientName" name="PatientName" style="width:150px" />
+                                        </span>
+                                    </td>
+                                    <td width="20%" class="detailTitle" style="height: 25px;">病历号：<span style="color: #ff0000">*</span></td>
+                                    <td width="30%" class="detailContent" style="height:25px;">
+                                        <span class="detailContent" style="height: 25px">
+                                            <input type="text" id="CaseNum" name="CaseNum" style="width:150px" />
+                                        </span>
+                                    </td>
+                                </tr>
+
+                                <tr>
+                                    <td width="20%" class="detailTitle" style="height: 25px;">是否成功：</td>
+                                    <td width="30%" class="detailContent" style="height:25px;">
+                                        <span class="detailContent" style="height: 25px">
+                                            <label><input type="radio" id="Success" name="IsOk" value="成功" />成功</label>
+                                            <label><input type="radio" id="Error" name="IsOk" value="失败" />失败</label>
+                                        </span>
+                                    </td>
+                                    <td width="20%" class="detailTitle" style="height: 25px;">操作日期：</td>
+                                    <td width="30%" class="detailContent" style="height:25px;">
+                                        <span class="detailContent" style="height: 25px">
+                                            <input type="text" id="OperateDate" name="OperateDate" style="width: 150px;" onclick="WdatePicker({ maxDate: '%y-%M-%d', position: { left: -25, top: 0 } });" />
+                                        </span>
+                                    </td>
+                                </tr>
+
+                                <tr>
+                                    <td width="20%" class="detailTitle" style="height: 25px;">详细说明：<span style="color: #ff0000">*</span></td>
+                                    <td colspan="3" width="70%" class="detailContent" style="height:25px;">
+                                        <span class="detailContent" style="height: 25px">
+                                            <textarea id="Comment" name="Comment" style="width:90%;min-height:50px;max-height:120px"></textarea>
+                                        </span>
+                                    </td>
+                                </tr>
+                            </table>
+
+                        </div>
+                    </div>
+
+                    <div class="modal-footer" style="margin: auto; text-align: center;">
+                        <input type="button" id="close" name="close" class="btn btn-default" data-dismiss="modal" value="关闭" />
+                        <input type="button" id="submit" name="submit" class="btn btn-success" value="提交" onclick="submitSkillRequirement();" />
+
+                    </div>
+                </div>
+                <!-- /.modal-content -->
+            </div>
+            <!-- /.modal -->
+        </div>
+    </form>
+</body>
+</html>

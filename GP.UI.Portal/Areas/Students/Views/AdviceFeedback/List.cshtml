@@ -1,0 +1,349 @@
+﻿@using GP.Common
+@{
+    Layout = null;
+}
+
+<!DOCTYPE html>
+
+<html>
+<head>
+    <meta name="viewport" content="width=device-width" />
+    <title>列表页</title>
+    <script src="~/Scripts/jquery-1.8.2.min.js"></script>
+    <script src="~/Scripts/MyJs/global.js"></script>
+    <script src="~/Scripts/MyJs/MyPageList/PageList1.js"></script>
+    <script src="~/Scripts/MyJs/bootstrap-2.3.3/js/bootstrap.min.js"></script>
+    <script src="~/Scripts/MyJs/autosize.js"></script>
+    <script src="~/Scripts/MyJs/showTips.js"></script>
+    <script src="~/Scripts/MyJs/jquery-form.js"></script>
+    <script src="~/Scripts/MyJs/My97DatePicker/WdatePicker.js"></script>
+    <link href="~/Content/MyCss/global.css" rel="stylesheet" />
+    <link href="~/Content/MyCss/bootstrapNoTable/bootstrap.css" rel="stylesheet" />
+    <script type="text/javascript">
+        var deptName = '@CommonFunc.SafeGetStringFromObj(ViewData["DeptName"])';
+        var managerHandle = '@CommonFunc.SafeGetStringFromObj(ViewData["ManagerHandle"])';
+        var registerDate = '@CommonFunc.SafeGetStringFromObj(ViewData["RegisterDate"])';
+        $(function () {
+            loadInfo2();
+            loadPageList(1);
+        });
+
+        function loadPageList(pi) {
+            $.post('@Url.Action("PageList")', {
+                "pi": pi,  "DeptName": deptName,
+                "ManagerHandle": managerHandle, "RegisterDate": registerDate
+            },
+              function (data) {
+                  var jsonArr = data;
+                  if (jsonArr.data == null) {
+                      $("#tbList tr:gt(0)").remove();
+                  } else {
+                      createRows(jsonArr.data, pi);
+                  }
+                  createPageBar($("#PageList"), pi, jsonArr.totalCount, jsonArr.pageCount);
+              });
+        }
+
+        function createRows(jsonArr, pi) {
+            var tbL = $("#tbList");
+            $("#tbList tr:gt(0)").remove();
+            for (i = 0; i < jsonArr.length; i++) {
+                var trHTML = "<tr class='listTableContentRow'>";
+                trHTML += "<td style='height:25px'>" + jsonArr[i].StudentsRealName + "</td>";
+                trHTML += "<td>" + jsonArr[i].ProfessionalBaseName + "</td>";
+                trHTML += "<td>" + jsonArr[i].DeptName + "</td>";
+                if (jsonArr[i].ManagerReply == "" || jsonArr[i].ManagerReply == null) {
+                    trHTML += "<td style='width:10%;'>无</td>";
+                } else {
+                    trHTML += "<td style='width:10%;'>" + jsonArr[i].ManagerReply + "</td>";
+                }
+                trHTML += "<td style='color:red;'>" + jsonArr[i].ManagerHandle + "</td>";
+                
+                trHTML += "<td><a href='#' onclick=\"show('" + jsonArr[i].Id + "','" + pi + "');\"><img alt='查看详细资料' src='/images/imgs/icon_show.gif'/></a></td>";
+                trHTML += "<td><a href='#' onclick=\"check('" + jsonArr[i].ManagerHandle + "','" + jsonArr[i].Id + "','" + pi + "');\"><img alt='修改该记录' src='/images/imgs/icon_edit.gif'/></a></td>";
+                trHTML += "<td><a onclick=\"del('" + jsonArr[i].ManagerHandle + "','" + jsonArr[i].Id + "','" + pi + "');\" href='#'><img alt='删除该记录' src='/images/imgs/icon_del.gif'/></a></td>";
+                trHTML += "</tr>";
+                tbL.append(trHTML);
+
+
+            }
+
+            $("#tbList tr:gt(0)").mouseover(function () {
+                $(this).removeClass("listTab  leContentRow");
+                $(this).addClass("listTableContentRowMouseOver");
+            });
+
+            $("#tbList tr:gt(0)").mouseout(function () {
+                $(this).removeClass("listTableContentRowMouseOver");
+                $(this).addClass("listTableContentRow");
+            });
+
+        }
+        function show(id, pi) {
+            $("#submit").hide();
+            LoadData(id, pi);
+            $("#myModal").modal('show');
+        }
+        function check(ManagerHandle, id, pi) {
+            if (ManagerHandle == "已处理") {
+                alert("反馈信息已处理，无法进行修改");
+                return;
+            } else {
+                $("#submit").show();
+                LoadData(id, pi);
+                $("#myModal").modal('show');
+            }
+        }
+
+
+        function del(ManagerHandle, id, pi) {
+            if (ManagerHandle == "已处理") {
+                alert("反馈信息已处理，无法进行删除");
+                return;
+            } else {
+                if (confirm("确定删除该记录吗?")) {
+                    $.ajax({
+                        cache: false,
+                        type: "post",
+                        url: '@Url.Action("Del")',
+                        dataType: "text",
+                        data: { id: id },
+                        success: function (data) {
+                            if (data == "1") {
+                                alert("意见反馈信息删除成功");
+                                loadPageList(pi);
+                            } else {
+                                alert("意见反馈信息删除失败");
+                            }
+
+                        },
+                        error: function () {
+                            alert("系统繁忙，请联系管理员");
+                        }
+
+                    });
+                }
+            }
+        }
+    </script>
+</head>
+<body>
+    <div id="couDiv">
+        <table class="listTableHead" cellspacing="0" cellpadding="0" style="width:100%;">
+            <tr>
+                <td class="listTableHeadTR" style="height: 22px;" width="20%">
+                    <img height="16" src="/images/imgs/Query.gif" width="16" style="vertical-align: middle" />意见反馈查询结果
+                </td>
+
+            </tr>
+        </table>
+        <table id="tbList" class="listTable" cellspacing="1" cellpadding="0" style="width:100%;">
+            <tr id="tr0" class="listTableTitleRow">
+                <td>姓名</td>
+                <td>专业基地</td>
+                <td>轮转科室</td>
+                <td>管理员回复</td>
+                <td>状态</td>
+                <td>查看</td>
+                <td>修改</td>
+                <td>删除</td>
+            </tr>
+
+        </table>
+        <div id="PageList" style="text-align: center; vertical-align: middle; margin-top: 10px;"></div>
+
+    </div>
+    <form id="form1" name="form1">
+
+        <div class="modal fade" id="myModal" tabindex="-2" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true" data-backdrop="static" style="display:none;max-height:500px;min-height:200px;width:70%;margin-left:-35%;top:5%;">
+            <div class="modal-dialog">
+                <div class="modal-content">
+
+                    <div class="modal-body" style="max-height: 500px; min-height: 200px; padding: 1px;">
+                        <div align="center">
+                            <input type="hidden" id="pi" name="pi" />
+                            <input type="hidden" id="Id" name="Id" />
+                            <input type="hidden" id="TeacherCheck" name="TeacherCheck" />
+                            <input type="hidden" id="BaseCheck" name="BaseCheck" />
+                            <input type="hidden" id="KzrCheck" name="KzrCheck" />
+                            <input type="hidden" id="ManagerCheck" name="ManagerCheck" />
+                            <input type="hidden" id="ManagerHandle" name="ManagerHandle" />
+                            <table border="0" style="border-collapse: collapse;width:100%;" cellpadding="0" cellspacing="1" class="detailTable">
+                                <tr>
+                                    <td height="24" align="center" colspan="4" class="detailHead">意见反馈</td>
+                                </tr>
+                                <tr>
+                                    <td width="15%" class="detailTitle" style="height: 25px;">姓名<span style="color: #ff0000">*</span></td>
+                                    <td width="35%" class="detailContent" style="height:25px;">
+                                        <span class="detailContent" style="height: 25px">
+                                            <input type="text" id="StudentsRealName" name="StudentsRealName" readonly="readonly" style="width: 150px;" />
+                                            <input type="hidden" id="StudentsName" name="StudentsName" />
+                                        </span>
+                                    </td>
+                                    <td width="15%" class="detailTitle" style="height: 25px;">培训基地<span style="color: #ff0000">*</span></td>
+                                    <td width="35%" class="detailContent" style="height:25px;">
+                                        <span class="detailContent" style="height: 25px">
+                                            <input type="text" id="TrainingBaseName" name="TrainingBaseName" readonly="readonly" style="width: 150px;" />
+                                            <input type="hidden" id="TrainingBaseCode" name="TrainingBaseCode" />
+                                        </span>
+                                    </td>
+                                </tr>
+
+                                <tr>
+
+                                    <td width="15%" class="detailTitle" style="height: 25px;">专业基地<span style="color: #ff0000">*</span></td>
+                                    <td width="35%" class="detailContent" style="height:25px;">
+                                        <span class="detailContent" style="height: 25px">
+                                            <input type="text" id="ProfessionalBaseName" name="ProfessionalBaseName" readonly="readonly" style="width: 150px;" />
+                                            <input type="hidden" id="ProfessionalBaseCode" name="ProfessionalBaseCode" />
+                                        </span>
+                                    </td>
+                                    <td width="15%" class="detailTitle" style="height: 25px;">轮转科室<span style="color: #ff0000">*</span></td>
+                                    <td width="35%" class="detailContent" style="height:25px;">
+                                        <span class="detailContent" style="height: 25px">
+                                            <select id="DeptCode" name="DeptCode" style="width:200px">
+                                                <option value="">==请选择==</option>
+                                            </select><input type="hidden" id="DeptName" name="DeptName" />
+                                        </span>
+                                    </td>
+                                </tr>
+
+                                <tr>
+                                    <td width="15%" class="detailTitle" style="height: 25px;">反馈信息<span style="color: #ff0000">*</span></td>
+                                    <td width="70%" class="detailContent" colspan="3">
+                                        <span class="detailContent">
+                                            <textarea id="FeedbackInformation" name="FeedbackInformation" style="width:95%; min-height: 100px; max-height: 150px;"></textarea>
+                                        </span>
+                                    </td>
+
+                                </tr>
+                                <tr>
+                                    <td width="15%" class="detailTitle" style="height: 25px;">管理员回复</td>
+                                    <td width="70%" class="detailContent" colspan="3">
+                                        <span class="detailContent">
+                                            <textarea id="ManagerReply" name="ManagerReply" style="width:95%; min-height: 100px; max-height: 150px;" disabled="disabled"></textarea>
+                                        </span>
+                                    </td>
+
+                                </tr>
+                                <tr>
+                                    <td width="85%" class="detailContent" style="height: 25px" colspan="5">
+                                        <table align="right">
+                                            <tr>
+                                                <td width="25%" class="detailTitle" style="height: 25px">管理员<span style="color: #ff0000">*</span></td>
+                                                <td width="20%" class="detailContent" style="height: 25px">
+                                                    <span class="detailContent" style="height: 25px">
+                                                        <input type="text" id="ManagerName" name="ManagerName" style="width: 100px;" disabled="disabled" />
+                                                    </span>
+                                                </td>
+                                                <td width="20%" class="detailTitle" style="height: 25px">日期<span style="color: #ff0000">*</span></td>
+                                                <td width="20%" class="detailContent" style="height: 25px">
+                                                    <span class="detailContent" style="height: 25px">
+                                                        <input type="text" id="ManagerDate" name="ManagerDate" style="width: 100px;" disabled="disabled" onclick="WdatePicker({ maxDate: '%y-%M-%d' });" />
+                                                    </span>
+                                                </td>
+                                            </tr>
+                                        </table>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td width="85%" class="detailContent" style="height: 25px" colspan="5">
+                                        <table align="right">
+                                            <tr>
+                                                <td width="20%" class="detailTitle" style="height: 25px">填写人<span style="color: #ff0000">*</span></td>
+                                                <td width="20%" class="detailContent" style="height: 25px">
+                                                    <span class="detailContent" style="height: 25px">
+                                                        <input type="text" id="Writor" name="Writor" style="width: 100px;" />
+                                                    </span>
+                                                </td>
+                                                <td width="30%" class="detailTitle" style="height: 25px">登记日期<span style="color: #ff0000">*</span></td>
+                                                <td width="20%" class="detailContent" style="height: 25px">
+                                                    <span class="detailContent" style="height: 25px">
+                                                        <input type="text" id="RegisterDate" name="RegisterDate" style="width: 100px;" onclick="WdatePicker({ maxDate: '%y-%M-%d' });" />
+                                                    </span>
+                                                </td>
+                                            </tr>
+                                        </table>
+                                    </td>
+                                </tr>
+                            </table>
+                        </div>
+                    </div>
+
+                    <div class="modal-footer" style="margin: auto; text-align: center;">
+                        <input type="button" id="close" name="close" class="btn btn-default" data-dismiss="modal" value="关闭" />
+                        <input type="button" id="submit" name="submit" class="btn btn-success" value="修改" onclick="Update()" />
+
+                    </div>
+                </div>
+                <!-- /.modal-content -->
+            </div>
+            <!-- /.modal -->
+        </div>
+    </form>
+    <script type="text/javascript">
+        $(function () {
+            $("textarea").autosize();
+        });
+
+        function LoadData(id, pi) {
+            $.ajax({
+                cache: false,
+                asycn: true,
+                type: "get",
+                url: '@Url.Action("LoadData")',
+                dataType: "text",
+                data: { id: id },
+                success: function (data) {
+                    var jsonArr = eval("(" + data + ")");
+                    $("#pi").val(pi);
+
+                    $("#Id").val(jsonArr.Id);
+                    $("#StudentsRealName").val(jsonArr.StudentsRealName);
+                    $("#StudentsName").val(jsonArr.StudentsName);
+                    $("#TrainingBaseCode").val(jsonArr.TrainingBaseCode);
+                    $("#TrainingBaseName").val(jsonArr.TrainingBaseName);
+                    $("#ProfessionalBaseCode").val(jsonArr.ProfessionalBaseCode);
+                    $("#ProfessionalBaseName").val(jsonArr.ProfessionalBaseName);
+                    $("#DeptCode").val(jsonArr.DeptCode);
+                    $("#DeptName").val(jsonArr.DeptName);
+                    $("#RegisterDate").val(jsonArr.RegisterDate);
+                    $("#Writor").val(jsonArr.Writor);
+                    $("#TeacherCheck").val(jsonArr.TeacherCheck);
+                    $("#KzrCheck").val(jsonArr.KzrCheck);
+                    $("#BaseCheck").val(jsonArr.BaseCheck);
+                    $("#ManagerCheck").val(jsonArr.ManagerCheck);
+                    $("#ManagerHandle").val(jsonArr.ManagerHandle);
+
+                    $("#FeedbackInformation").val(jsonArr.FeedbackInformation);
+                    $("#ManagerReply").val(jsonArr.ManagerReply);
+                    $("#ManagerName").val(jsonArr.ManagerName);
+                    $("#ManagerDate").val(jsonArr.ManagerDate);
+
+                },
+                error: function () {
+                    alert("系统繁忙，请联系管理员")
+                }
+            });
+        }
+
+        function Update() {
+            if ($("#DeptCode").val() == "") { alert("轮转科室不能为空"); return false; }
+            if ($("#FeedbackInformation").val() == "") { alert("反馈信息不能为空"); return false; }
+            if ($("#Writor").val() == "") { alert("填写人不能为空"); return false; }
+            if ($("#RegisterDate").val() == "") { alert("登记日期不能为空"); return false; }
+
+            $("#form1").ajaxSubmit({
+                type: "post",
+                url: '@Url.Action("Update")',
+                dataType: "text",
+                success: function (data) {
+                    alert(data);
+                    $("#myModal").modal("hide");
+                    loadPageList($("#pi").val());
+                }
+            });
+        }
+    </script>
+</body>
+</html>
